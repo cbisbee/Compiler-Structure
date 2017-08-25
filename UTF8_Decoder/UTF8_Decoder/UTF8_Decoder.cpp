@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <bitset>
-#include <vector>
 #include <iomanip>
 
 /*
@@ -14,7 +12,7 @@ This program is designed to read in UTF-8 encoded text file with unicode charact
 and for each character output its code point (in hex) into a seperate file.
 */
 
-void readBytes(std::ifstream &fin, std::vector<bool>&);
+void readBytes(std::ifstream &fin);
 std::string trimFileExtension(std::string);
 
 int main(int argc, char* argv) {
@@ -22,7 +20,6 @@ int main(int argc, char* argv) {
 	std::string outputFileName;
 	std::ifstream fin;
 	std::ofstream fout;
-	std::vector<bool> bitBuffer;
 
 	std::cout << "Enter a UTF-8 encoded file to convert: ";
 	std::cin >> inputFileName;
@@ -34,12 +31,15 @@ int main(int argc, char* argv) {
 		return 0;
 	}
 
-	readBytes(fin, bitBuffer);
+	readBytes(fin);
+
+	std::cin.get();
+	std::cin.get();
 
 	return 0;
 }
 
-void readBytes(std::ifstream &fin, std::vector<bool> &bitBuffer) {
+void readBytes(std::ifstream &fin) {
 	char byte;
 	int codePoint = 0;
 	int currentBitNum = 0;
@@ -87,8 +87,8 @@ void readBytes(std::ifstream &fin, std::vector<bool> &bitBuffer) {
 				codePoint = 0;
 				newCodePoint = true;
 			}
+			--i;
 		}
-		--i;
 	}
 }
 
