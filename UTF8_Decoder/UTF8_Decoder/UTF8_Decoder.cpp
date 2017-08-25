@@ -15,7 +15,6 @@ and for each character output its code point (in hex) into a seperate file.
 */
 
 void readBytes(std::ifstream &fin, std::vector<bool>&);
-void getCodePointsFromBits(std::vector<bool>&, std::ofstream&);
 std::string trimFileExtension(std::string);
 
 int main(int argc, char* argv) {
@@ -36,8 +35,6 @@ int main(int argc, char* argv) {
 	}
 
 	readBytes(fin, bitBuffer);
-	getCodePointsFromBits(bitBuffer, fout);
-	
 
 	return 0;
 }
