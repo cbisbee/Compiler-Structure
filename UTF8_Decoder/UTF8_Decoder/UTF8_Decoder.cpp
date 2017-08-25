@@ -44,40 +44,57 @@ int main(int argc, char* argv) {
 
 void readBytes(std::ifstream &fin, std::vector<bool> &bitBuffer) {
 	char byte;
+	int codePoint = 0;
+	int currentBitNum = 0;
+	int allowedBits = 0;
+	bool newCodePoint = true;
 	
 	while (fin.read(&byte, 1)) {
 		//Bytes are encoded in reverse order that wikipedia states,
-		//start from the back of the char
-		for (int i = CHAR_BIT - 1; i >= 0; --i) {
-			bitBuffer.push_back(((byte >> i) & 1));
-		}
-	}
-}
-
-void getCodePointsFromBits(std::vector<bool> &bitBuffer, std::ofstream &fout) {
-	bool newCodePoint = true;
-	int codePointSize = 0;
-	int bytesAllowed = 0;
-	int currentByteNumber = 0;
-	int bitPosition = 0;
-	for (int i = 0; i < bitBuffer.size(); ++i) {
-		if (newCodePoint) {
-			//Conventional ASCII Encoded Character
-			if (!bitBuffer[i]) {
-				codePointSize = 7;
-				bytesAllowed = 1;
-				currentByteNumber = 1;
+		//start from the back of the char when adding to the bit string
+		int i = CHAR_BIT - 1;
+		while (i >= 0) {
+			if (newCodePoint) {
+				int precedingOnes = 0;
+				while ((byte >> i) & 1) {
+					--i;
+					++precedingOnes;
+				}
 				newCodePoint = false;
-				bitPosition = 0;
+				currentBitNum = 0;
+				switch (precedingOnes)
+				{
+				case 0:
+					allowedBits = 7;
+					break;
+				case 2:
+					allowedBits = 11;
+					break;
+				case 3:
+					allowedBits = 16;
+					break;
+				case 4:
+					allowedBits = 21;
+					break;
+				default:
+					break;
+				}
+			}
+			else if (currentBitNum < allowedBits) {
+				if ((byte >> i) & 1) codePoint += pow(2, currentBitNum);
+				++currentBitNum;
+			}
+			else {
+				//output the code point in hex
+				std::cout << std::hex << "0x" << codePoint << std::endl;
+				codePoint = 0;
+				newCodePoint = true;
 			}
 		}
-
-		//Start reading in actual code point
-		
-
+		--i;
 	}
 }
 
 std::string trimFileExtension(std::string ogFileName) {
-	return ogFileName.substr(0, ogFileName.length() - 3);
+	return ogFileName.substr(0, ogFileName.length() - 4);
 }
