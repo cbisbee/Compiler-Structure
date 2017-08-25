@@ -15,6 +15,7 @@ and for each character output its code point (in hex) into a seperate file.
 */
 
 void readBytes(std::ifstream &fin, std::vector<bool>&);
+void getCodePointsFromBits(std::vector<bool>&, std::ofstream&);
 std::string trimFileExtension(std::string);
 
 int main(int argc, char* argv) {
@@ -28,13 +29,14 @@ int main(int argc, char* argv) {
 	std::cin >> inputFileName;
 	outputFileName = trimFileExtension(inputFileName) + "_CodePoints.txt";
 
-	fin.open(inputFileName, std::ios::binary);
+	fin.open(inputFileName, std::ifstream::binary);
 	if (!fin) {
 		std::cout << "The requested file could not be opened, exiting program...";
 		return 0;
 	}
 
 	readBytes(fin, bitBuffer);
+	getCodePointsFromBits(bitBuffer, fout);
 	
 
 	return 0;
@@ -44,12 +46,38 @@ void readBytes(std::ifstream &fin, std::vector<bool> &bitBuffer) {
 	char byte;
 	
 	while (fin.read(&byte, 1)) {
-		for (int i = 0; i < CHAR_BIT; ++i) {
-			bitBuffer.push_back(((byte >> i) & 1) != 0);
+		//Bytes are encoded in reverse order that wikipedia states,
+		//start from the back of the char
+		for (int i = CHAR_BIT - 1; i >= 0; --i) {
+			bitBuffer.push_back(((byte >> i) & 1));
 		}
 	}
 }
 
-std::string trimFileExtension(std::string ogFileName) {
+void getCodePointsFromBits(std::vector<bool> &bitBuffer, std::ofstream &fout) {
+	bool newCodePoint = true;
+	int codePointSize = 0;
+	int bytesAllowed = 0;
+	int currentByteNumber = 0;
+	int bitPosition = 0;
+	for (int i = 0; i < bitBuffer.size(); ++i) {
+		if (newCodePoint) {
+			//Conventional ASCII Encoded Character
+			if (!bitBuffer[i]) {
+				codePointSize = 7;
+				bytesAllowed = 1;
+				currentByteNumber = 1;
+				newCodePoint = false;
+				bitPosition = 0;
+			}
+		}
 
+		//Start reading in actual code point
+		
+
+	}
+}
+
+std::string trimFileExtension(std::string ogFileName) {
+	return ogFileName.substr(0, ogFileName.length() - 3);
 }
