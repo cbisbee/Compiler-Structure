@@ -12,17 +12,15 @@ and for each character output its code point (in hex) into a seperate file.
 */
 
 void readBytes(std::ifstream &fin);
-std::string trimFileExtension(std::string);
 
 int main(int argc, char* argv) {
-	std::string inputFileName;
-	std::string outputFileName;
+	std::string inputFileName, outputFileName;
 	std::ifstream fin;
 	std::ofstream fout;
 
 	std::cout << "Enter a UTF-8 encoded file to convert: ";
 	std::cin >> inputFileName;
-	outputFileName = trimFileExtension(inputFileName) + "_CodePoints.txt";
+	outputFileName = inputFileName.substr(0, inputFileName.length() - 4) + "_CodePoints.txt";
 
 	fin.open(inputFileName, std::ifstream::binary);
 	if (!fin) {
@@ -90,8 +88,4 @@ void readBytes(std::ifstream &fin) {
 			--i;
 		}
 	}
-}
-
-std::string trimFileExtension(std::string ogFileName) {
-	return ogFileName.substr(0, ogFileName.length() - 4);
 }
