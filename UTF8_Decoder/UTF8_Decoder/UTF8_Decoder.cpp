@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <iomanip>
 
 /*
 Charles Bisbee
@@ -14,7 +13,6 @@ and for each character output its code point (in hex) into a seperate file.
 
 void readBytes(std::ifstream &fin);
 std::string trimFileExtension(std::string);
-void printRawBits(std::ifstream &fin);
 
 int main(int argc, char* argv) {
 	std::string inputFileName;
@@ -33,25 +31,11 @@ int main(int argc, char* argv) {
 	}
 
 	readBytes(fin);
-	//printRawBits(fin);
 
 	std::cin.get();
 	std::cin.get();
 
 	return 0;
-}
-
-void printRawBits(std::ifstream &fin) {
-	char byte;
-
-	while (fin.read(&byte, 1)) {
-		int i = 0;		
-		while (i < CHAR_BIT) {
-			std::cout << ((byte >> i) & 1) << " ";
-			++i;
-		}
-		std::cout << std::endl;
-	}
 }
 
 void readBytes(std::ifstream &fin) {
@@ -62,9 +46,13 @@ void readBytes(std::ifstream &fin) {
 	bool newCodePoint = true;
 	
 	while (fin.read(&byte, 1)) {
-		std::cout << std::hex << "0x" << codePoint << std::endl;
-		codePoint = 0;
-		newCodePoint = true;
+		if(currentBitNum > allowedBits)
+		{
+			//output the code point in hex
+			std::cout << std::hex << "0x" << codePoint << std::endl;
+			codePoint = 0;
+			newCodePoint = true;
+		}
 		//Bytes are encoded in reverse order that wikipedia states,
 		//start from the back of the char when adding to the bit string
 		int i = CHAR_BIT - 1;
