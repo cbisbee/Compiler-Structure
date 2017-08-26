@@ -11,7 +11,7 @@ This program is designed to read in UTF-8 encoded text file with unicode charact
 and for each character output its code point (in hex) into a seperate file.
 */
 
-void readBytes(std::ifstream&);
+void readBytes(std::ifstream&, std::ofstream&);
 
 int main(int argc, char* argv) {
 	std::string inputFileName, outputFileName;
@@ -27,35 +27,32 @@ int main(int argc, char* argv) {
 		std::cout << "The requested file could not be opened, exiting program...";
 		return 0;
 	}
+	fout.open(outputFileName);
 
-	readBytes(fin);
-
-	std::cin.get();
-	std::cin.get();
+	readBytes(fin, fout);
 
 	return 0;
 }
 
-void readBytes(std::ifstream &fin) {
+void readBytes(std::ifstream &fin, std::ofstream &fout) {
 	char byte;
 	int codePoint = 0, currentBitNum = 0, bytesAllowed = 0, currentByte = 0, allowedBits = 0, i;
 	bool newCodePoint = true;
 	
 	while (fin.read(&byte, 1)) {
 		if (currentByte <= bytesAllowed) {
-			i = CHAR_BIT - 3;
+			i = CHAR_BIT - 3; //Skip the '10' at the start of the byte if you are starting a new byte but are not in a new encoding
 		}
 		else {
 			//output the code point in hex
-			std::cout << std::hex << "0x" << codePoint << std::endl;
+			fout << std::hex << "0x" << codePoint << std::endl;
 			codePoint = 0;
 			newCodePoint = true;
 			bytesAllowed = 0;
 			currentByte = 1;
 			i = CHAR_BIT - 1;
 		}
-		//Bytes are encoded in reverse order that wikipedia states,
-		//start from the back of the char when adding to the bit string
+		//Bytes are encoded in reverse order that wikipedia states, start from the back of the char when adding to the bit string
 		while (i >= 0) {
 			if (newCodePoint) {
 				int precedingOnes = 0;
