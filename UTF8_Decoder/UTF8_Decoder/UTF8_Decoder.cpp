@@ -11,7 +11,7 @@ This program is designed to read in UTF-8 encoded text file with unicode charact
 and for each character output its code point (in hex) into a seperate file.
 */
 
-void readBytes(std::ifstream &fin);
+void readBytes(std::ifstream&);
 
 int main(int argc, char* argv) {
 	std::string inputFileName, outputFileName;
@@ -38,22 +38,24 @@ int main(int argc, char* argv) {
 
 void readBytes(std::ifstream &fin) {
 	char byte;
-	int codePoint = 0;
-	int currentBitNum = 0;
-	int allowedBits = 0;
+	int codePoint = 0, currentBitNum = 0, bytesAllowed = 0, currentByte = 0, allowedBits = 0, i;
 	bool newCodePoint = true;
 	
 	while (fin.read(&byte, 1)) {
-		if(currentBitNum > allowedBits)
-		{
+		if (currentByte <= bytesAllowed) {
+			i = CHAR_BIT - 3;
+		}
+		else {
 			//output the code point in hex
 			std::cout << std::hex << "0x" << codePoint << std::endl;
 			codePoint = 0;
 			newCodePoint = true;
+			bytesAllowed = 0;
+			currentByte = 1;
+			i = CHAR_BIT - 1;
 		}
 		//Bytes are encoded in reverse order that wikipedia states,
 		//start from the back of the char when adding to the bit string
-		int i = CHAR_BIT - 1;
 		while (i >= 0) {
 			if (newCodePoint) {
 				int precedingOnes = 0;
@@ -63,19 +65,24 @@ void readBytes(std::ifstream &fin) {
 				}
 				newCodePoint = false;
 				currentBitNum = 1;
+				currentByte = 1;
 				switch (precedingOnes)
 				{
 				case 0:
 					allowedBits = 7;
+					bytesAllowed = 1;
 					break;
 				case 2:
 					allowedBits = 11;
+					bytesAllowed = 2;
 					break;
 				case 3:
 					allowedBits = 16;
+					bytesAllowed = 3;
 					break;
 				case 4:
 					allowedBits = 21;
+					bytesAllowed = 4;
 					break;
 				default:
 					break;
@@ -87,5 +94,6 @@ void readBytes(std::ifstream &fin) {
 			}
 			--i;
 		}
+		++currentByte;
 	}
 }
