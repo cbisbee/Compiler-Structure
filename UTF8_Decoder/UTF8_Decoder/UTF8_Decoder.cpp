@@ -93,4 +93,5 @@ void readBytes(std::ifstream &fin, std::ofstream &fout) {
 		}
 		++currentByte;
 	}
+	fout << std::hex << "0x" << codePoint << std::endl;
 }
