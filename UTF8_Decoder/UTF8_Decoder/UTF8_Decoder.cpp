@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 /*
 Charles Bisbee
@@ -11,7 +12,11 @@ This program is designed to read in UTF-8 encoded text file with unicode charact
 and for each character output its code point (in hex) into a seperate file.
 */
 
-void readBytes(std::ifstream&, std::ofstream&);
+void readRawBytes(std::ifstream&, std::ofstream&);
+uint32_t decode4ByteUTF8(std::vector<uint8_t>);
+uint32_t decode3ByteUTF8(std::vector<uint8_t>);
+uint32_t decode2ByteUTF8(std::vector<uint8_t>);
+uint32_t decode1ByteUTF8(uint8_t);
 
 int main(int argc, char* argv[]) {
 	std::string inputFileName, outputFileName;
@@ -32,69 +37,73 @@ int main(int argc, char* argv[]) {
 	}
 
 	fout.open(outputFileName);
-	readBytes(fin, fout);
+	readRawBytes(fin, fout);
 
 	return 0;
 }
 
-void readBytes(std::ifstream &fin, std::ofstream &fout) {
+void readRawBytes(std::ifstream &fin, std::ofstream &fout) {
 	char byte;
-	int codePoint = 0, currentBitNum = 0, bytesAllowed = 0, currentByte = 0, allowedBits = 0, i;
-	bool newCodePoint = true;
-	
+	std::vector<uint8_t> encodedData;
 	while (fin.read(&byte, 1)) {
-		if (currentByte <= bytesAllowed) {
-			i = CHAR_BIT - 3; //Skip the '10' at the start of the byte if you are starting a new byte but are not in a new encoding
-		}
-		else {
-			//output the code point in hex
-			fout << std::hex << "0x" << codePoint << std::endl;
-			codePoint = 0;
-			newCodePoint = true;
-			bytesAllowed = 0;
-			currentByte = 1;
-			i = CHAR_BIT - 1;
-		}
-		//Bytes are encoded in reverse order that wikipedia states, start from the back of the char when adding to the bit string
-		while (i >= 0) {
-			if (newCodePoint) {
-				int precedingOnes = 0;
-				while ((byte >> i) & 1) {
-					--i;
-					++precedingOnes;
-				}
-				newCodePoint = false;
-				currentBitNum = 1;
-				currentByte = 1;
-				switch (precedingOnes)
-				{
-				case 0:
-					allowedBits = 7;
-					bytesAllowed = 1;
-					break;
-				case 2:
-					allowedBits = 11;
-					bytesAllowed = 2;
-					break;
-				case 3:
-					allowedBits = 16;
-					bytesAllowed = 3;
-					break;
-				case 4:
-					allowedBits = 21;
-					bytesAllowed = 4;
-					break;
-				default:
-					break;
-				}
-			}
-			else if (currentBitNum <= allowedBits) {
-				if ((byte >> i) & 1) codePoint += pow(2, (allowedBits - currentBitNum));
-				++currentBitNum;
-			}
+		int precedingOnes = 0;
+		int i = CHAR_BIT - 1;
+		encodedData.push_back((uint8_t)byte);
+		while ((byte >> i) & 1) {
 			--i;
+			++precedingOnes;
 		}
-		++currentByte;
+		switch (precedingOnes)
+		{
+		case 0:
+			fout << std::hex << "0x" << decode1ByteUTF8((uint8_t)byte) << std::endl;
+			break;
+		case 2:
+			fin.read(&byte, 1);
+			encodedData.push_back((uint8_t)byte);
+			fout << std::hex << "0x" << decode2ByteUTF8(encodedData);
+			break;
+		case 3:
+			for (int i = 0; i < 2; ++i) { fin.read(&byte, 1); encodedData.push_back((uint8_t)byte); }
+			fout << std::hex << "0x" << decode3ByteUTF8(encodedData) << std::endl;
+			break;
+		case 4:
+			for (int i = 0; i < 4; ++i) { fin.read(&byte, 1); encodedData.push_back((uint8_t)byte); }
+			fout << std::hex << "0x" << decode4ByteUTF8(encodedData) << std::endl;		
+			break;
+		default:
+			break;
+		}
+		encodedData.clear();
 	}
-	fout << std::hex << "0x" << codePoint << std::endl;
+}
+
+uint32_t decode4ByteUTF8(std::vector<uint8_t> encodedData) {
+	uint32_t codePoint =
+		((((uint32_t)encodedData[0]) & 0x7) << 18) |
+		((((uint32_t)encodedData[1]) & 0x3F) << 12) |
+		((((uint32_t)encodedData[2]) & 0x3F) << 6) |
+		((((uint32_t)encodedData[3]) & 0x3F) << 0);
+
+	return codePoint;
+}
+
+uint32_t decode3ByteUTF8(std::vector<uint8_t> encodedData) {
+	uint32_t codePoint =
+		((((uint32_t)encodedData[0]) & 0xF) << 12) |
+		((((uint32_t)encodedData[1]) & 0x3F) << 6) |
+		((((uint32_t)encodedData[2]) & 0x3F) << 0);
+
+	return codePoint;
+}
+
+uint32_t decode2ByteUTF8(std::vector<uint8_t> encodedData) {
+	uint16_t codePoint =
+		((((uint16_t)encodedData[0]) & 0x1F) << 6) |
+		((((uint16_t)encodedData[1]) & 0x3F) << 0);
+	return codePoint;
+}
+
+uint32_t decode1ByteUTF8(uint8_t encodedData) {
+	return (((encodedData)& 0x7F) << 0);
 }
