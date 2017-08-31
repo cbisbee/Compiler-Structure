@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <codecvt>
 
 /*
 Charles Bisbee
@@ -46,10 +45,10 @@ void readRawBytes(std::ifstream &fin, std::ofstream &fout) {
 	char byte;
 	std::vector<uint8_t> encodedData;
 	while (fin.read(&byte, 1)) {
-		int i = 0;
+		int precedingOnes = 0, i = CHAR_BIT - 1;
 		encodedData.push_back((uint8_t)byte);
-		while ((byte << i) & 1) ++i;
-		switch (i)
+		while ((byte >> i) & 1) { --i; ++precedingOnes; }
+		switch (precedingOnes)
 		{
 		case 0:
 			fout << std::hex << "0x" << decode1ByteUTF8((uint8_t)byte) << std::endl;
