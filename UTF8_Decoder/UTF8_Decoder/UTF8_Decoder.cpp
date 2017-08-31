@@ -2,12 +2,12 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <codecvt>
 
 /*
 Charles Bisbee
 8/25/17
 CSCI 450: Compiler Structure
-
 This program is designed to read in UTF-8 encoded text file with unicode characters
 and for each character output its code point (in hex) into a seperate file.
 */
@@ -46,14 +46,10 @@ void readRawBytes(std::ifstream &fin, std::ofstream &fout) {
 	char byte;
 	std::vector<uint8_t> encodedData;
 	while (fin.read(&byte, 1)) {
-		int precedingOnes = 0;
-		int i = CHAR_BIT - 1;
+		int i = 0;
 		encodedData.push_back((uint8_t)byte);
-		while ((byte >> i) & 1) {
-			--i;
-			++precedingOnes;
-		}
-		switch (precedingOnes)
+		while ((byte << i) & 1) ++i;
+		switch (i)
 		{
 		case 0:
 			fout << std::hex << "0x" << decode1ByteUTF8((uint8_t)byte) << std::endl;
@@ -69,7 +65,7 @@ void readRawBytes(std::ifstream &fin, std::ofstream &fout) {
 			break;
 		case 4:
 			for (int i = 0; i < 4; ++i) { fin.read(&byte, 1); encodedData.push_back((uint8_t)byte); }
-			fout << std::hex << "0x" << decode4ByteUTF8(encodedData) << std::endl;		
+			fout << std::hex << "0x" << decode4ByteUTF8(encodedData) << std::endl;
 			break;
 		default:
 			break;
