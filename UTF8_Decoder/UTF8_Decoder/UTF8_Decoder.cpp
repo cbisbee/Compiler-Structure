@@ -56,7 +56,7 @@ void readRawBytes(std::ifstream &fin, std::ofstream &fout) {
 		case 2:
 			fin.read(&byte, 1);
 			encodedData.push_back((uint8_t)byte);
-			fout << std::hex << "0x" << decode2ByteUTF8(encodedData);
+			fout << std::hex << "0x" << decode2ByteUTF8(encodedData) << std::endl;
 			break;
 		case 3:
 			for (int i = 0; i < 2; ++i) { fin.read(&byte, 1); encodedData.push_back((uint8_t)byte); }
