@@ -79,7 +79,6 @@ uint32_t decode4ByteUTF8(std::vector<uint8_t> encodedData) {
 		((((uint32_t)encodedData[1]) & 0x3F) << 12) |
 		((((uint32_t)encodedData[2]) & 0x3F) << 6) |
 		((((uint32_t)encodedData[3]) & 0x3F) << 0);
-
 	return codePoint;
 }
 
@@ -88,7 +87,6 @@ uint32_t decode3ByteUTF8(std::vector<uint8_t> encodedData) {
 		((((uint32_t)encodedData[0]) & 0xF) << 12) |
 		((((uint32_t)encodedData[1]) & 0x3F) << 6) |
 		((((uint32_t)encodedData[2]) & 0x3F) << 0);
-
 	return codePoint;
 }
 
