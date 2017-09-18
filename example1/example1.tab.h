@@ -50,7 +50,8 @@ extern int yydebug;
      START = 259,
      STOP = 260,
      WORD = 261,
-     EOL = 262
+     EOL = 262,
+     WS = 263
    };
 #endif
 

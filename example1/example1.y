@@ -7,7 +7,7 @@
   int yylex();
 %}
 
-%token NUMBER START STOP WORD EOL
+%token NUMBER START STOP WORD EOL WS
 
 %%
 
@@ -24,11 +24,17 @@ command :
      ;
 
 start_command :
-     START WORD NUMBER EOL
+     optional_ws START WS WORD WS NUMBER optional_ws EOL
      ;
 
 stop_command :
-     STOP WORD EOL
+     optional_ws STOP WS WORD optional_ws EOL
+     ;
+
+optional_ws :
+     /* empty */
+     |
+     WS
      ;
 
 %%
