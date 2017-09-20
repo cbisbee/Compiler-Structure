@@ -63,7 +63,7 @@
 
 /* Copy the first part of user declarations.  */
 /* Line 371 of yacc.c  */
-#line 1 "example1.y"
+#line 1 "example1.ypp"
 
 #include <stdio.h>
 #include <string.h>
@@ -73,7 +73,7 @@
   int yylex();
 
 /* Line 371 of yacc.c  */
-#line 77 "example1.tab.c"
+#line 77 "example1.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -92,9 +92,9 @@
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "example1.tab.h".  */
-#ifndef YY_YY_EXAMPLE1_TAB_H_INCLUDED
-# define YY_YY_EXAMPLE1_TAB_H_INCLUDED
+   by #include "example1.tab.hpp".  */
+#ifndef YY_YY_EXAMPLE1_TAB_HPP_INCLUDED
+# define YY_YY_EXAMPLE1_TAB_HPP_INCLUDED
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -142,12 +142,12 @@ int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
-#endif /* !YY_YY_EXAMPLE1_TAB_H_INCLUDED  */
+#endif /* !YY_YY_EXAMPLE1_TAB_HPP_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 151 "example1.tab.c"
+#line 151 "example1.tab.cpp"
 
 #ifdef short
 # undef short
@@ -1331,7 +1331,7 @@ yyreduce:
     {
       
 /* Line 1792 of yacc.c  */
-#line 1335 "example1.tab.c"
+#line 1335 "example1.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1563,16 +1563,16 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 40 "example1.y"
+#line 40 "example1.ypp"
 
+
+int yywrap(void) {
+    return 1;
+}
 
 void yyerror(const char *str)
 {
   fprintf(stderr,"error: %s\n",str);
-}
-
-int yywrap(void) {
-    return 1;
 }
 
 int main(int argc, char *argv[])
@@ -1580,3 +1580,4 @@ int main(int argc, char *argv[])
   yyparse();
   return 0;
 } 
+

@@ -39,13 +39,13 @@ optional_ws :
 
 %%
 
+int yywrap(void) {
+    return 1;
+}
+
 void yyerror(const char *str)
 {
   fprintf(stderr,"error: %s\n",str);
-}
-
-int yywrap(void) {
-    return 1;
 }
 
 int main(int argc, char *argv[])
@@ -53,3 +53,4 @@ int main(int argc, char *argv[])
   yyparse();
   return 0;
 } 
+
