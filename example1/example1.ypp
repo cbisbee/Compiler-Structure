@@ -5,6 +5,7 @@
 
   void yyerror(const char *str);
   int yylex();
+  
 %}
 
 %token NUMBER START STOP WORD EOL WS
