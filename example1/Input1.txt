@@ -1,0 +1,3 @@
+start widget 10
+start fozzle 0
+stop whoozit
