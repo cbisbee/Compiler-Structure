@@ -5,7 +5,7 @@
 
   void yyerror(const char *str);
   int yylex();
-  
+  int yywrap();
 %}
 
 %token NUMBER START STOP WORD EOL WS
@@ -40,7 +40,7 @@ optional_ws :
 
 %%
 
-int yywrap(void) {
+int yywrap() {
     return 1;
 }
 
