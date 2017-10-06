@@ -44,6 +44,50 @@ lexed          as WS
 lexed </placemarker> as CLOSE_PLACEMARK
 lexed 
  as EOL
+lexed          as WS
+lexed <placemarker> as OPEN_PLACEMARK
+lexed 
+ as EOL
+lexed              as WS
+lexed <name> as OPEN_NAME
+lexed "Knowles Canyon" as STRING_LITERAL: stringLiteral("Knowles Canyon")
+lexed </name> as CLOSE_NAME
+lexed 
+ as EOL
+lexed              as WS
+lexed <description> as OPEN_DESCRIPTION
+lexed 
+ as EOL
+lexed                  as WS
+lexed "Another canyon in the southwest that is a couple miles from Mee Canyon" as STRING_LITERAL: stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")
+lexed 
+ as EOL
+lexed              as WS
+lexed </description> as CLOSE_DESCRIPTION
+lexed 
+ as EOL
+lexed              as WS
+lexed <point> as OPEN_POINT
+lexed 
+ as EOL
+lexed                  as WS
+lexed <coordinate> as OPEN_COORDINATE
+lexed 50.4 as NUMBER_LITERAL: numberLiteral(50)
+lexed , as COMMA_DELIMETER
+lexed -67.09 as NUMBER_LITERAL: numberLiteral(-67)
+lexed , as COMMA_DELIMETER
+lexed 0 as NUMBER_LITERAL: numberLiteral(0)
+lexed </coordinate> as CLOSE_COORDINATE
+lexed 
+ as EOL
+lexed              as WS
+lexed </point> as CLOSE_POINT
+lexed 
+ as EOL
+lexed          as WS
+lexed </placemarker> as CLOSE_PLACEMARK
+lexed 
+ as EOL
 lexed      as WS
 lexed </document> as CLOSE_DOCUMENT
 lexed 
