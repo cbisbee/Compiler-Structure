@@ -528,8 +528,8 @@ char *yytext;
 #include <assert.h>
 #include <string.h>
 #include "KML.h"
-//#include "example1.tab.hpp"
 #include "kml.tab.hpp"
+
 #define DEBUG_LEXER 1
 #line 534 "kml.lex.cpp"
 #line 535 "kml.lex.cpp"
@@ -812,15 +812,20 @@ case 1:
 YY_RULE_SETUP
 #line 15 "kml.l"
 {
+  std::cout << "WTF" << std::endl;
+  std::cout << "yytext = " << yytext << std::endl;
   if(strcmp(yytext,"<kml>") == 0){
+    std::cout << "Made it past the strcmp()" << std::endl;
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as OPEN_KML: " << yylval << std::endl;
+      std::cout << "Made it into the DEBUG_LEXER" << std::endl;
+      std::cout << "lexed " << yytext << " as OPEN_KML" << std::endl;
     #endif
+    std::cout << "Made it past the if DEBUG_LEXER == 1" << std::endl;
     return OPEN_KML;
   }
   if(strcmp(yytext,"</kml>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_KML: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_KML" << std::endl;
     #endif
     return CLOSE_KML;
   }
@@ -829,17 +834,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 31 "kml.l"
+#line 36 "kml.l"
 {
   if(strcmp(yytext,"<document>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as OPEN_DOCUMENT: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as OPEN_DOCUMENT" <<  std::endl;
     #endif
     return OPEN_DOCUMENT;
   }
   if(strcmp(yytext,"</document>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_DOCUMENT: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_DOCUMENT" << std::endl;
     #endif
     return CLOSE_DOCUMENT;
   }
@@ -847,17 +852,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 46 "kml.l"
+#line 51 "kml.l"
 {
   if(strcmp(yytext,"<placemark>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as OPEN_PLACEMARK: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as OPEN_PLACEMARK" <<  std::endl;
     #endif
     return OPEN_PLACEMARK;
   }
   if(strcmp(yytext,"</placemark>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_PLACEMARK: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_PLACEMARK" << std::endl;
     #endif
     return CLOSE_PLACEMARK;
   }
@@ -865,17 +870,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 61 "kml.l"
+#line 66 "kml.l"
 {
   if(strcmp(yytext,"<name>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as OPEN_NAME: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as OPEN_NAME" << std::endl;
     #endif
     return OPEN_NAME;
   }
   if(strcmp(yytext,"</name>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_KML: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_KML" << std::endl;
     #endif
     return CLOSE_NAME;
   }
@@ -883,17 +888,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 76 "kml.l"
+#line 81 "kml.l"
 {
   if(strcmp(yytext,"<description>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as OPEN_DESCRIPTION: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as OPEN_DESCRIPTION" << std::endl;
     #endif
     return OPEN_DESCRIPTION;
   }
   if(strcmp(yytext, "</description>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_DESCRIPTION: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_DESCRIPTION" << std::endl;
     #endif
     return CLOSE_DESCRIPTION;
   }
@@ -901,17 +906,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 91 "kml.l"
+#line 96 "kml.l"
 {
   if(strcmp(yytext, "<point>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as OPEN_POINT: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as OPEN_POINT" << std::endl;
     #endif
     return OPEN_POINT;
   }
   if(strcmp(yytext, "</point>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_POINT: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_POINT" << std::endl;
     #endif
     return CLOSE_POINT;
   }
@@ -919,17 +924,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 106 "kml.l"
+#line 111 "kml.l"
 {
   if(strcmp(yytext, "<coordinate>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as OPEN_COORDINATE: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as OPEN_COORDINATE" << std::endl;
     #endif
     return OPEN_COORDINATE;
   }
   if(strcmp(yytext, "</coordinate>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_COORDINATE: " << yylval << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_COORDINATE" << std::endl;
     #endif
     return CLOSE_COORDINATE;
   }
@@ -937,7 +942,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 121 "kml.l"
+#line 126 "kml.l"
 {
   #if DEBUG_LEXER == 1
     std::cout << "lexed " << yytext << " as COMMA_DELIMETER" << std::endl;
@@ -947,8 +952,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 128 "kml.l"
+#line 133 "kml.l"
 {
+  yylval = node(atoi(yytext));
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as NUMBER_LITERAL: " << yylval << std::endl;
     #endif
@@ -958,8 +964,9 @@ YY_RULE_SETUP
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 135 "kml.l"
+#line 141 "kml.l"
 {
+  yylval = node(std::string(yytext));
   #if DEBUG_LEXER == 1
     std::cout << "lexed " << yytext << " as STRING_LITERAL: " << yylval << std::endl;
   #endif
@@ -968,7 +975,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 142 "kml.l"
+#line 149 "kml.l"
 {
   #if DEBUG_LEXER == 1
     std::cout << "lexed " << yytext << " as WS" << std::endl;
@@ -979,7 +986,7 @@ YY_RULE_SETUP
 case 12:
 /* rule 12 can match eol */
 YY_RULE_SETUP
-#line 149 "kml.l"
+#line 156 "kml.l"
 {
   #if DEBUG_LEXER == 1
     std::cout << "lexed " << yytext << " as EOL" << std::endl;
@@ -989,7 +996,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 156 "kml.l"
+#line 163 "kml.l"
 {
   std::cout << "syntax error '" << yytext << "'" << std::endl;
   assert(0);
@@ -997,10 +1004,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 160 "kml.l"
+#line 167 "kml.l"
 ECHO;
 	YY_BREAK
-#line 1003 "kml.lex.cpp"
+#line 1010 "kml.lex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2005,5 +2012,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 160 "kml.l"
+#line 167 "kml.l"
 
