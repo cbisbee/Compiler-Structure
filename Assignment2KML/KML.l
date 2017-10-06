@@ -2,6 +2,7 @@
 
 %{
 #include <stdio.h>
+#include <iostream>
 #include <assert.h>
 #include <string.h>
 #include "KML.h"
