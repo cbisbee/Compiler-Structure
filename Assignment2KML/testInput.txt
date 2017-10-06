@@ -1,1 +1,11 @@
-<kml><document><placemarker><name>"Mee Canyon"</name><description>"A canyon in the southwest"</description><point><coordinate>45.07,54.98,0</coordinate></point></placemarker></document></kml>
+<kml>
+    <document>
+        <placemarker>
+            <name>"Mee Canyon"</name>
+            <description>"A canyon in the southwest"</description>
+            <point>
+                <coordinate>45.07,54.98,0</coordinate>
+            </point>
+        </placemarker>
+    </document>
+</kml>

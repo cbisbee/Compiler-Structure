@@ -27,6 +27,14 @@ kml
 }
 ; /*program*/
 
+optionalws:
+/* empty */
+|
+optionalws WS
+|
+optionalws EOL
+;
+
 kml:
 OPEN_KML document CLOSE_KML
 {
@@ -40,7 +48,7 @@ document:
 
 }
 |
-OPEN_DOCUMENT major_tag CLOSE_DOCUMENT
+optionalws OPEN_DOCUMENT major_tag CLOSE_DOCUMENT optionalws
 {
 
 }
@@ -59,7 +67,7 @@ major_tag placemarker
 ; /*major_tag*/
 
 placemarker:
-OPEN_PLACEMARK descriptor CLOSE_PLACEMARK
+optionalws OPEN_PLACEMARK descriptor CLOSE_PLACEMARK optionalws
 {
 
 }
@@ -95,28 +103,28 @@ point_tag
 ; /*minor_tag*/
 
 name_tag:
-OPEN_NAME STRING_LITERAL CLOSE_NAME
+optionalws OPEN_NAME optionalws STRING_LITERAL optionalws CLOSE_NAME optionalws
 {
 
 }
 ; /*name tag*/
 
 description_tag:
-OPEN_DESCRIPTION STRING_LITERAL CLOSE_DESCRIPTION
+optionalws OPEN_DESCRIPTION optionalws STRING_LITERAL optionalws CLOSE_DESCRIPTION optionalws
 {
 
 }
 ; /*description tag*/
 
 point_tag:
-OPEN_POINT coordinate CLOSE_POINT
+optionalws OPEN_POINT optionalws coordinate optionalws CLOSE_POINT optionalws
 {
 
 }
 ; /*point_tag*/
 
 coordinate:
-OPEN_COORDINATE NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL CLOSE_COORDINATE
+optionalws OPEN_COORDINATE NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL CLOSE_COORDINATE optionalws
 {
 
 }
@@ -136,7 +144,9 @@ void yyerror(const char *str)
 
 int main(int argc, char *argv[])
 {
+  std::cout << "starting parser..." << std::endl;
   yyparse();
+  std::cout << "finished parsing..." << std::endl;
   if (!! program) {
     program->print(std::cout);
   } else {

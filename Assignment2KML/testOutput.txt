@@ -1,13 +1,32 @@
+starting parser...
 lexed <kml> as OPEN_KML
+lexed 
+ as EOL
+lexed      as WS
 lexed <document> as OPEN_DOCUMENT
+lexed 
+ as EOL
+lexed          as WS
 lexed <placemarker> as OPEN_PLACEMARK
+lexed 
+ as EOL
+lexed              as WS
 lexed <name> as OPEN_NAME
 lexed "Mee Canyon" as STRING_LITERAL: stringLiteral("Mee Canyon")
 lexed </name> as CLOSE_NAME
+lexed 
+ as EOL
+lexed              as WS
 lexed <description> as OPEN_DESCRIPTION
 lexed "A canyon in the southwest" as STRING_LITERAL: stringLiteral("A canyon in the southwest")
 lexed </description> as CLOSE_DESCRIPTION
+lexed 
+ as EOL
+lexed              as WS
 lexed <point> as OPEN_POINT
+lexed 
+ as EOL
+lexed                  as WS
 lexed <coordinate> as OPEN_COORDINATE
 lexed 45.07 as NUMBER_LITERAL: numberLiteral(45)
 lexed , as COMMA_DELIMETER
@@ -15,7 +34,18 @@ lexed 54.98 as NUMBER_LITERAL: numberLiteral(54)
 lexed , as COMMA_DELIMETER
 lexed 0 as NUMBER_LITERAL: numberLiteral(0)
 lexed </coordinate> as CLOSE_COORDINATE
+lexed 
+ as EOL
+lexed              as WS
 lexed </point> as CLOSE_POINT
+lexed 
+ as EOL
+lexed          as WS
 lexed </placemarker> as CLOSE_PLACEMARK
+lexed 
+ as EOL
+lexed      as WS
 lexed </document> as CLOSE_DOCUMENT
+lexed 
+ as EOL
 lexed </kml> as CLOSE_KML
