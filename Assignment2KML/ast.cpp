@@ -45,7 +45,7 @@ int CommaDelimeter::type() const {
 }
 
 void CommaDelimeter::print(std::ostream &out) const {
-    out << "commaDelimiter(" << commaDelimeter << ")";
+    out << "commaDelimiter('" << commaDelimeter << "')";
 }
 
 
@@ -113,9 +113,11 @@ void NameNode::print(std::ostream &out) const {
 }
 
 
-
-PlacemarkerNode::PlacemarkerNode(const NodePtr &name){
+//Check out the grammar rule for this, could use some modifications
+PlacemarkerNode::PlacemarkerNode(const NodePtr &name, const NodePtr &description, const NodePtr &point){
     children.push_back(name);
+    children.push_back(description);
+    children.push_back(point);
 }
 
 int PlacemarkerNode::type() const {
@@ -123,36 +125,11 @@ int PlacemarkerNode::type() const {
 }
 
 void PlacemarkerNode::print(std::ostream &out){
-    out << "placemarker(name=" << children.at(0) << ")";
+    out << "placemarker(name=" << children.at(0)
+    << ", desciption=" << children.at(1);
+    << ", point=" <<children.at(2) << ")";
 }
 
-
-StartCommandNode::StartCommandNode(const NodePtr &target,
-                                   const NodePtr &power)
-{
-  children.push_back(target);
-  children.push_back(power);
-}
-
-int StartCommandNode::type() const { return START_COMMAND; }
-void StartCommandNode::print(std::ostream &out) const {
-  out << "start(target=" << children.at(0)
-      << ", power=" << children.at(1) << ")";
-}
-
-const std::string & StartCommandNode::target() const
-{
-  return std::dynamic_pointer_cast<WordNode>(children.at(0))->word;
-}
-
-int StartCommandNode::power() const
-{
-  return std::dynamic_pointer_cast<NumberNode>(children.at(1))->number;
-}
-
-StopCommandNode::StopCommandNode(const NodePtr &target) {
-  children.push_back(target);
-}
 
 
 int ProgramNode::type() const { return PROGRAM; }
@@ -165,20 +142,14 @@ void ProgramNode::print(std::ostream &out) const {
   out << "]) // program" << std::endl;
 }
 
-int number(const NodePtr &p) {
-  return std::dynamic_pointer_cast < NumberNode >(p)->number;
-}
- 
-const std::string & word(const NodePtr &p) {
-  return std::dynamic_pointer_cast < WordNode >(p)->word;
-}
+
 
 NodePtr node(int number) {
-  return NodePtr(new NumberNode(number));
+  return NodePtr(new NumberLiteralNode(number));
 }
 
 NodePtr node(const std::string &word) {
-  return NodePtr(new WordNode(word));
+  return NodePtr(new StringLiteralNode(word));
 }
 
 std::ostream &operator<< (std::ostream& out, const NodePtr &p) {
