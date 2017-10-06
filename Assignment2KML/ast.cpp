@@ -36,21 +36,21 @@ void NumberLiteralNode::print(std::ostream &out) const {
 
 
 
-CommaDelimeter::CommaDelimeter(char _commaDelimeter){
+CommaDelimeterNode::CommaDelimeterNode(char _commaDelimeter){
     commaDelimeter = _commaDelimeter;
 }
 
-int CommaDelimeter::type() const {
+int CommaDelimeterNode::type() const {
     return COMMA_DELIMETER;
 }
 
-void CommaDelimeter::print(std::ostream &out) const {
+void CommaDelimeterNode::print(std::ostream &out) const {
     out << "commaDelimiter('" << commaDelimeter << "')";
 }
 
 
 
-CoordinateNode::CoordinateNode(const NodePtr &number1, const NodePtr &comma1, const NodePtr &number2, const NodePtr &comma2, const NodePtr &number2) {
+CoordinateNode::CoordinateNode(const NodePtr &number1, const NodePtr &comma1, const NodePtr &number2, const NodePtr &comma2, const NodePtr &number3) {
     children.push_back(number1);
     children.push_back(comma1);
     children.push_back(number2);
@@ -62,7 +62,7 @@ int CoordinateNode::type() const {
     return COORDINATE;
 }
 
-void CoordinateNode:print(std::ostream &out) const {
+void CoordinateNode::print(std::ostream &out) const {
     out << "coordinate(xCor=" << children.at(0) <<
         ", comma='" << children.at(1) << "' , " <<
         ", yCor=" << children.at(2) << ", comma='" 
@@ -124,9 +124,9 @@ int PlacemarkerNode::type() const {
     return PLACEMARKER;
 }
 
-void PlacemarkerNode::print(std::ostream &out){
+void PlacemarkerNode::print(std::ostream &out) const {
     out << "placemarker(name=" << children.at(0)
-    << ", desciption=" << children.at(1);
+    << ", desciption=" << children.at(1)
     << ", point=" <<children.at(2) << ")";
 }
 
