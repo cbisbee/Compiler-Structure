@@ -13,15 +13,10 @@
 
 %%
 (<kml>|<\/kml>)   {
-  std::cout << "WTF" << std::endl;
-  std::cout << "yytext = " << yytext << std::endl;
   if(strcmp(yytext,"<kml>") == 0){
-    std::cout << "Made it past the strcmp()" << std::endl;
     #if DEBUG_LEXER == 1
-      std::cout << "Made it into the DEBUG_LEXER" << std::endl;
       std::cout << "lexed " << yytext << " as OPEN_KML" << std::endl;
     #endif
-    std::cout << "Made it past the if DEBUG_LEXER == 1" << std::endl;
     return OPEN_KML;
   }
   if(strcmp(yytext,"</kml>") == 0){
@@ -33,7 +28,7 @@
   //assert(0);
 }
 
-(<document<|<\/document>)   {
+(<document>|<\/document>)   {
   if(strcmp(yytext,"<document>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_DOCUMENT" <<  std::endl;
@@ -48,14 +43,14 @@
   }
 }
 
-(<placemark>|<\/placemark>)   {
-  if(strcmp(yytext,"<placemark>") == 0){
+(<placemarker>|<\/placemarker>)   {
+  if(strcmp(yytext,"<placemarker>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_PLACEMARK" <<  std::endl;
     #endif
     return OPEN_PLACEMARK;
   }
-  if(strcmp(yytext,"</placemark>") == 0){
+  if(strcmp(yytext,"</placemarker>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as CLOSE_PLACEMARK" << std::endl;
     #endif
@@ -63,7 +58,7 @@
   }
 }
 
-(<name<|<\/name>)   {
+(<name>|<\/name>)   {
   if(strcmp(yytext,"<name>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_NAME" << std::endl;
@@ -72,7 +67,7 @@
   }
   if(strcmp(yytext,"</name>") == 0){
     #if DEBUG_LEXER == 1
-      std::cout << "lexed " << yytext << " as CLOSE_KML" << std::endl;
+      std::cout << "lexed " << yytext << " as CLOSE_NAME" << std::endl;
     #endif
     return CLOSE_NAME;
   }
