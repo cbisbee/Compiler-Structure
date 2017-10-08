@@ -7,5 +7,7 @@ Repo for CSCI 450 - Compiler Structure, Colorado Mesa University Fall 2017
 - There is a collection of test input and output files at the URL https://github.com/cbisbee/Compiler-Structure/tree/Assignment1/UTF8_Decoder/Debug/TestFiles
 
 # Assignment 2: Build a lexer/parser/ast for a simple language
-- Project description
-- https://github.com/cbisbee/Compiler-Structure/tree/Assignment2
+- In this assignment we were to pick out a simple language and create a lexical scanner and parser for the language. I chose to do a very simple subset of Keyhole Markup Language (KML) which allows users to define placemarkers and give those placemarkers names, descriptions, and coordinates.
+- The branch can be found at https://github.com/cbisbee/Compiler-Structure/tree/Assignment2
+- The source files for this project can be found at https://github.com/cbisbee/Compiler-Structure/tree/Assignment2/Assignment2KML/SourceFiles
+- The test files for this project can be found at https://github.com/cbisbee/Compiler-Structure/tree/Assignment2/Assignment2KML/TestFiles
