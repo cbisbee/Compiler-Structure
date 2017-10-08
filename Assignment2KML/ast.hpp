@@ -94,6 +94,7 @@ public: void print(std::ostream &out) const;
 typedef std::shared_ptr < DocumentNode > DocumentNodePtr;
 
 class KMLNode : public Node {
+public: KMLNode(const NodePtr &document);
 public: int type() const;
 public: void print(std::ostream &out) const;
 };

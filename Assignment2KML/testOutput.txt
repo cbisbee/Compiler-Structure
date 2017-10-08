@@ -1,95 +1,43 @@
 starting parser...
-lexed <kml> as OPEN_KML
-lexed 
- as EOL
-lexed      as WS
-lexed <document> as OPEN_DOCUMENT
-lexed 
- as EOL
-lexed          as WS
-lexed <placemarker> as OPEN_PLACEMARK
-lexed 
- as EOL
-lexed              as WS
-lexed <name> as OPEN_NAME
-lexed "Mee Canyon" as STRING_LITERAL: stringLiteral("Mee Canyon")
-lexed </name> as CLOSE_NAME
-lexed 
- as EOL
-lexed              as WS
-lexed <description> as OPEN_DESCRIPTION
-lexed "A canyon in the southwest" as STRING_LITERAL: stringLiteral("A canyon in the southwest")
-lexed </description> as CLOSE_DESCRIPTION
-lexed 
- as EOL
-lexed              as WS
-lexed <point> as OPEN_POINT
-lexed 
- as EOL
-lexed                  as WS
-lexed <coordinate> as OPEN_COORDINATE
-lexed 45.07 as NUMBER_LITERAL: numberLiteral(45)
-lexed , as COMMA_DELIMETER
-lexed 54.98 as NUMBER_LITERAL: numberLiteral(54)
-lexed , as COMMA_DELIMETER
-lexed 0 as NUMBER_LITERAL: numberLiteral(0)
-lexed </coordinate> as CLOSE_COORDINATE
-lexed 
- as EOL
-lexed              as WS
-lexed </point> as CLOSE_POINT
-lexed 
- as EOL
-lexed          as WS
-lexed </placemarker> as CLOSE_PLACEMARK
-lexed 
- as EOL
-lexed          as WS
-lexed <placemarker> as OPEN_PLACEMARK
-lexed 
- as EOL
-lexed              as WS
-lexed <name> as OPEN_NAME
-lexed "Knowles Canyon" as STRING_LITERAL: stringLiteral("Knowles Canyon")
-lexed </name> as CLOSE_NAME
-lexed 
- as EOL
-lexed              as WS
-lexed <description> as OPEN_DESCRIPTION
-lexed 
- as EOL
-lexed                  as WS
-lexed "Another canyon in the southwest that is a couple miles from Mee Canyon" as STRING_LITERAL: stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")
-lexed 
- as EOL
-lexed              as WS
-lexed </description> as CLOSE_DESCRIPTION
-lexed 
- as EOL
-lexed              as WS
-lexed <point> as OPEN_POINT
-lexed 
- as EOL
-lexed                  as WS
-lexed <coordinate> as OPEN_COORDINATE
-lexed 50.4 as NUMBER_LITERAL: numberLiteral(50)
-lexed , as COMMA_DELIMETER
-lexed -67.09 as NUMBER_LITERAL: numberLiteral(-67)
-lexed , as COMMA_DELIMETER
-lexed 0 as NUMBER_LITERAL: numberLiteral(0)
-lexed </coordinate> as CLOSE_COORDINATE
-lexed 
- as EOL
-lexed              as WS
-lexed </point> as CLOSE_POINT
-lexed 
- as EOL
-lexed          as WS
-lexed </placemarker> as CLOSE_PLACEMARK
-lexed 
- as EOL
-lexed      as WS
-lexed </document> as CLOSE_DOCUMENT
-lexed 
- as EOL
-lexed </kml> as CLOSE_KML
+major_tag: empty
+name_tag: string_literal=stringLiteral("Mee Canyon")
+description_tag: string_literal=stringLiteral("A canyon in the southwest")
+coordinate: numberLiteral1=numberLiteral(45)commaDelimeter1=numberLiteral(45)numberLiteral2=numberLiteral(54)commaDelimeter2=numberLiteral(54)numberLiteral3=numberLiteral(0)
+point_tag: coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))
+major_tag: major_tag=document(children=[
+]) // document
+ minor_tag=placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))
+name_tag: string_literal=stringLiteral("Knowles Canyon")
+description_tag: string_literal=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")
+coordinate: numberLiteral1=numberLiteral(50)commaDelimeter1=numberLiteral(50)numberLiteral2=numberLiteral(-67)commaDelimeter2=numberLiteral(-67)numberLiteral3=numberLiteral(0)
+point_tag: coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))
+major_tag: major_tag=document(children=[
+ placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
+]) // document
+ minor_tag=placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))
+document: major_tag=document(children=[
+ placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
+ placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
+]) // document
+
+kml: document=document(children=[
+ placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
+ placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
+]) // document
+
+program : kml=kml(children=[
+  document(children=[
+ placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
+ placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
+]) // document
+ // child 0
+]) // kml
+
+finished parsing...
+kml(children=[
+  document(children=[
+ placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
+ placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
+]) // document
+ // child 0
+]) // kml

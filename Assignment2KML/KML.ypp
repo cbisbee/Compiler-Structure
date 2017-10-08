@@ -34,7 +34,7 @@ optionalws:
 optionalws WS
 |
 optionalws EOL
-;
+; /* optionalws */
 
 
 kml:
@@ -43,17 +43,14 @@ OPEN_KML document CLOSE_KML
   #if DEBUG_PARSER == 1
     std::cout << "kml: document=" << $2 << std::endl;
   #endif
-  $$ = $2;
+  $$ = NodePtr(new KMLNode($2));
 }
-; /*document*/
+; /*kml*/
 
 document:
 /* empty */
 {
-  #if DEBUG_PARSER == 1
-    std::cout << "document: empty" << std::endl;
-  #endif
-  $$ = NodePtr(new ProgramNode());
+  $$ = NodePtr(new DocumentNode());
 }
 |
 optionalws OPEN_DOCUMENT major_tag CLOSE_DOCUMENT optionalws
@@ -61,11 +58,10 @@ optionalws OPEN_DOCUMENT major_tag CLOSE_DOCUMENT optionalws
   #if DEBUG_PARSER == 1
     std::cout << "document: major_tag=" << $3 << std::endl;
   #endif
-  //$$=$1;
-  //$$->children.push_back($2);
   $$ = $3;
 }
 ; /*document*/
+
 
 major_tag:
 /* empty */
@@ -73,7 +69,7 @@ major_tag:
   #if DEBUG_PARSER == 1
     std::cout << "major_tag: empty" << std::endl;
   #endif
-  $$ = NodePtr(new ProgramNode());
+  $$ = NodePtr(new DocumentNode());
 }
 |
 major_tag placemarker
@@ -87,14 +83,10 @@ major_tag placemarker
 ; /*major_tag*/
 
 placemarker:
-optionalws OPEN_PLACEMARK descriptor CLOSE_PLACEMARK optionalws
+optionalws OPEN_PLACEMARK name_tag description_tag point_tag CLOSE_PLACEMARK optionalws
 {
-  #if DEBUG_PARSER == 1
-    std::cout << "placemarker: descriptor=" << $3 << std::endl;
-  #endif
-  $$ = $3;
+  $$ = NodePtr(new PlacemarkerNode($3, $4, $5));
 }
-; /*placemarker*/
 
 descriptor:
 /* empty */
@@ -102,7 +94,7 @@ descriptor:
   #if DEBUG_PARSER == 1
     std::cout << "descriptor: empty" << std::endl;
   #endif
-  //do something
+  $$ = NodePtr(new PlacemarkerNode());
 }
 |
 descriptor minor_tag
@@ -111,6 +103,8 @@ descriptor minor_tag
     std::cout << "descriptor: descriptor=" << $1 << " minor_tag=" << $2 << std::endl;
   #endif
   //do something
+  $$ = $1;
+  $$->children.push_back($2);
 }
 ; /*descriptor*/
 
@@ -120,7 +114,7 @@ name_tag
   #if DEBUG_PARSER == 1
     std::cout << "minor_tag: nametag=" << $1 << std::endl;  
   #endif
-  //do something
+  $$ = $1;
 }
 |
 description_tag
@@ -128,7 +122,7 @@ description_tag
   #if DEBUG_PARSER == 1
     std::cout << "minor_tag: description_tag=" << $1 << std::endl;
   #endif
-  //do something
+  $$ = $1;
 }
 |
 point_tag
@@ -136,7 +130,7 @@ point_tag
   #if DEBUG_PARSER == 1
     std::cout << "minor_tag: description_tag=" << $1 << std::endl;
   #endif
-  //do something
+  $$ = $1;
 }
 ; /*minor_tag*/
 
@@ -146,7 +140,7 @@ optionalws OPEN_NAME optionalws STRING_LITERAL optionalws CLOSE_NAME optionalws
   #if DEBUG_PARSER == 1
     std::cout << "name_tag: string_literal=" << $4 << std::endl;
   #endif
-  //do something;
+  $$ = NodePtr(new NameNode($4));
 }
 ; /*name tag*/
 
@@ -156,7 +150,7 @@ optionalws OPEN_DESCRIPTION optionalws STRING_LITERAL optionalws CLOSE_DESCRIPTI
   #if DEBUG_PARSER == 1
     std::cout << "description_tag: string_literal=" << $4 << std::endl;
   #endif
-  //do something
+  $$ = NodePtr(new DescriptionNode($4));
 }
 ; /*description tag*/
 
@@ -166,7 +160,7 @@ optionalws OPEN_POINT optionalws coordinate optionalws CLOSE_POINT optionalws
   #if DEBUG_PARSER == 1
     std::cout << "point_tag: coordinate=" << $4 << std::endl;
   #endif
-  //do something
+  $$ = NodePtr(new PointNode($4));
 }
 ; /*point_tag*/
 
@@ -177,7 +171,7 @@ optionalws OPEN_COORDINATE NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_D
     std::cout << "coordinate: numberLiteral1=" << $3 << "commaDelimeter1=" << $4 << "numberLiteral2=" << $5 << "commaDelimeter2=" <<
     $6 << "numberLiteral3=" << $7 << std::endl;
   #endif
-  //do something;
+  $$ = NodePtr(new CoordinateNode($3,$4,$5,$6,$7));
 }
 ; /*coordinate*/
 

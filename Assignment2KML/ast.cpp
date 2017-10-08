@@ -132,6 +132,36 @@ void PlacemarkerNode::print(std::ostream &out) const {
 
 
 
+int DocumentNode::type() const {
+    return DOCUMENT;
+}
+
+void DocumentNode::print(std::ostream &out) const {
+    out << "document(children=[" << std::endl;
+    for(size_t i = 0; i < children.size(); ++i){
+        out << " " << children[i] << "// child " << i << std::endl;  
+    }
+    out << "]) // document" << std::endl;
+}
+
+
+KMLNode::KMLNode(const NodePtr &document){
+    children.push_back(document);
+}
+
+int KMLNode::type() const {
+    return KML;
+}
+
+void KMLNode::print(std::ostream &out) const {
+    out << "kml(children=[" << std::endl;
+    for (size_t i=0; i<children.size(); ++i) {
+      out << "  " << children[i] << " // child " << i << std::endl;
+    }
+    out << "]) // kml" << std::endl;
+}
+
+
 int ProgramNode::type() const { return PROGRAM; }
 
 void ProgramNode::print(std::ostream &out) const {
