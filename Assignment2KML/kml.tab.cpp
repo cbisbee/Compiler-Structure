@@ -394,14 +394,14 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   64
+#define YYLAST   61
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  23
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  11
+#define YYNNTS  13
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  15
+#define YYNRULES  20
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  52
 
@@ -451,8 +451,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    22,    22,    31,    34,    36,    41,    52,    56,    68,
-      75,    86,   138,   148,   158,   168
+       0,    22,    22,    31,    34,    36,    40,    51,    55,    67,
+      74,    86,    93,   100,   112,   120,   128,   138,   148,   158,
+     168
 };
 #endif
 
@@ -467,8 +468,8 @@ static const char *const yytname[] =
   "OPEN", "OPEN_POINT", "CLOSE_POINT", "OPEN_COORDINATE",
   "CLOSE_COORDINATE", "COMMA_DELIMETER", "STRING_LITERAL",
   "NUMBER_LITERAL", "WS", "EOL", "$accept", "program", "optionalws", "kml",
-  "document", "major_tag", "placemarker", "name_tag", "description_tag",
-  "point_tag", "coordinate", YY_NULLPTR
+  "document", "major_tag", "placemarker", "descriptors", "minor_tag",
+  "name_tag", "description_tag", "point_tag", "coordinate", YY_NULLPTR
 };
 #endif
 
@@ -483,10 +484,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -20
+#define YYPACT_NINF -13
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-20)))
+  (!!((Yystate) == (-13)))
 
 #define YYTABLE_NINF -8
 
@@ -497,12 +498,12 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       1,     2,     9,   -20,     8,     7,   -20,   -20,   -20,   -20,
-     -20,    34,   -20,    15,   -20,   -19,   -20,     3,   -20,   -20,
-      10,   -20,    37,   -20,    21,    19,   -20,    41,   -20,   -20,
-      26,   -20,   -19,   -19,   -20,    24,    33,   -20,   -19,   -20,
-      -4,    29,   -19,    23,   -20,    32,   -19,    35,    44,    40,
-     -20,   -19
+       2,     9,    36,   -13,     3,    33,   -13,   -13,   -13,   -13,
+     -13,    34,   -13,    -4,   -13,     5,   -13,    39,   -13,    21,
+     -13,   -13,   -13,   -13,     5,   -13,   -13,   -13,    27,    31,
+       5,   -13,   -13,   -12,   -13,    12,   -10,    35,    23,   -13,
+     -13,    38,   -13,     5,     5,    37,     5,    40,    41,    24,
+     -13,     5
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -511,25 +512,25 @@ static const yytype_int8 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     3,     0,     2,     0,     0,     1,     9,     4,     5,
-       6,     3,     3,     0,    10,     8,     3,     0,     3,     3,
-       0,     3,     0,     3,     0,     0,     3,     0,     3,     3,
-       0,     3,     3,    11,     3,     0,     0,     3,    12,     3,
-       0,     0,    13,     0,     3,     0,    14,     0,     0,     0,
-       3,    15
+       6,     3,     3,     0,    10,     8,    12,     3,     3,     0,
+      13,    14,    15,    16,    11,     3,     3,     3,     0,     0,
+       3,     3,     3,     0,     3,     0,     0,     0,     0,     3,
+       3,     0,     3,    18,    17,     0,    19,     0,     0,     0,
+       3,    20
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -20,   -20,   -11,   -20,   -20,   -20,   -20,   -20,   -20,   -20,
-     -20
+     -13,   -13,   -11,   -13,   -13,   -13,   -13,   -13,   -13,   -13,
+     -13,   -13,   -13
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     4,     3,     5,    11,    14,    18,    21,    25,
-      37
+      -1,     2,     4,     3,     5,    11,    14,    17,    20,    21,
+      22,    23,    34
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -537,24 +538,24 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      13,    15,     8,     9,     1,    17,    -7,    20,    22,     6,
-      24,    10,    27,     7,    19,    30,    43,    32,    33,    23,
-      35,    36,    16,    38,     8,     9,    41,    29,    42,     8,
-       9,     8,     9,    46,    39,    28,     8,     9,    34,    51,
-      12,    45,     8,     9,    44,     8,     9,     8,     9,    40,
-       8,     9,    47,    48,     8,     9,    26,    50,     8,     9,
-      31,     0,     8,     9,    49
+      13,    15,    40,    16,    37,     1,    19,    24,     7,     8,
+       9,     8,     9,    -7,    28,    29,    30,     8,     9,    33,
+      35,    36,    39,    38,     8,     9,     8,     9,    43,    44,
+      25,    46,    26,     8,     9,    27,     6,    10,    42,    51,
+      12,    50,     8,     9,     8,     9,    31,    18,     8,     9,
+      32,     0,     8,     9,     0,    41,    45,    47,    48,     0,
+       0,    49
 };
 
 static const yytype_int8 yycheck[] =
 {
-      11,    12,    21,    22,     3,    16,     4,    18,    19,     0,
-      21,     4,    23,     5,    11,    26,    20,    28,    29,     9,
-      31,    32,     7,    34,    21,    22,    37,     8,    39,    21,
-      22,    21,    22,    44,    10,    14,    21,    22,    12,    50,
-       6,    18,    21,    22,    15,    21,    22,    21,    22,    16,
-      21,    22,    20,    18,    21,    22,    19,    17,    21,    22,
-      19,    -1,    21,    22,    20
+      11,    12,    12,     7,    16,     3,    17,    18,     5,    21,
+      22,    21,    22,     4,    25,    26,    27,    21,    22,    30,
+      31,    32,    10,    34,    21,    22,    21,    22,    39,    40,
+       9,    42,    11,    21,    22,    14,     0,     4,    15,    50,
+       6,    17,    21,    22,    21,    22,    19,     8,    21,    22,
+      19,    -1,    21,    22,    -1,    20,    18,    20,    18,    -1,
+      -1,    20
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -562,10 +563,10 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,    24,    26,    25,    27,     0,     5,    21,    22,
-       4,    28,     6,    25,    29,    25,     7,    25,    30,    11,
-      25,    31,    25,     9,    25,    32,    19,    25,    14,     8,
-      25,    19,    25,    25,    12,    25,    25,    33,    25,    10,
-      16,    25,    25,    20,    15,    18,    25,    20,    18,    20,
+       4,    28,     6,    25,    29,    25,     7,    30,     8,    25,
+      31,    32,    33,    34,    25,     9,    11,    14,    25,    25,
+      25,    19,    19,    25,    35,    25,    25,    16,    25,    10,
+      12,    20,    15,    25,    25,    18,    25,    20,    18,    20,
       17,    25
 };
 
@@ -573,14 +574,16 @@ static const yytype_uint8 yystos[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    23,    24,    25,    25,    25,    26,    27,    27,    28,
-      28,    29,    30,    31,    32,    33
+      28,    29,    30,    30,    31,    31,    31,    32,    33,    34,
+      35
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     0,     2,     2,     3,     0,     5,     0,
-       2,     7,     7,     7,     7,     9
+       2,     5,     0,     2,     1,     1,     1,     7,     7,     7,
+       9
 };
 
 
@@ -1264,52 +1267,52 @@ yyreduce:
 #endif
   program = (yyvsp[0]);
 }
-#line 1268 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1271 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 6:
-#line 42 "kml.ypp" /* yacc.c:1661  */
+#line 41 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "kml: document=" << (yyvsp[-1]) << std::endl;
   #endif
   (yyval) = NodePtr(new KMLNode((yyvsp[-1])));
 }
-#line 1279 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1282 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 7:
-#line 52 "kml.ypp" /* yacc.c:1661  */
+#line 51 "kml.ypp" /* yacc.c:1661  */
     {
   (yyval) = NodePtr(new DocumentNode());
 }
-#line 1287 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1290 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 8:
-#line 57 "kml.ypp" /* yacc.c:1661  */
+#line 56 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "document: major_tag=" << (yyvsp[-2]) << std::endl;
   #endif
   (yyval) = (yyvsp[-2]);
 }
-#line 1298 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1301 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 9:
-#line 68 "kml.ypp" /* yacc.c:1661  */
+#line 67 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "major_tag: empty" << std::endl;
   #endif
   (yyval) = NodePtr(new DocumentNode());
 }
-#line 1309 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1312 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 10:
-#line 76 "kml.ypp" /* yacc.c:1661  */
+#line 75 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "major_tag: major_tag=" << (yyvsp[-1]) << " minor_tag=" << (yyvsp[0]) << std::endl;
@@ -1317,18 +1320,75 @@ yyreduce:
   (yyval)=(yyvsp[-1]);
   (yyval)->children.push_back((yyvsp[0]));
 }
-#line 1321 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1324 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 11:
 #line 87 "kml.ypp" /* yacc.c:1661  */
     {
-  (yyval) = NodePtr(new PlacemarkerNode((yyvsp[-4]), (yyvsp[-3]), (yyvsp[-2])));
+  (yyval) = NodePtr(new PlacemarkerNode((yyvsp[-2])));
 }
-#line 1329 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1332 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 12:
+#line 93 "kml.ypp" /* yacc.c:1661  */
+    {
+  #if DEBUG_PARSER == 1
+    std::cout << "descriptor: empty" << std::endl;
+  #endif
+  (yyval) = NodePtr(new DescriptorsNode());
+}
+#line 1343 "kml.tab.cpp" /* yacc.c:1661  */
+    break;
+
+  case 13:
+#line 101 "kml.ypp" /* yacc.c:1661  */
+    {
+  #if DEBUG_PARSER == 1
+    std::cout << "descriptor: descriptor=" << (yyvsp[-1]) << " minor_tag=" << (yyvsp[0]) << std::endl;
+  #endif
+  //do something
+  (yyval) = (yyvsp[-1]);
+  (yyval)->children.push_back((yyvsp[0]));
+}
+#line 1356 "kml.tab.cpp" /* yacc.c:1661  */
+    break;
+
+  case 14:
+#line 113 "kml.ypp" /* yacc.c:1661  */
+    {
+  #if DEBUG_PARSER == 1
+    std::cout << "minor_tag: nametag=" << (yyvsp[0]) << std::endl;  
+  #endif
+  (yyval) = (yyvsp[0]);
+}
+#line 1367 "kml.tab.cpp" /* yacc.c:1661  */
+    break;
+
+  case 15:
+#line 121 "kml.ypp" /* yacc.c:1661  */
+    {
+  #if DEBUG_PARSER == 1
+    std::cout << "minor_tag: description_tag=" << (yyvsp[0]) << std::endl;
+  #endif
+  (yyval) = (yyvsp[0]);
+}
+#line 1378 "kml.tab.cpp" /* yacc.c:1661  */
+    break;
+
+  case 16:
+#line 129 "kml.ypp" /* yacc.c:1661  */
+    {
+  #if DEBUG_PARSER == 1
+    std::cout << "minor_tag: description_tag=" << (yyvsp[0]) << std::endl;
+  #endif
+  (yyval) = (yyvsp[0]);
+}
+#line 1389 "kml.tab.cpp" /* yacc.c:1661  */
+    break;
+
+  case 17:
 #line 139 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
@@ -1336,10 +1396,10 @@ yyreduce:
   #endif
   (yyval) = NodePtr(new NameNode((yyvsp[-3])));
 }
-#line 1340 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1400 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
-  case 13:
+  case 18:
 #line 149 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
@@ -1347,10 +1407,10 @@ yyreduce:
   #endif
   (yyval) = NodePtr(new DescriptionNode((yyvsp[-3])));
 }
-#line 1351 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1411 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
-  case 14:
+  case 19:
 #line 159 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
@@ -1358,10 +1418,10 @@ yyreduce:
   #endif
   (yyval) = NodePtr(new PointNode((yyvsp[-3])));
 }
-#line 1362 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1422 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
-  case 15:
+  case 20:
 #line 169 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
@@ -1369,11 +1429,11 @@ yyreduce:
   #endif
   (yyval) = NodePtr(new CoordinateNode((yyvsp[-6]),(yyvsp[-4]),(yyvsp[-2])));
 }
-#line 1373 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1433 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
 
-#line 1377 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1437 "kml.tab.cpp" /* yacc.c:1661  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1616,9 +1676,7 @@ void yyerror(const char *str)
 
 int main(int argc, char *argv[])
 {
-  std::cout << "starting parser..." << std::endl;
   yyparse();
-  std::cout << "finished parsing..." << std::endl;
   if (!! program) {
     program->print(std::cout);
   } else {

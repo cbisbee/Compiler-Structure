@@ -94,11 +94,23 @@ void NameNode::print(std::ostream &out) const {
 }
 
 
+
+int DescriptorsNode::type() const {
+    return DESCRIPTORS;
+}
+
+void DescriptorsNode::print(std::ostream &out) const {
+    out << "descriptors=[" << std::endl;
+    for(size_t i = 0; i < children.size(); ++i){
+        out << children.at(i) << " // child " << i << std::endl;
+    }
+    out << "] //descriptors" << std::endl;
+}
+
+
 //Check out the grammar rule for this, could use some modifications
-PlacemarkerNode::PlacemarkerNode(const NodePtr &name, const NodePtr &description, const NodePtr &point){
-    children.push_back(name);
-    children.push_back(description);
-    children.push_back(point);
+PlacemarkerNode::PlacemarkerNode(const NodePtr &descriptors){
+    children.push_back(descriptors);
 }
 
 int PlacemarkerNode::type() const {
@@ -106,9 +118,7 @@ int PlacemarkerNode::type() const {
 }
 
 void PlacemarkerNode::print(std::ostream &out) const {
-    out << "placemarker(name=" << children.at(0)
-    << ", desciption=" << children.at(1)
-    << ", point=" <<children.at(2) << ")";
+    out << "placemarker(" << children[0] << ")" << std::endl;
 }
 
 

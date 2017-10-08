@@ -36,7 +36,6 @@ optionalws WS
 optionalws EOL
 ; /* optionalws */
 
-
 kml:
 OPEN_KML document CLOSE_KML
 {
@@ -82,22 +81,23 @@ major_tag placemarker
 }
 ; /*major_tag*/
 
+//optionalws OPEN_PLACEMARK name_tag description_tag point_tag CLOSE_PLACEMARK optionalws
 placemarker:
-optionalws OPEN_PLACEMARK name_tag description_tag point_tag CLOSE_PLACEMARK optionalws
+optionalws OPEN_PLACEMARK descriptors CLOSE_PLACEMARK optionalws
 {
-  $$ = NodePtr(new PlacemarkerNode($3, $4, $5));
+  $$ = NodePtr(new PlacemarkerNode($3));
 }
 
-descriptor:
+descriptors:
 /* empty */
 {
   #if DEBUG_PARSER == 1
     std::cout << "descriptor: empty" << std::endl;
   #endif
-  $$ = NodePtr(new PlacemarkerNode());
+  $$ = NodePtr(new DescriptorsNode());
 }
 |
-descriptor minor_tag
+descriptors minor_tag
 {
   #if DEBUG_PARSER == 1
     std::cout << "descriptor: descriptor=" << $1 << " minor_tag=" << $2 << std::endl;
@@ -188,9 +188,7 @@ void yyerror(const char *str)
 
 int main(int argc, char *argv[])
 {
-  std::cout << "starting parser..." << std::endl;
   yyparse();
-  std::cout << "finished parsing..." << std::endl;
   if (!! program) {
     program->print(std::cout);
   } else {

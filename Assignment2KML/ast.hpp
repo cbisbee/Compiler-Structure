@@ -11,6 +11,7 @@ public: enum {
     KML,
     DOCUMENT,
     PLACEMARKER,
+    DESCRIPTORS,
     NAME,
     DESCRIPTION,
     POINT,
@@ -71,8 +72,15 @@ public: void print(std::ostream &out) const;
 };
 typedef std::shared_ptr < NameNode > NameNodePtr;
 
+class DescriptorsNode : public Node {
+//public: DescriptorsNode();
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr < DescriptorsNode > DescriptorsNodePtr;
+
 class PlacemarkerNode : public Node {
-public: PlacemarkerNode(const NodePtr &name, const NodePtr &description, const NodePtr &point);
+public: PlacemarkerNode(const NodePtr &descriptors);
 public: int type() const;
 public: void print(std::ostream & out) const;
 };
