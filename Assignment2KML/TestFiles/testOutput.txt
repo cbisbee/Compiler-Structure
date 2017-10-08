@@ -1,0 +1,20 @@
+kml(document(children=[
+placemarker(descriptors=[
+name(stringLiteral=stringLiteral("Mee Canyon")) // child 0
+description(stringLiteral=stringLiteral("A canyon in the southwest")) // child 1
+point(coordinate=coordinate(xCor=numberLiteral(45.07), yCor=numberLiteral(54.98), zCor=numberLiteral(0))) // child 2
+] //descriptors)
+// child 0
+placemarker(descriptors=[
+name(stringLiteral=stringLiteral("Knowles Canyon")) // child 0
+description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")) // child 1
+point(coordinate=coordinate(xCor=numberLiteral(50.4), yCor=numberLiteral(-67.09), zCor=numberLiteral(0))) // child 2
+] //descriptors)
+// child 1
+placemarker(descriptors=[
+name(stringLiteral=stringLiteral("Jones Canyon")) // child 0
+point(coordinate=coordinate(xCor=numberLiteral(78.09), yCor=numberLiteral(-1002.4), zCor=numberLiteral(0))) // child 1
+] //descriptors)
+// child 2
+]) // document
+) // kml
