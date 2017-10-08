@@ -73,7 +73,6 @@ public: void print(std::ostream &out) const;
 typedef std::shared_ptr < NameNode > NameNodePtr;
 
 class DescriptorsNode : public Node {
-//public: DescriptorsNode();
 public: int type() const;
 public: void print(std::ostream &out) const;
 };

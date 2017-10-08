@@ -81,7 +81,7 @@ major_tag placemarker
 }
 ; /*major_tag*/
 
-//optionalws OPEN_PLACEMARK name_tag description_tag point_tag CLOSE_PLACEMARK optionalws
+
 placemarker:
 optionalws OPEN_PLACEMARK descriptors CLOSE_PLACEMARK optionalws
 {
@@ -102,7 +102,6 @@ descriptors minor_tag
   #if DEBUG_PARSER == 1
     std::cout << "descriptor: descriptor=" << $1 << " minor_tag=" << $2 << std::endl;
   #endif
-  //do something
   $$ = $1;
   $$->children.push_back($2);
 }

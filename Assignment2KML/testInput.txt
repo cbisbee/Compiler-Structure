@@ -16,5 +16,11 @@
                 <coordinate>50.4,-67.09,0</coordinate>
             </point>
         </placemarker>
+        <placemarker>
+            <name>"Jones Canyon"</name>
+            <point>
+                <coordinate>78.09,-1002.4,0</coordinate>
+            </point>
+        </placemarker>
     </document>
 </kml>

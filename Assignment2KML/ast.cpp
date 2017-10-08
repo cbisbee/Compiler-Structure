@@ -104,7 +104,7 @@ void DescriptorsNode::print(std::ostream &out) const {
     for(size_t i = 0; i < children.size(); ++i){
         out << children.at(i) << " // child " << i << std::endl;
     }
-    out << "] //descriptors" << std::endl;
+    out << "] //descriptors";
 }
 
 
@@ -130,7 +130,7 @@ int DocumentNode::type() const {
 void DocumentNode::print(std::ostream &out) const {
     out << "document(children=[" << std::endl;
     for(size_t i = 0; i < children.size(); ++i){
-        out << " " << children[i] << "// child " << i << std::endl;  
+        out << children[i] << "// child " << i << std::endl;  
     }
     out << "]) // document" << std::endl;
 }
