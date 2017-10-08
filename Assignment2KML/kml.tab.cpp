@@ -70,7 +70,7 @@
 #include "KML.h"
 #include "ast.hpp"
 
-#define DEBUG_PARSER 1
+#define DEBUG_PARSER 0
 
 int yywrap();
 int yylex();
@@ -451,8 +451,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    22,    22,    31,    34,    36,    41,    52,    56,    72,
-      79,   101,   153,   163,   173,   183
+       0,    22,    22,    31,    34,    36,    41,    52,    56,    68,
+      75,    86,   138,   148,   158,   168
 };
 #endif
 
@@ -1292,27 +1292,24 @@ yyreduce:
   #if DEBUG_PARSER == 1
     std::cout << "document: major_tag=" << (yyvsp[-2]) << std::endl;
   #endif
-  //$$=$1;
-  //$$->children.push_back($2);
   (yyval) = (yyvsp[-2]);
-  //$$->children.push_back($3);
 }
-#line 1301 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1298 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 9:
-#line 72 "kml.ypp" /* yacc.c:1661  */
+#line 68 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "major_tag: empty" << std::endl;
   #endif
   (yyval) = NodePtr(new DocumentNode());
 }
-#line 1312 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1309 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 10:
-#line 80 "kml.ypp" /* yacc.c:1661  */
+#line 76 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "major_tag: major_tag=" << (yyvsp[-1]) << " minor_tag=" << (yyvsp[0]) << std::endl;
@@ -1320,64 +1317,63 @@ yyreduce:
   (yyval)=(yyvsp[-1]);
   (yyval)->children.push_back((yyvsp[0]));
 }
-#line 1324 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1321 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 11:
-#line 102 "kml.ypp" /* yacc.c:1661  */
+#line 87 "kml.ypp" /* yacc.c:1661  */
     {
   (yyval) = NodePtr(new PlacemarkerNode((yyvsp[-4]), (yyvsp[-3]), (yyvsp[-2])));
 }
-#line 1332 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1329 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 12:
-#line 154 "kml.ypp" /* yacc.c:1661  */
+#line 139 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "name_tag: string_literal=" << (yyvsp[-3]) << std::endl;
   #endif
   (yyval) = NodePtr(new NameNode((yyvsp[-3])));
 }
-#line 1343 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1340 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 13:
-#line 164 "kml.ypp" /* yacc.c:1661  */
+#line 149 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "description_tag: string_literal=" << (yyvsp[-3]) << std::endl;
   #endif
   (yyval) = NodePtr(new DescriptionNode((yyvsp[-3])));
 }
-#line 1354 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1351 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 14:
-#line 174 "kml.ypp" /* yacc.c:1661  */
+#line 159 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
     std::cout << "point_tag: coordinate=" << (yyvsp[-3]) << std::endl;
   #endif
   (yyval) = NodePtr(new PointNode((yyvsp[-3])));
 }
-#line 1365 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1362 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
   case 15:
-#line 184 "kml.ypp" /* yacc.c:1661  */
+#line 169 "kml.ypp" /* yacc.c:1661  */
     {
   #if DEBUG_PARSER == 1
-    std::cout << "coordinate: numberLiteral1=" << (yyvsp[-6]) << "commaDelimeter1=" << (yyvsp[-5]) << "numberLiteral2=" << (yyvsp[-4]) << "commaDelimeter2=" <<
-    (yyvsp[-3]) << "numberLiteral3=" << (yyvsp[-2]) << std::endl;
+    std::cout << "coordinate: numberLiteral1=" << (yyvsp[-6]) "numberLiteral2=" << (yyvsp[-4]) << "numberLiteral3=" << (yyvsp[-2]) << std::endl;
   #endif
-  (yyval) = NodePtr(new CoordinateNode((yyvsp[-6]),(yyvsp[-5]),(yyvsp[-4]),(yyvsp[-3]),(yyvsp[-2])));
+  (yyval) = NodePtr(new CoordinateNode((yyvsp[-6]),(yyvsp[-4]),(yyvsp[-2])));
 }
-#line 1377 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1373 "kml.tab.cpp" /* yacc.c:1661  */
     break;
 
 
-#line 1381 "kml.tab.cpp" /* yacc.c:1661  */
+#line 1377 "kml.tab.cpp" /* yacc.c:1661  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1605,7 +1601,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 193 "kml.ypp" /* yacc.c:1906  */
+#line 177 "kml.ypp" /* yacc.c:1906  */
 
 
 int yywrap()

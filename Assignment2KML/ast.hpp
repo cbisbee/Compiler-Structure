@@ -16,8 +16,7 @@ public: enum {
     POINT,
     COORDINATE,
     NUMBER_LITERAL,
-    STRING_LITERAL,
-    COMMA_DELIMETER
+    STRING_LITERAL
   };
 public: std::vector < std::shared_ptr < Node > > children;
 public: virtual int type() const = 0;
@@ -36,24 +35,16 @@ public: void print(std::ostream &out) const;
 typedef std::shared_ptr < StringLiteralNode > StringLiteralNodePtr;
 
 class NumberLiteralNode : public Node {
-public: int numberLiteral;
-public: NumberLiteralNode(int _numberLiteral);
+public: float numberLiteral;
+public: NumberLiteralNode(float _numberLiteral);
 public: int type() const;
 public: void print(std::ostream &out) const;  
 };
 typedef std::shared_ptr < NumberLiteralNode > NumberLiteralNodePtr;
 
 
-class CommaDelimeterNode : public Node {
-public: char commaDelimeter;
-public: CommaDelimeterNode(char _commaDelimeter);
-public: int type() const;
-public: void print(std::ostream &out) const;
-};
-typedef std::shared_ptr < CommaDelimeterNode > CommaDelimeterNodePtr;
-
 class CoordinateNode : public Node {
-public: CoordinateNode(const NodePtr &number1, const NodePtr &comma1, const NodePtr &number2, const NodePtr &comma2, const NodePtr &number3);
+public: CoordinateNode(const NodePtr &number1, const NodePtr &number2, const NodePtr &number3);
 public: int type() const;
 public: void print(std::ostream &out) const;
 };
@@ -110,7 +101,7 @@ int numberLiteral(const NodePtr &p);
 
 const std::string & stringLiteral(const NodePtr &p);
 
-NodePtr node(int numberLiteral);
+NodePtr node(float numberLiteral);
 
 NodePtr node(const std::string &stringLiteral);
 

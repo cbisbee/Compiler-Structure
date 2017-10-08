@@ -1,43 +1,7 @@
 starting parser...
-major_tag: empty
-name_tag: string_literal=stringLiteral("Mee Canyon")
-description_tag: string_literal=stringLiteral("A canyon in the southwest")
-coordinate: numberLiteral1=numberLiteral(45)commaDelimeter1=numberLiteral(45)numberLiteral2=numberLiteral(54)commaDelimeter2=numberLiteral(54)numberLiteral3=numberLiteral(0)
-point_tag: coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))
-major_tag: major_tag=document(children=[
-]) // document
- minor_tag=placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))
-name_tag: string_literal=stringLiteral("Knowles Canyon")
-description_tag: string_literal=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")
-coordinate: numberLiteral1=numberLiteral(50)commaDelimeter1=numberLiteral(50)numberLiteral2=numberLiteral(-67)commaDelimeter2=numberLiteral(-67)numberLiteral3=numberLiteral(0)
-point_tag: coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))
-major_tag: major_tag=document(children=[
- placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
-]) // document
- minor_tag=placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))
-document: major_tag=document(children=[
- placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
- placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
-]) // document
-
-kml: document=document(children=[
- placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
- placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
-]) // document
-
-program : kml=kml(children=[
-  document(children=[
- placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
- placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
-]) // document
- // child 0
-]) // kml
-
 finished parsing...
-kml(children=[
-  document(children=[
- placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45), comma='numberLiteral(45)' , , yCor=numberLiteral(54), comma='numberLiteral(54)' , zCor=numberLiteral(0))))// child 0
- placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50), comma='numberLiteral(50)' , , yCor=numberLiteral(-67), comma='numberLiteral(-67)' , zCor=numberLiteral(0))))// child 1
+kml(document(children=[
+ placemarker(name=name(stringLiteral=stringLiteral("Mee Canyon")), desciption=description(stringLiteral=stringLiteral("A canyon in the southwest")), point=point(coordinate=coordinate(xCor=numberLiteral(45.07), yCor=numberLiteral(54.98), zCor=numberLiteral(0))))// child 0
+ placemarker(name=name(stringLiteral=stringLiteral("Knowles Canyon")), desciption=description(stringLiteral=stringLiteral("Another canyon in the southwest that is a couple miles from Mee Canyon")), point=point(coordinate=coordinate(xCor=numberLiteral(50.4), yCor=numberLiteral(-67.09), zCor=numberLiteral(0))))// child 1
 ]) // document
- // child 0
-]) // kml
+) // kml

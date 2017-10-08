@@ -5,7 +5,7 @@
 #include "KML.h"
 #include "ast.hpp"
 
-#define DEBUG_PARSER 1
+#define DEBUG_PARSER 0
 
 int yywrap();
 int yylex();
@@ -168,10 +168,9 @@ coordinate:
 optionalws OPEN_COORDINATE NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL CLOSE_COORDINATE optionalws
 {
   #if DEBUG_PARSER == 1
-    std::cout << "coordinate: numberLiteral1=" << $3 << "commaDelimeter1=" << $4 << "numberLiteral2=" << $5 << "commaDelimeter2=" <<
-    $6 << "numberLiteral3=" << $7 << std::endl;
+    std::cout << "coordinate: numberLiteral1=" << $3 "numberLiteral2=" << $5 << "numberLiteral3=" << $7 << std::endl;
   #endif
-  $$ = NodePtr(new CoordinateNode($3,$4,$5,$6,$7));
+  $$ = NodePtr(new CoordinateNode($3,$5,$7));
 }
 ; /*coordinate*/
 

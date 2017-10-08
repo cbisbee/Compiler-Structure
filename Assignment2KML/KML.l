@@ -126,7 +126,7 @@
 }
 
 [+|-]?[0-9]+\.?([0-9]+)?    {
-  yylval = node(atoi(yytext));
+  yylval = node(atof(yytext));
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as NUMBER_LITERAL: " << yylval << std::endl;
     #endif

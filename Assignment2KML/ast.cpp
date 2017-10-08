@@ -20,7 +20,7 @@ void StringLiteralNode::print(std::ostream &out) const {
 
 
 
-NumberLiteralNode::NumberLiteralNode(int _numberLiteral)
+NumberLiteralNode::NumberLiteralNode(float _numberLiteral)
 {
   numberLiteral = _numberLiteral;
 }
@@ -35,26 +35,9 @@ void NumberLiteralNode::print(std::ostream &out) const {
 }
 
 
-
-CommaDelimeterNode::CommaDelimeterNode(char _commaDelimeter){
-    commaDelimeter = _commaDelimeter;
-}
-
-int CommaDelimeterNode::type() const {
-    return COMMA_DELIMETER;
-}
-
-void CommaDelimeterNode::print(std::ostream &out) const {
-    out << "commaDelimiter('" << commaDelimeter << "')";
-}
-
-
-
-CoordinateNode::CoordinateNode(const NodePtr &number1, const NodePtr &comma1, const NodePtr &number2, const NodePtr &comma2, const NodePtr &number3) {
+CoordinateNode::CoordinateNode(const NodePtr &number1, const NodePtr &number2, const NodePtr &number3) {
     children.push_back(number1);
-    children.push_back(comma1);
     children.push_back(number2);
-    children.push_back(comma2);
     children.push_back(number3);
 }
 
@@ -64,10 +47,8 @@ int CoordinateNode::type() const {
 
 void CoordinateNode::print(std::ostream &out) const {
     out << "coordinate(xCor=" << children.at(0) <<
-        ", comma='" << children.at(1) << "' , " <<
-        ", yCor=" << children.at(2) << ", comma='" 
-        << children.at(3) << "' , zCor=" <<
-        children.at(4) << ")";
+        ", yCor=" << children.at(1) << ", zCor=" <<
+        children.at(2) << ")";
 }
 
 
@@ -154,11 +135,11 @@ int KMLNode::type() const {
 }
 
 void KMLNode::print(std::ostream &out) const {
-    out << "kml(children=[" << std::endl;
-    for (size_t i=0; i<children.size(); ++i) {
-      out << "  " << children[i] << " // child " << i << std::endl;
+    out << "kml(";
+    if(!children.empty()){
+        out << children[0];
     }
-    out << "]) // kml" << std::endl;
+    out << ") // kml" << std::endl;
 }
 
 
@@ -174,7 +155,7 @@ void ProgramNode::print(std::ostream &out) const {
 
 
 
-NodePtr node(int number) {
+NodePtr node(float number) {
   return NodePtr(new NumberLiteralNode(number));
 }
 
