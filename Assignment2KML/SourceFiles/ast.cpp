@@ -108,7 +108,6 @@ void DescriptorsNode::print(std::ostream &out) const {
 }
 
 
-//Check out the grammar rule for this, could use some modifications
 PlacemarkerNode::PlacemarkerNode(const NodePtr &descriptors){
     children.push_back(descriptors);
 }

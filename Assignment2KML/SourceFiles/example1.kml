@@ -1,0 +1,35 @@
+<kml>
+    <document>
+        <placemarker>
+            <name>"Mee Canyon"</name>
+            <description>"A canyon in the southwest"</description>
+            <point>
+                <coordinate>46.05,57.08,0</coordinate>
+            </point>
+        </placemarker>
+
+        <placemarker>
+            <name>"Knowles Canyon"</name>
+            <description>"Another canyon in the southwest"</description>
+            <point>
+                <coordinate>-30.98,170.89,0</coordinate>
+            </point>
+        </placemarker>
+
+        <placemarker>
+            <name>"Jones Canyon"</name>
+            <description>"A nearly inaccessible canyon in the southwest near Knowles and Mee Canyon"</description>
+            <point>
+                <coordinate>100.9,300.65,0</coordinate>
+            </point>
+        </placemarker>
+
+        <placemarker>
+            <name>"Turkey Flats"</name>
+            <description>"An open space resource area"</description>
+            <point>
+                <coordinate>-200,-205.79,0</coordinate>
+            </point>
+        </placemarker>
+    </document>
+</kml>

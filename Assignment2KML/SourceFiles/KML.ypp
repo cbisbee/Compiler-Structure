@@ -4,6 +4,7 @@
 #include <string.h>
 #include "KML.h"
 #include "ast.hpp"
+#include "generator.hpp"
 
 #define DEBUG_PARSER 0
 
@@ -189,7 +190,9 @@ int main(int argc, char *argv[])
 {
   yyparse();
   if (!! program) {
-    program->print(std::cout);
+    //program->print(std::cout);
+    GeneratorPtr gen = generator(program);
+    gen->generate(std::cout);
   } else {
     std::cout << "syntax error." << std::endl;
   }
