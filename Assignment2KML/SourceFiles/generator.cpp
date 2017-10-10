@@ -22,14 +22,6 @@ struct HeaderGenerator : public Generator {
     }
 
     virtual void generate(std::ostream &out) {
-        /*
-        out << "import turtle" << std::endl << std::endl;
-        out << "pen = turtle.Turtle()" << std::endl;
-        out << "pen.hideturtle()" << std::endl;
-        out << "pen.penup()" << std::endl;
-        out << "pen.speed(0)" << std::endl;
-        out << std::endl;
-        */
         out << "import requests" << std::endl;
         out << "APIKEY = \"ENTER YOUR OWN APIKEY\"" << std::endl;
         out << "url = \"http://maps.google.com/maps/api/staticmap?center=\"" << std::endl;
@@ -63,12 +55,10 @@ struct PlacemarkerGenerator : public Generator {
                     switch(child->type()){
                         case Node::NAME:{
                             StringLiteralNodePtr nameStringNode = std::dynamic_pointer_cast<StringLiteralNode>(child->children.at(0));
-                            //nameStr = "pen.write(" + nameStringNode->stringLiteral + ",align=\"center\", font=(\"Arial\",13,\"normal\"))";
                         }
                         break;
                         case Node::DESCRIPTION:{
                             StringLiteralNodePtr descriptionStringNode = std::dynamic_pointer_cast<StringLiteralNode>(child->children.at(0));
-                            //descStr = "pen.write(" + descriptionStringNode->stringLiteral + ",align=\"center\", font=(\"Arial\",10,\"normal\"))";
                         }
                         break;
                         case Node::POINT:{
@@ -77,8 +67,6 @@ struct PlacemarkerGenerator : public Generator {
                             NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(1));
                             xCor = xCorNode->numberLiteral;
                             yCor = yCorNode->numberLiteral;
-                            //xStr = "pen.setx(" + numToString(xCor) + ")";
-                            //yStr = "pen.sety(" + numToString(yCor) + ")";
                             if(numPlacemarks == 0){
                                 out << "url += " << "\"" << numToString(xCor) << "," << numToString(yCor) << "&zoom=10&maptype=hybrid&size=800x800" << "\"" << std::endl;
                                 out << "url += " << "\"" << "&markers=color:blue%7Clabel:S%7C" << "\"" << std::endl;
@@ -91,12 +79,6 @@ struct PlacemarkerGenerator : public Generator {
                         break;
                     }
                 }
-                //out << xStr << std::endl;
-                //out << yStr << std::endl;
-                //out << nameStr << std::endl;
-                //out << "pen.sety(" + numToString(yCor-10) + ")" << std::endl;
-                //out << "pen.setx(" + numToString(xCor+10) + ")" << std::endl;
-                //out << descStr << std::endl;
             }
             break;
             default:{
@@ -130,17 +112,11 @@ struct LineStringGenerator : public Generator {
                     if(count == 0){
                         out << "url += \"&path=color:0xff0000ff|weight:2\"" << std::endl;
                         out << "url += \"" << "|" << numToString(xCorNode->numberLiteral) << "," << numToString(yCorNode->numberLiteral) << "\"" << std::endl;
-                        //out << "pen.penup()" << std::endl;
-                        //move to the start coordinate
-                        //out << "pen.setpos(" + numToString(xCorNode->numberLiteral) + "," + numToString(yCorNode->numberLiteral) + ")" << std::endl;
-                        //out << "pen.pendown()" << std::endl;
                     } else {
-                        //out << "pen.setpos(" + numToString(xCorNode->numberLiteral) + "," + numToString(yCorNode->numberLiteral) + ")" << std::endl;
                         out << "url += \"" << "|" << numToString(xCorNode->numberLiteral) << "," << numToString(yCorNode->numberLiteral) << "\"" << std::endl;
                     }
                     ++count;
                 }
-                //out << "pen.penup()" << std::endl;
             }
             break;
             default:{
@@ -165,10 +141,6 @@ struct FooterGenerator : public Generator {
         out << "f = open('testMap.png','wb')" << std::endl;
         out << "f.write(r.content)" << std::endl;
         out << "f.close()" << std::endl;
-        /*
-        out << std::endl;
-        out << "turtle.done()" << std::endl;
-        */
     }
 };
 
