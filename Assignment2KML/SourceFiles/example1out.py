@@ -3,8 +3,15 @@ import turtle
 pen = turtle.Turtle()
 pen.hideturtle()
 pen.penup()
+pen.speed(0)
 
 # Creating the placemarks on the canvas
+pen.setx(-100)
+pen.sety(15)
+pen.write("START",align="left", font=("Arial",13,"normal"))
+pen.sety(5)
+pen.setx(-90)
+
 pen.setx(46.05)
 pen.sety(57.08)
 pen.write("Mee Canyon",align="left", font=("Arial",13,"normal"))
@@ -29,15 +36,24 @@ pen.write("Turkey Flats",align="left", font=("Arial",13,"normal"))
 pen.sety(-215.79)
 pen.setx(-190)
 pen.write("An open space resource area",align="left", font=("Arial",10,"normal"))
+pen.setx(300)
+pen.sety(39.09)
+pen.write("END",align="left", font=("Arial",13,"normal"))
+pen.sety(29.09)
+pen.setx(310)
+
 # End of the placemarks section
 #Beginning of the line string section
 pen.penup()
-pen.setpos(15,15)
+pen.setpos(-100,15)
 pen.pendown()
 pen.setpos(-30.98,170.89)
-pen.setpos(46.05,57.08)
 pen.setpos(100.9,300.65)
+pen.setpos(130.98,280)
+pen.setpos(46.05,57.08)
 pen.setpos(-200,-205.79)
+pen.setpos(-175,-250)
+pen.setpos(-25,-215)
 pen.setpos(300,39.09)
 pen.penup()
 #End of the line string section

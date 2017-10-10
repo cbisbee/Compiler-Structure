@@ -1,6 +1,13 @@
 <kml>
     <document>
         <placemarker>
+            <name>"START"</name>
+            <point>
+                <coordinate>-100,15,0</coordinate>
+            </point>
+        </placemarker>
+
+        <placemarker>
             <name>"Mee Canyon"</name>
             <description>"A canyon in the southwest"</description>
             <point>
@@ -31,13 +38,23 @@
                 <coordinate>-200,-205.79,0</coordinate>
             </point>
         </placemarker>
+
+        <placemarker>
+            <name>"END"</name>
+            <point>
+                <coordinate>300,39.09,0</coordinate>
+            </point>
+        </placemarker>
         <LineString>
             <coordinate>
-                15,15,0
+                -100,15,0
                 -30.98,170.89,0
-                46.05,57.08,0
                 100.9,300.65,0
+                130.98,280,0
+                46.05,57.08,0
                 -200,-205.79,0
+                -175,-250,0
+                -25,-215,0
                 300,39.09,0
             </coordinate>
         </LineString>
