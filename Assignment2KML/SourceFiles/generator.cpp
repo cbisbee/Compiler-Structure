@@ -56,12 +56,12 @@ struct PlacemarkerGenerator : public Generator {
                     switch(child->type()){
                         case Node::NAME:{
                             StringLiteralNodePtr nameStringNode = std::dynamic_pointer_cast<StringLiteralNode>(child->children.at(0));
-                            nameStr = "pen.write(" + nameStringNode->stringLiteral + ",align=\"left\", font=(\"Arial\",13,\"normal\"))";
+                            nameStr = "pen.write(" + nameStringNode->stringLiteral + ",align=\"center\", font=(\"Arial\",13,\"normal\"))";
                         }
                         break;
                         case Node::DESCRIPTION:{
                             StringLiteralNodePtr descriptionStringNode = std::dynamic_pointer_cast<StringLiteralNode>(child->children.at(0));
-                            descStr = "pen.write(" + descriptionStringNode->stringLiteral + ",align=\"left\", font=(\"Arial\",10,\"normal\"))";
+                            descStr = "pen.write(" + descriptionStringNode->stringLiteral + ",align=\"center\", font=(\"Arial\",10,\"normal\"))";
                         }
                         break;
                         case Node::POINT:{
