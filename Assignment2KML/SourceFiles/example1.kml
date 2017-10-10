@@ -1,52 +1,53 @@
-<kml>
-    <document>
-        <placemarker>
+<Kml>
+    <Document>
+        <Placemarker>
             <name>"START"</name>
-            <point>
-                <coordinate>-100,15,0</coordinate>
-            </point>
-        </placemarker>
+            <Point>
+                <coordinates>-100,15,0</coordinates>
+            </Point>
+        </Placemarker>
 
-        <placemarker>
+        <Placemarker>
             <name>"Mee Canyon"</name>
             <description>"A canyon in the southwest"</description>
-            <point>
-                <coordinate>46.05,57.08,0</coordinate>
-            </point>
-        </placemarker>
+            <Point>
+                <coordinates>46.05,57.08,0</coordinates>
+            </Point>
+        </Placemarker>
 
-        <placemarker>
+        <Placemarker>
             <name>"Knowles Canyon"</name>
             <description>"Another canyon in the southwest"</description>
-            <point>
-                <coordinate>-30.98,170.89,0</coordinate>
-            </point>
-        </placemarker>
+            <Point>
+                <coordinates>-30.98,170.89,0</coordinates>
+            </Point>
+        </Placemarker>
 
-        <placemarker>
+        <Placemarker>
             <name>"Jones Canyon"</name>
             <description>"A nearly inaccessible canyon in the southwest near Knowles and Mee Canyon"</description>
-            <point>
-                <coordinate>100.9,300.65,0</coordinate>
-            </point>
-        </placemarker>
+            <Point>
+                <coordinates>100.9,300.65,0</coordinates>
+            </Point>
+        </Placemarker>
 
-        <placemarker>
+        <Placemarker>
             <name>"Turkey Flats"</name>
             <description>"An open space resource area"</description>
-            <point>
-                <coordinate>-200,-205.79,0</coordinate>
-            </point>
-        </placemarker>
+            <Point>
+                <coordinates>-200,-205.79,0</coordinates>
+            </Point>
+        </Placemarker>
 
-        <placemarker>
+        <Placemarker>
             <name>"END"</name>
-            <point>
-                <coordinate>300,39.09,0</coordinate>
-            </point>
-        </placemarker>
+            <description>"This is where my journey ended, it took a total of 9 hours to complete"</description>
+            <Point>
+                <coordinates>300,39.09,0</coordinates>
+            </Point>
+        </Placemarker>
         <LineString>
-            <coordinate>
+            <coordinates>
                 -100,15,0
                 -30.98,170.89,0
                 100.9,300.65,0
@@ -56,7 +57,7 @@
                 -175,-250,0
                 -25,-215,0
                 300,39.09,0
-            </coordinate>
+            </coordinates>
         </LineString>
-    </document>
-</kml>
+    </Document>
+</Kml>

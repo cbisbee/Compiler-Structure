@@ -12,14 +12,14 @@
 %}
 
 %%
-(<kml>|<\/kml>)   {
-  if(strcmp(yytext,"<kml>") == 0){
+(<Kml>|<\/Kml>)   {
+  if(strcmp(yytext,"<Kml>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_KML" << std::endl;
     #endif
     return OPEN_KML;
   }
-  if(strcmp(yytext,"</kml>") == 0){
+  if(strcmp(yytext,"</Kml>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as CLOSE_KML" << std::endl;
     #endif
@@ -28,14 +28,14 @@
   //assert(0);
 }
 
-(<document>|<\/document>)   {
-  if(strcmp(yytext,"<document>") == 0){
+(<Document>|<\/Document>)   {
+  if(strcmp(yytext,"<Document>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_DOCUMENT" <<  std::endl;
     #endif
     return OPEN_DOCUMENT;
   }
-  if(strcmp(yytext,"</document>") == 0){
+  if(strcmp(yytext,"</Document>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as CLOSE_DOCUMENT" << std::endl;
     #endif
@@ -58,14 +58,14 @@
   }
 }
 
-(<placemarker>|<\/placemarker>)   {
-  if(strcmp(yytext,"<placemarker>") == 0){
+(<Placemarker>|<\/Placemarker>)   {
+  if(strcmp(yytext,"<Placemarker>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_PLACEMARK" <<  std::endl;
     #endif
     return OPEN_PLACEMARK;
   }
-  if(strcmp(yytext,"</placemarker>") == 0){
+  if(strcmp(yytext,"</Placemarker>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as CLOSE_PLACEMARK" << std::endl;
     #endif
@@ -103,14 +103,14 @@
   }
 }
 
-(<point>|<\/point>)   {
-  if(strcmp(yytext, "<point>") == 0){
+(<Point>|<\/Point>)   {
+  if(strcmp(yytext, "<Point>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_POINT" << std::endl;
     #endif
     return OPEN_POINT;
   }
-  if(strcmp(yytext, "</point>") == 0){
+  if(strcmp(yytext, "</Point>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as CLOSE_POINT" << std::endl;
     #endif
@@ -118,14 +118,14 @@
   }
 }
 
-(<coordinate>|<\/coordinate>)   {
-  if(strcmp(yytext, "<coordinate>") == 0){
+(<coordinates>|<\/coordinates>)   {
+  if(strcmp(yytext, "<coordinates>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_COORDINATE" << std::endl;
     #endif
     return OPEN_COORDINATE;
   }
-  if(strcmp(yytext, "</coordinate>") == 0){
+  if(strcmp(yytext, "</coordinates>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as CLOSE_COORDINATE" << std::endl;
     #endif
