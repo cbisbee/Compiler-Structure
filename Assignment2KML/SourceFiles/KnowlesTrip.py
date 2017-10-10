@@ -1,9 +1,8 @@
 import requests
 APIKEY = "ENTER YOUR OWN APIKEY"
-url = "http://maps.google.com/maps/api/staticmap?center="
+url = "http://maps.google.com/maps/api/staticmap?&zoom=10&maptype=hybrid&size=640x640"
 
 # Creating the placemarks on the canvas
-url += "39.1043,-108.875&zoom=10&maptype=hybrid&size=800x800"
 url += "&markers=color:blue%7Clabel:S%7C"
 url += "39.1043,-108.875"
 url += "|39.0748,-108.923"
