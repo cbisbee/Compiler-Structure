@@ -30,5 +30,16 @@ pen.sety(-215.79)
 pen.setx(-190)
 pen.write("An open space resource area",align="left", font=("Arial",10,"normal"))
 # End of the placemarks section
+#Beginning of the line string section
+pen.penup()
+pen.setpos(15,15)
+pen.pendown()
+pen.setpos(-30.98,170.89)
+pen.setpos(46.05,57.08)
+pen.setpos(100.9,300.65)
+pen.setpos(-200,-205.79)
+pen.setpos(300,39.09)
+pen.penup()
+#End of the line string section
 
 turtle.done()

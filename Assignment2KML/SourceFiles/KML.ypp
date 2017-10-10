@@ -15,8 +15,9 @@ void yyerror(const char *str);
 NodePtr program(0);
 %}
 
-%token OPEN_KML CLOSE_KML OPEN_DOCUMENT CLOSE_DOCUMENT OPEN_PLACEMARK CLOSE_PLACEMARK OPEN_DESCRIPTION CLOSE_DESCRIPTION
-OPEN_NAME CLOSE_NAME OPEN OPEN_POINT CLOSE_POINT OPEN_COORDINATE CLOSE_COORDINATE COMMA_DELIMETER STRING_LITERAL NUMBER_LITERAL WS EOL
+%token OPEN_KML CLOSE_KML OPEN_DOCUMENT CLOSE_DOCUMENT OPEN_PLACEMARK CLOSE_PLACEMARK OPEN_DESCRIPTION CLOSE_DESCRIPTION OPEN_LINESTRING
+CLOSE_LINESTRING OPEN_NAME CLOSE_NAME OPEN OPEN_POINT CLOSE_POINT OPEN_COORDINATE CLOSE_COORDINATE COMMA_DELIMETER STRING_LITERAL 
+NUMBER_LITERAL WS EOL
 
 %%
 program:
@@ -80,6 +81,15 @@ major_tag placemarker
   $$=$1;
   $$->children.push_back($2);
 }
+|
+major_tag linestring
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "major_tag: major_tag=" << $1 << " minor_tag=" << $2 << std::endl;
+  #endif
+  $$=$1;
+  $$->children.push_back($2);
+}
 ; /*major_tag*/
 
 
@@ -107,6 +117,17 @@ descriptors minor_tag
   $$->children.push_back($2);
 }
 ; /*descriptor*/
+
+linestring:
+optionalws OPEN_LINESTRING optionalws OPEN_COORDINATE coordinates CLOSE_COORDINATE optionalws CLOSE_LINESTRING optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "linestring: coordinates =" << $5 << std::endl;
+  #endif
+  $$ = NodePtr(new LineStringNode($5));
+  //$$->children.push_back($5);
+}
+; /*linestring*/
 
 minor_tag:
 name_tag
@@ -164,11 +185,49 @@ optionalws OPEN_POINT optionalws coordinate optionalws CLOSE_POINT optionalws
 }
 ; /*point_tag*/
 
+coordinates:
+/*empty*/
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "coordinates: empty" << std::endl;
+  #endif
+  $$ = NodePtr(new CoordinateListNode());
+}
+|
+coordinates singlecor
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "coordinates = " << $1 << " singlecor = " << $2 << std::endl;
+  #endif
+  $$ = $1;
+  $$->children.push_back($2);
+}
+; /*coordinates*/
+
+
+singlecor:
+optionalws NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "singlecor(" << $2 << "," << $4 << "," << $6 << ")" << std::endl;
+  #endif
+  $$ = NodePtr(new CoordinateNode($2,$4,$6));
+}
+; 
+
 coordinate:
+optionalws NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "coordinate: numberLiteral1=" << $2 << "numberLiteral2=" << $4 << "numberLiteral3=" << $6 << std::endl;
+  #endif
+  $$ = NodePtr(new CoordinateNode($2,$4,$6));
+}
+|
 optionalws OPEN_COORDINATE NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL CLOSE_COORDINATE optionalws
 {
   #if DEBUG_PARSER == 1
-    std::cout << "coordinate: numberLiteral1=" << $3 "numberLiteral2=" << $5 << "numberLiteral3=" << $7 << std::endl;
+    std::cout << "coordinate: numberLiteral1=" << $3 << "numberLiteral2=" << $5 << "numberLiteral3=" << $7 << std::endl;
   #endif
   $$ = NodePtr(new CoordinateNode($3,$5,$7));
 }

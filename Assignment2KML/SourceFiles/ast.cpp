@@ -35,6 +35,19 @@ void NumberLiteralNode::print(std::ostream &out) const {
 }
 
 
+int CoordinateListNode::type() const {
+    return COORDINATE_LIST;
+}
+
+void CoordinateListNode::print(std::ostream &out) const {
+    out << "coordinateList(children=[" << std::endl;
+    for(size_t i = 0; i < children.size(); ++i){
+        out << children[i] << "// child " << i << std::endl;  
+    }
+    out << "]) // coordinateList" << std::endl;
+}
+
+
 CoordinateNode::CoordinateNode(const NodePtr &number1, const NodePtr &number2, const NodePtr &number3) {
     children.push_back(number1);
     children.push_back(number2);
@@ -105,6 +118,19 @@ void DescriptorsNode::print(std::ostream &out) const {
         out << children.at(i) << " // child " << i << std::endl;
     }
     out << "] //descriptors";
+}
+
+
+LineStringNode::LineStringNode(const NodePtr &coordinateList){
+    children.push_back(coordinateList);
+}
+
+int LineStringNode::type() const {
+    return LINESTRING;
+}
+
+void LineStringNode::print(std::ostream &out) const {
+    out << "linestring(" << children.at(0) << ")" << std::endl;
 }
 
 

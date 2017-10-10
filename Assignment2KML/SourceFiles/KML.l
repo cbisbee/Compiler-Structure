@@ -43,6 +43,21 @@
   }
 }
 
+(<LineString>|<\/LineString>) {
+  if(strcmp(yytext,"<LineString>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as OPEN_LINESTRING" << std::endl;
+    #endif
+    return OPEN_LINESTRING;
+  }
+  if(strcmp(yytext,"</LineString>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as CLOSE_LINESTRING" << std::endl;
+    #endif
+    return CLOSE_LINESTRING;
+  }
+}
+
 (<placemarker>|<\/placemarker>)   {
   if(strcmp(yytext,"<placemarker>") == 0){
     #if DEBUG_LEXER == 1

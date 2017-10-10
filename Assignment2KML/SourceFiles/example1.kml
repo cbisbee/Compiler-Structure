@@ -31,5 +31,15 @@
                 <coordinate>-200,-205.79,0</coordinate>
             </point>
         </placemarker>
+        <LineString>
+            <coordinate>
+                15,15,0
+                -30.98,170.89,0
+                46.05,57.08,0
+                100.9,300.65,0
+                -200,-205.79,0
+                300,39.09,0
+            </coordinate>
+        </LineString>
     </document>
 </kml>

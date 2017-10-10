@@ -93,6 +93,47 @@ struct PlacemarkerGenerator : public Generator {
     }
 };
 
+struct LineStringGenerator : public Generator {
+    LineStringGenerator(const NodePtr &_ast) : Generator(_ast){
+    }
+    virtual void generate(std::ostream &out){
+        out << "#Beginning of the line string section" << std::endl;
+        linestrings(ast, out);
+        out << "#End of the line string section" << std::endl;
+    }
+    void linestrings(const NodePtr &ast, std::ostream &out){
+        switch(ast->type()){
+            case Node::LINESTRING:{
+                LineStringNodePtr lineString = std::dynamic_pointer_cast<LineStringNode>(ast);
+                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(lineString->children.at(0));
+                int count = 0;
+                for(auto child : coordinateList->children){
+                    //get the current coordinate's x and y val
+                    NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(0));
+                    NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(1));
+                    if(count == 0){
+                        out << "pen.penup()" << std::endl;
+                        //move to the start coordinate
+                        out << "pen.setpos(" + numToString(xCorNode->numberLiteral) + "," + numToString(yCorNode->numberLiteral) + ")" << std::endl;
+                        out << "pen.pendown()" << std::endl;
+                    } else {
+                        out << "pen.setpos(" + numToString(xCorNode->numberLiteral) + "," + numToString(yCorNode->numberLiteral) + ")" << std::endl;
+                    }
+                    ++count;
+                }
+                out << "pen.penup()" << std::endl;
+            }
+            break;
+            default:{
+                for(auto child : ast->children){
+                    linestrings(child,out);
+                }
+            }
+            break;
+        }
+    }
+};
+
 struct FooterGenerator : public Generator {
     FooterGenerator(const NodePtr &_ast) : Generator(_ast) {
 
@@ -106,15 +147,17 @@ struct FooterGenerator : public Generator {
 
 struct ProgramGenerator : Generator {
   HeaderGenerator header;
-  PlacemarkerGenerator placemarker;
+  PlacemarkerGenerator placemarkers;
+  LineStringGenerator linestrings;
   FooterGenerator footer;  
 
   ProgramGenerator(const NodePtr &_ast)
-    : Generator(_ast), header(_ast), placemarker(_ast), footer(_ast) {}
+    : Generator(_ast), header(_ast), placemarkers(_ast), linestrings(_ast), footer(_ast) {}
 
   virtual void generate(std::ostream &out) {
     header.generate(out);
-    placemarker.generate(out);
+    placemarkers.generate(out);
+    linestrings.generate(out);
     footer.generate(out);    
   }
 };

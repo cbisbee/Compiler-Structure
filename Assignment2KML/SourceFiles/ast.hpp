@@ -11,10 +11,12 @@ public: enum {
     KML,
     DOCUMENT,
     PLACEMARKER,
+    LINESTRING,
     DESCRIPTORS,
     NAME,
     DESCRIPTION,
     POINT,
+    COORDINATE_LIST,
     COORDINATE,
     NUMBER_LITERAL,
     STRING_LITERAL
@@ -43,6 +45,11 @@ public: void print(std::ostream &out) const;
 };
 typedef std::shared_ptr < NumberLiteralNode > NumberLiteralNodePtr;
 
+class CoordinateListNode : public Node {
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr <CoordinateListNode> CoordinateListNodePtr;
 
 class CoordinateNode : public Node {
 public: CoordinateNode(const NodePtr &number1, const NodePtr &number2, const NodePtr &number3);
@@ -77,6 +84,13 @@ public: int type() const;
 public: void print(std::ostream &out) const;
 };
 typedef std::shared_ptr < DescriptorsNode > DescriptorsNodePtr;
+
+class LineStringNode : public Node {
+public: LineStringNode(const NodePtr &coordinateList);
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr < LineStringNode > LineStringNodePtr;
 
 class PlacemarkerNode : public Node {
 public: PlacemarkerNode(const NodePtr &descriptors);

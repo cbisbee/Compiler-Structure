@@ -8,5 +8,5 @@ kml.lex.cpp : kml.l
 kml.tab.hpp kml.tab.cpp : kml.ypp
 	bison -d -o kml.tab.cpp kml.ypp
 
-kml : ast.cpp kml.lex.cpp kml.tab.cpp kml.tab.hpp
-	$(CXX) $(CXXFLAGS) ast.cpp kml.lex.cpp kml.tab.cpp -o kml $(LDFLAGS)
+kml : ast.hpp ast.cpp kml.lex.cpp kml.tab.cpp kml.tab.hpp generator.hpp generator.cpp
+	$(CXX) $(CXXFLAGS) ast.cpp kml.lex.cpp kml.tab.cpp generator.cpp -o kml $(LDFLAGS)
