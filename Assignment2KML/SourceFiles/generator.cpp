@@ -24,7 +24,7 @@ struct HeaderGenerator : public Generator {
     virtual void generate(std::ostream &out) {
         out << "import requests" << std::endl;
         out << "APIKEY = \"ENTER YOUR OWN APIKEY\"" << std::endl;
-        out << "url = \"http://maps.google.com/maps/api/staticmap?center=\"" << std::endl;
+        out << "url = \"http://maps.google.com/maps/api/staticmap?&zoom=10&maptype=hybrid&size=640x640\"" << std::endl;
         out << std::endl;
     }
 };
@@ -68,7 +68,6 @@ struct PlacemarkerGenerator : public Generator {
                             xCor = xCorNode->numberLiteral;
                             yCor = yCorNode->numberLiteral;
                             if(numPlacemarks == 0){
-                                out << "url += " << "\"" << numToString(xCor) << "," << numToString(yCor) << "&zoom=10&maptype=hybrid&size=800x800" << "\"" << std::endl;
                                 out << "url += " << "\"" << "&markers=color:blue%7Clabel:S%7C" << "\"" << std::endl;
                                 out << "url += " << "\"" << numToString(xCor) << "," << numToString(yCor) << "\"" << std::endl; 
                             } else {
