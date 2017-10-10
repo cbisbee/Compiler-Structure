@@ -26,6 +26,7 @@ struct HeaderGenerator : public Generator {
         out << "pen = turtle.Turtle()" << std::endl;
         out << "pen.hideturtle()" << std::endl;
         out << "pen.penup()" << std::endl;
+        out << "pen.speed(0)" << std::endl;
         out << std::endl;
     }
 };
