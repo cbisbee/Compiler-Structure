@@ -16,8 +16,7 @@
            int i = 0;
            NodePtr program(0);
 
-           #define DEBUG 0
-           
+           #define DEBUG 0       
 
 #ifndef YY_MALLOC
 #define YY_MALLOC(C, N)		malloc(N)
@@ -329,8 +328,13 @@ YY_ACTION(void) yy_1_STRING_LITERAL(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_STRING_LITERAL\n"));
   {
-#line 119
-  __ = NodePtr(new StringLiteralNode(yytext)); printf("STRING-LITERAL %s\n",yytext);;
+#line 276
+  
+    __ = NodePtr(new StringLiteralNode(yytext)); 
+    #if DEBUG == 1
+        printf("STRING-LITERAL %s\n",yytext);
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -343,8 +347,13 @@ YY_ACTION(void) yy_1_NUMBER_LITERAL(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_NUMBER_LITERAL\n"));
   {
-#line 118
-  __ = NodePtr(new NumberLiteralNode(atoi(yytext))); printf("NUMBER-LITERAL %d\n",atoi(yytext));;
+#line 268
+  
+    __ = NodePtr(new NumberLiteralNode(atoi(yytext))); 
+    #if DEBUG == 1
+        printf("NUMBER-LITERAL %d\n",atoi(yytext));
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -357,8 +366,12 @@ YY_ACTION(void) yy_1_EOL(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_EOL\n"));
   {
-#line 117
-  printf("EOL\n");;
+#line 261
+  
+    #if DEBUG == 1
+        printf("EOL\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -371,8 +384,12 @@ YY_ACTION(void) yy_1_WS(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_WS\n"));
   {
-#line 116
-  printf("WS\n");;
+#line 254
+  
+    #if DEBUG == 1
+        printf("WS\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -385,8 +402,12 @@ YY_ACTION(void) yy_1_COMMA_DELIMETER(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_COMMA_DELIMETER\n"));
   {
-#line 115
-  printf("COMMA-DELIMETER\n");;
+#line 247
+  
+    #if DEBUG == 1
+        printf("COMMA-DELIMETER\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -399,8 +420,12 @@ YY_ACTION(void) yy_1_CLOSE_COORDINATE(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_COORDINATE\n"));
   {
-#line 113
-  printf("CLOSE-COORDINATE\n");;
+#line 240
+  
+    #if DEBUG == 1
+        printf("CLOSE-COORDINATE\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -413,8 +438,12 @@ YY_ACTION(void) yy_1_OPEN_COORDINATE(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_COORDINATE\n"));
   {
-#line 112
-  printf("OPEN-COORDINATE\n");;
+#line 233
+  
+    #if DEBUG == 1
+        printf("OPEN-COORDINATE\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -427,8 +456,12 @@ YY_ACTION(void) yy_1_CLOSE_POINT(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_POINT\n"));
   {
-#line 111
-  printf("CLOSE-POINT\n");;
+#line 226
+  
+    #if DEBUG == 1
+        printf("CLOSE-POINT\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -441,8 +474,12 @@ YY_ACTION(void) yy_1_OPEN_POINT(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_POINT\n"));
   {
-#line 110
-  printf("OPEN-POINT\n");;
+#line 219
+  
+    #if DEBUG == 1
+        printf("OPEN-POINT\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -455,8 +492,12 @@ YY_ACTION(void) yy_1_CLOSE_DESCRIPTION(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_DESCRIPTION\n"));
   {
-#line 109
-  printf("CLOSE-DESCRIPTION\n");;
+#line 212
+  
+    #if DEBUG == 1
+        printf("CLOSE-DESCRIPTION\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -469,8 +510,12 @@ YY_ACTION(void) yy_1_OPEN_DESCRIPTION(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_DESCRIPTION\n"));
   {
-#line 108
-  printf("OPEN-DESCRIPTION\n");;
+#line 205
+  
+    #if DEBUG == 1
+        printf("OPEN-DESCRIPTION\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -483,8 +528,12 @@ YY_ACTION(void) yy_1_CLOSE_NAME(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_NAME\n"));
   {
-#line 107
-  printf("CLOSE-NAME\n");;
+#line 198
+  
+    #if DEBUG == 1
+        printf("CLOSE-NAME\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -497,8 +546,12 @@ YY_ACTION(void) yy_1_OPEN_NAME(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_NAME\n"));
   {
-#line 106
-  printf("OPEN-NAME\n");;
+#line 191
+  
+    #if DEBUG == 1
+        printf("OPEN-NAME\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -511,8 +564,12 @@ YY_ACTION(void) yy_1_CLOSE_PLACEMARKER(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_PLACEMARKER\n"));
   {
-#line 105
-  printf("CLOSE-PLACEMARKER\n");;
+#line 184
+  
+    #if DEBUG == 1
+        printf("CLOSE-PLACEMARKER\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -525,8 +582,12 @@ YY_ACTION(void) yy_1_OPEN_PLACEMARKER(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_PLACEMARKER\n"));
   {
-#line 104
-  printf("OPEN-PLACEMARKER\n");;
+#line 177
+  
+    #if DEBUG == 1
+        printf("OPEN-PLACEMARKER\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -539,8 +600,12 @@ YY_ACTION(void) yy_1_CLOSE_LINESTRING(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_LINESTRING\n"));
   {
-#line 103
-  printf("CLOSE-LINESTRING\n");;
+#line 170
+  
+    #if DEBUG == 1
+        printf("CLOSE-LINESTRING\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -553,8 +618,12 @@ YY_ACTION(void) yy_1_OPEN_LINESTRING(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_LINESTRING\n"));
   {
-#line 102
-  printf("OPEN-LINESTRING\n");;
+#line 163
+  
+    #if DEBUG == 1
+        printf("OPEN-LINESTRING\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -567,8 +636,12 @@ YY_ACTION(void) yy_1_CLOSE_DOCUMENT(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_DOCUMENT\n"));
   {
-#line 101
-  printf("CLOSE-DOCUMENT\n");;
+#line 156
+  
+    #if DEBUG == 1
+        printf("CLOSE-DOCUMENT\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -581,8 +654,12 @@ YY_ACTION(void) yy_1_OPEN_DOCUMENT(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_DOCUMENT\n"));
   {
-#line 100
-  printf("OPEN-DOCUMENT\n");;
+#line 149
+  
+    #if DEBUG == 1
+        printf("OPEN-DOCUMENT\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -595,8 +672,12 @@ YY_ACTION(void) yy_1_CLOSE_KML(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_CLOSE_KML\n"));
   {
-#line 99
-  printf("CLOSE-KML\n");;
+#line 142
+  
+    #if DEBUG == 1
+        printf("CLOSE-KML\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -609,8 +690,12 @@ YY_ACTION(void) yy_1_OPEN_KML(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_OPEN_KML\n"));
   {
-#line 98
-  printf("OPEN-KML\n");;
+#line 135
+  
+    #if DEBUG == 1
+        printf("OPEN-KML\n");
+    #endif
+;
   }
 #undef yythunkpos
 #undef yypos
@@ -626,8 +711,10 @@ YY_ACTION(void) yy_1_SINGLECOR(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_SINGLECOR\n"));
   {
-#line 93
-  __ = NodePtr(new CoordinateNode(num1,num2,num3));;
+#line 127
+  
+        __ = NodePtr(new CoordinateNode(num1,num2,num3));
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -644,8 +731,11 @@ YY_ACTION(void) yy_1_COORDINATES_LIST(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_COORDINATES_LIST\n"));
   {
-#line 89
-  __ = NodePtr(new CoordinateListNode()); __->children.push_back(cor);;
+#line 119
+  
+        __ = NodePtr(new CoordinateListNode()); 
+        __->children.push_back(cor);
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -660,8 +750,10 @@ YY_ACTION(void) yy_1_FULL_POINT_TAG(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_FULL_POINT_TAG\n"));
   {
-#line 85
-  __ = NodePtr(new PointNode(corList));;
+#line 112
+  
+        __ = NodePtr(new PointNode(corList));
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -676,8 +768,10 @@ YY_ACTION(void) yy_1_FULL_DESCRIPTION_TAG(yycontext *yy, char *yytext, int yylen
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_FULL_DESCRIPTION_TAG\n"));
   {
-#line 81
-   __ = NodePtr(new DescriptionNode(descr));;
+#line 105
+  
+        __ = NodePtr(new DescriptionNode(descr));
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -692,8 +786,10 @@ YY_ACTION(void) yy_1_FULL_NAME_TAG(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_FULL_NAME_TAG\n"));
   {
-#line 77
-   __ = NodePtr(new NameNode(name)); ;
+#line 98
+  
+        __ = NodePtr(new NameNode(name));
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -710,8 +806,10 @@ YY_ACTION(void) yy_3_MINOR_TAGS(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_3_MINOR_TAGS\n"));
   {
-#line 73
-  __ = point;;
+#line 91
+  
+        __ = point;
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -730,8 +828,10 @@ YY_ACTION(void) yy_2_MINOR_TAGS(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_2_MINOR_TAGS\n"));
   {
-#line 71
-  __ = description;;
+#line 86
+  
+        __ = description;
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -750,8 +850,10 @@ YY_ACTION(void) yy_1_MINOR_TAGS(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_MINOR_TAGS\n"));
   {
-#line 69
-  __ = name;;
+#line 81
+  
+        __ = name;
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -768,10 +870,11 @@ YY_ACTION(void) yy_1_DESCRIPTORS(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_DESCRIPTORS\n"));
   {
-#line 63
+#line 73
   
-                            __ = NodePtr(new DescriptorsNode()); __->children.push_back(minortag);
-                            ;
+        __ = NodePtr(new DescriptorsNode()); 
+        __->children.push_back(minortag);
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -786,9 +889,10 @@ YY_ACTION(void) yy_1_FULL_LINESTRING_TAG(yycontext *yy, char *yytext, int yyleng
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_FULL_LINESTRING_TAG\n"));
   {
-#line 58
+#line 66
   
-                                                                                                                                                            __ = NodePtr(new LineStringNode(corList));;
+        __ = NodePtr(new LineStringNode(corList));
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -803,10 +907,10 @@ YY_ACTION(void) yy_1_FULL_PLACEMARKER_TAG(yycontext *yy, char *yytext, int yylen
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_FULL_PLACEMARKER_TAG\n"));
   {
-#line 52
+#line 59
    
-                                                                                                        __ = NodePtr(new PlacemarkerNode(descriptors)); 
-                                                                                                    ;
+        __ = NodePtr(new PlacemarkerNode(descriptors)); 
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -822,10 +926,10 @@ YY_ACTION(void) yy_2_MAJOR_TAGS(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_2_MAJOR_TAGS\n"));
   {
-#line 46
+#line 52
   
-                                        __ = linestring;
-                                    ;
+        __ = linestring;
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -842,10 +946,10 @@ YY_ACTION(void) yy_1_MAJOR_TAGS(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_MAJOR_TAGS\n"));
   {
-#line 42
+#line 47
   
-                                        __ = placemarker;
-                                        ;
+        __ = placemarker;
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -861,10 +965,10 @@ YY_ACTION(void) yy_2_DOCUMENT(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_2_DOCUMENT\n"));
   {
-#line 36
+#line 40
   
-                                                                __ = NodePtr(new DocumentNode());
-                                                            ;
+        __ = NodePtr(new DocumentNode());
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -879,10 +983,11 @@ YY_ACTION(void) yy_1_DOCUMENT(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_DOCUMENT\n"));
   {
-#line 32
+#line 34
   
-                                                                                                __ = NodePtr(new DocumentNode()); __->children.push_back(majortag);
-                                                                                            ;
+        __ = NodePtr(new DocumentNode()); 
+        __->children.push_back(majortag);
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -897,10 +1002,10 @@ YY_ACTION(void) yy_1_KML_DOC(yycontext *yy, char *yytext, int yyleng)
 #define yythunkpos yy->__thunkpos
   yyprintf((stderr, "do yy_1_KML_DOC\n"));
   {
-#line 26
+#line 27
   
-                                                                            __ = NodePtr(new KMLNode(doc)); //expecting a document node as param
-                                                                        ;
+        __ = NodePtr(new KMLNode(doc)); //expecting a document node as param
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -917,11 +1022,11 @@ YY_ACTION(void) yy_1_PROGRAM(yycontext *yy, char *yytext, int yyleng)
   {
 #line 17
   
-                    program = kml; 
-                    #if DEBUG == 1 
-                        printf("Valid Doc!\n"); 
-                    #endif
-                ;
+        program = kml; 
+        #if DEBUG == 1 
+            printf("Valid Doc!\n"); 
+        #endif
+    ;
   }
 #undef yythunkpos
 #undef yypos
@@ -1660,7 +1765,7 @@ YY_PARSE(yycontext *) YYRELEASE(yycontext *yyctx)
 }
 
 #endif
-#line 121 "kml.leg"
+#line 283 "kml.leg"
 
 
 int main()

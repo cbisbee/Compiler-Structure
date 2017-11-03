@@ -133,109 +133,151 @@ SINGLECOR =
 
 OPEN-KML = "<Kml>"
 {
-    printf("OPEN-KML\n");
+    #if DEBUG == 1
+        printf("OPEN-KML\n");
+    #endif
 }
 
 CLOSE-KML = "</Kml>"
 {
-    printf("CLOSE-KML\n");
+    #if DEBUG == 1
+        printf("CLOSE-KML\n");
+    #endif
 }
 
 OPEN-DOCUMENT = "<Document>"                        
 {
-    printf("OPEN-DOCUMENT\n");
+    #if DEBUG == 1
+        printf("OPEN-DOCUMENT\n");
+    #endif
 }
 
 CLOSE-DOCUMENT = "</Document>"                      
 {
-    printf("CLOSE-DOCUMENT\n");
+    #if DEBUG == 1
+        printf("CLOSE-DOCUMENT\n");
+    #endif
 }
 
 OPEN-LINESTRING = "<Linestring>"                    
 {
-    printf("OPEN-LINESTRING\n");
+    #if DEBUG == 1
+        printf("OPEN-LINESTRING\n");
+    #endif
 }
 
 CLOSE-LINESTRING = "</Linestring>"                  
 {
-    printf("CLOSE-LINESTRING\n");
+    #if DEBUG == 1
+        printf("CLOSE-LINESTRING\n");
+    #endif
 }
 
 OPEN-PLACEMARKER = "<Placemarker>"                  
 {
-    printf("OPEN-PLACEMARKER\n");
+    #if DEBUG == 1
+        printf("OPEN-PLACEMARKER\n");
+    #endif
 }
 
 CLOSE-PLACEMARKER = "</Placemarker>"                
 {
-    printf("CLOSE-PLACEMARKER\n");
+    #if DEBUG == 1
+        printf("CLOSE-PLACEMARKER\n");
+    #endif
 }
 
 OPEN-NAME = "<name>"                                
 {
-    printf("OPEN-NAME\n");
+    #if DEBUG == 1
+        printf("OPEN-NAME\n");
+    #endif
 }
 
 CLOSE-NAME = "</name>"                              
 {
-    printf("CLOSE-NAME\n");
+    #if DEBUG == 1
+        printf("CLOSE-NAME\n");
+    #endif
 }
 
 OPEN-DESCRIPTION = "<description>"                  
 {
-    printf("OPEN-DESCRIPTION\n");
+    #if DEBUG == 1
+        printf("OPEN-DESCRIPTION\n");
+    #endif
 }
 
 CLOSE-DESCRIPTION = "</description>"                
 {
-    printf("CLOSE-DESCRIPTION\n");
+    #if DEBUG == 1
+        printf("CLOSE-DESCRIPTION\n");
+    #endif
 }
 
 OPEN-POINT = "<Point>"                              
 {
-    printf("OPEN-POINT\n");
+    #if DEBUG == 1
+        printf("OPEN-POINT\n");
+    #endif
 }
 
 CLOSE-POINT = "</Point>"                            
 {
-    printf("CLOSE-POINT\n");
+    #if DEBUG == 1
+        printf("CLOSE-POINT\n");
+    #endif
 }
 
 OPEN-COORDINATE = "<coordinates>"                   
 {
-    printf("OPEN-COORDINATE\n");
+    #if DEBUG == 1
+        printf("OPEN-COORDINATE\n");
+    #endif
 }
 
 CLOSE-COORDINATE = "</coordinates>"                 
 {
-    printf("CLOSE-COORDINATE\n");
+    #if DEBUG == 1
+        printf("CLOSE-COORDINATE\n");
+    #endif
 }
 
 COMMA-DELIMETER = ','                               
 {
-    printf("COMMA-DELIMETER\n");
+    #if DEBUG == 1
+        printf("COMMA-DELIMETER\n");
+    #endif
 }
 
 WS = [ \t]                                          
 {
-    printf("WS\n");
+    #if DEBUG == 1
+        printf("WS\n");
+    #endif
 }
 
 EOL = '\r'?'\n'                                     
 {
-    printf("EOL\n");
+    #if DEBUG == 1
+        printf("EOL\n");
+    #endif
 }
 
 NUMBER-LITERAL = < ['+'|'-']?[0-9]+'.'?([0-9]+)? >  
 {
     $$ = NodePtr(new NumberLiteralNode(atoi(yytext))); 
-    printf("NUMBER-LITERAL %d\n",atoi(yytext));
+    #if DEBUG == 1
+        printf("NUMBER-LITERAL %d\n",atoi(yytext));
+    #endif
 }
 
 STRING-LITERAL = < [a-z|A-Z|" "]+ >                 
 {
     $$ = NodePtr(new StringLiteralNode(yytext)); 
-    printf("STRING-LITERAL %s\n",yytext);
+    #if DEBUG == 1
+        printf("STRING-LITERAL %s\n",yytext);
+    #endif
 }
 
 %%
