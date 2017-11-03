@@ -3,43 +3,66 @@
            #include <stdlib.h>    /* atoi() */
            #include <vector>
            #include "KML.h"
+           #include "generator.hpp"
            #include <iostream>
            int vars[26];
            int i = 0;
            NodePtr program(0);
+
+           #define DEBUG 0
            
 %}
 
 PROGRAM =
-    kml:KML-DOC {program = kml; printf("Valid Doc!\n");}
+    kml:KML-DOC {
+                    program = kml; 
+                    #if DEBUG == 1 
+                        printf("Valid Doc!\n"); 
+                    #endif
+                }
 
 
 KML-DOC = 
-    OPEN-KML EOL* WS* doc:DOCUMENT EOL* WS* CLOSE-KML EOL* WS* {$$ = NodePtr(new KMLNode(doc)); //expecting a document node as param}
+    EOL* WS* OPEN-KML EOL* WS* doc:DOCUMENT EOL* WS* CLOSE-KML EOL* WS* {
+                                                                            $$ = NodePtr(new KMLNode(doc)); //expecting a document node as param
+                                                                        }
 
 
 DOCUMENT =
-    OPEN-DOCUMENT EOL* WS* majortag:MAJOR-TAGS+ EOL* WS* CLOSE-DOCUMENT {$$ = NodePtr(new DocumentNode()); $$->children.push_back(majortag);}
+    EOL* WS* OPEN-DOCUMENT EOL* WS* majortag:MAJOR-TAGS+ EOL* WS* CLOSE-DOCUMENT EOL* WS*   {
+                                                                                                $$ = NodePtr(new DocumentNode()); $$->children.push_back(majortag);
+                                                                                            }
     |
-    OPEN-DOCUMENT EOL* WS* CLOSE-DOCUMENT {$$ = NodePtr(new DocumentNode());}
+    EOL* WS* OPEN-DOCUMENT EOL* WS* CLOSE-DOCUMENT EOL* WS* {
+                                                                $$ = NodePtr(new DocumentNode());
+                                                            }
 
 
 MAJOR-TAGS = 
-    placemarker:FULL-PLACEMARKER-TAG {$$ = placemarker;}
+    placemarker:FULL-PLACEMARKER-TAG    {
+                                        $$ = placemarker;
+                                        }
     |
-    linestring:FULL-LINESTRING-TAG {$$ = linestring;}
+    linestring:FULL-LINESTRING-TAG  {
+                                        $$ = linestring;
+                                    }
 
 
 FULL-PLACEMARKER-TAG = 
-    OPEN-PLACEMARKER EOL* WS* descriptors:DESCRIPTORS+ EOL* WS* CLOSE-PLACEMARKER { $$ = NodePtr(new PlacemarkerNode(descriptors)); }
+    EOL* WS* OPEN-PLACEMARKER EOL* WS* descriptors:DESCRIPTORS+ EOL* WS* CLOSE-PLACEMARKER EOL* WS* { 
+                                                                                                        $$ = NodePtr(new PlacemarkerNode(descriptors)); 
+                                                                                                    }
 
 
 FULL-LINESTRING-TAG = 
-    OPEN-LINESTRING OPEN-COORDINATE EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-COORDINATE CLOSE-LINESTRING {$$ = NodePtr(new LineStringNode(corList));}
+    EOL* WS* OPEN-LINESTRING EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-LINESTRING EOL* WS* {
+                                                                                                                                                            $$ = NodePtr(new LineStringNode(corList));}
 
 
 DESCRIPTORS = 
-    minortag:MINOR-TAGS+ {$$ = NodePtr(new DescriptorsNode()); $$->children.push_back(minortag);}
+    minortag:MINOR-TAGS+    {
+                            $$ = NodePtr(new DescriptorsNode()); $$->children.push_back(minortag);
+                            }
 
 
 MINOR-TAGS = 
@@ -51,23 +74,23 @@ MINOR-TAGS =
 
 
 FULL-NAME-TAG = 
-    OPEN-NAME EOL* WS* name:STRING-LITERAL EOL* WS* CLOSE-NAME { $$ = NodePtr(new NameNode(name)); }
+    EOL* WS* OPEN-NAME EOL* WS* name:STRING-LITERAL EOL* WS* CLOSE-NAME EOL* WS*{ $$ = NodePtr(new NameNode(name)); }
 
 
 FULL-DESCRIPTION-TAG = 
-    OPEN-DESCRIPTION EOL* WS* descr:STRING-LITERAL EOL* WS* CLOSE-DESCRIPTION { $$ = NodePtr(new DescriptionNode(descr));}
+    EOL* WS* OPEN-DESCRIPTION EOL* WS* descr:STRING-LITERAL EOL* WS* CLOSE-DESCRIPTION EOL* WS* { $$ = NodePtr(new DescriptionNode(descr));}
 
 
 FULL-POINT-TAG = 
-    OPEN-POINT EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-POINT {$$ = NodePtr(new PointNode(corList));}
+    EOL* WS* OPEN-POINT EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-POINT EOL* WS* {$$ = NodePtr(new PointNode(corList));}
 
 
 COORDINATES-LIST = 
-    OPEN-COORDINATE EOL* WS* cor:SINGLECOR+ EOL* WS* CLOSE-COORDINATE {$$ = NodePtr(new CoordinateListNode()); $$->children.push_back(cor);}
+    EOL* WS* OPEN-COORDINATE EOL* WS* cor:SINGLECOR+ EOL* WS* CLOSE-COORDINATE EOL* WS* {$$ = NodePtr(new CoordinateListNode()); $$->children.push_back(cor);}
 
 
 SINGLECOR = 
-    num1:NUMBER-LITERAL COMMA-DELIMETER num2:NUMBER-LITERAL COMMA-DELIMETER num3:NUMBER-LITERAL {$$ = NodePtr(new CoordinateNode(num1,num2,num3));}
+    EOL* WS* num1:NUMBER-LITERAL COMMA-DELIMETER num2:NUMBER-LITERAL COMMA-DELIMETER num3:NUMBER-LITERAL EOL* WS* {$$ = NodePtr(new CoordinateNode(num1,num2,num3));}
 
 
 
@@ -76,8 +99,8 @@ OPEN-KML = "<Kml>"                                  {printf("OPEN-KML\n");}
 CLOSE-KML = "</Kml>"                                {printf("CLOSE-KML\n");}
 OPEN-DOCUMENT = "<Document>"                        {printf("OPEN-DOCUMENT\n");}
 CLOSE-DOCUMENT = "</Document>"                      {printf("CLOSE-DOCUMENT\n");}
-OPEN-LINESTRING = "<LineString>"                    {printf("OPEN-LINESTRING\n");}
-CLOSE-LINESTRING = "</LineString>"                  {printf("CLOSE-LINESTRING\n");}
+OPEN-LINESTRING = "<Linestring>"                    {printf("OPEN-LINESTRING\n");}
+CLOSE-LINESTRING = "</Linestring>"                  {printf("CLOSE-LINESTRING\n");}
 OPEN-PLACEMARKER = "<Placemarker>"                  {printf("OPEN-PLACEMARKER\n");}
 CLOSE-PLACEMARKER = "</Placemarker>"                {printf("CLOSE-PLACEMARKER\n");}
 OPEN-NAME = "<name>"                                {printf("OPEN-NAME\n");}
@@ -105,5 +128,13 @@ int main()
         //printf("i = %d",i);
         ++i;
     }
+    if (!! program) {
+    //program->print(std::cout);
+    GeneratorPtr gen = generator(program);
+    gen->generate(std::cout);
+  } else {
+    std::cout << "syntax error." << std::endl;
+  }
+  return 0;
     return 0;
 }

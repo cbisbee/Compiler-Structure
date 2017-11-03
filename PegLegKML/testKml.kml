@@ -1,1 +1,18 @@
-<Kml><Document><Placemarker><name>Mee Canyon</name><Point><coordinates>1,1,1</coordinates></Point><description>A canyon in the southwest</description></Placemarker></Document></Kml>
+<Kml>
+    <Document>
+        <Placemarker>
+            <name>Mee Canyon</name>
+            <Point>
+                <coordinates>1,1,1</coordinates>
+            </Point>
+            <description>A canyon in the southwest</description>
+        </Placemarker>
+        <Linestring>
+            <coordinates>
+                3,3,3
+                1,1,1
+                2,2,2
+            </coordinates>
+        </Linestring>
+    </Document>
+</Kml>
