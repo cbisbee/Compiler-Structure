@@ -1,0 +1,53 @@
+<Kml>
+    <Document>
+        <Placemarker>
+            <name>Yellowcat Exit</name>
+            <description>Exit off of Interstate seventy for Yellowcat</description>
+            <Point>
+                <coordinates>38.939314,-109.612093,0</coordinates>
+            </Point>
+        </Placemarker>
+        <Placemarker>
+            <name>First Bend</name>
+            <description>The first bend in the road up to this point</description>
+            <Point>
+                <coordinates>38.872479,-109.551580,0</coordinates>
+            </Point>
+        </Placemarker>
+        <Placemarker>
+            <name>Split in road</name>
+            <description>First major split in road take a right</description>
+            <Point>
+                <coordinates>38.850640,-109.511038,0</coordinates>
+            </Point>
+        </Placemarker>
+        <Placemarker>
+            <name>Another split in road</name>
+            <description>Second major split in road take a right</description>
+            <Point>
+                <coordinates>38.824314,-109.496773,0</coordinates>
+            </Point>
+        </Placemarker>
+        <Placemarker>
+            <name>Entrance</name>
+            <description>The entrance into lost spring canyon</description>
+            <Point>
+                <coordinates>38.801786,-109.516448,0</coordinates>
+            </Point>
+        </Placemarker>
+        <LineString>
+            <coordinates>
+                38.939314,-109.612093,0
+                38.872479,-109.551580,0
+                38.864659,-109.550368,0
+                38.851643,-109.539986,0
+                38.847552,-109.526112,0
+                38.850640,-109.511038,0
+                38.838384,-109.513370,0
+                38.836180,-109.503613,0
+                38.824314,-109.496773,0
+                38.801786,-109.516448,0
+            </coordinates>
+        </LineString>       
+    </Document>
+</Kml>
