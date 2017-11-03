@@ -72,6 +72,7 @@ FULL-LINESTRING-TAG =
     EOL* WS* OPEN-LINESTRING EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-LINESTRING EOL* WS* 
     {
         $$ = NodePtr(new LineStringNode(corList));
+        coordinatesVector.clear();
     }
 
 
@@ -122,6 +123,7 @@ FULL-POINT-TAG =
     EOL* WS* OPEN-POINT EOL* WS* cor:COOR EOL* WS* CLOSE-POINT EOL* WS* 
     {
         $$ = NodePtr(new PointNode(cor));
+        coordinatesVector.clear();
     }
 
 COOR =
