@@ -7,11 +7,19 @@
             </Point>
             <description>A canyon in the southwest</description>
         </Placemarker>
+        <Placemarker>
+            <name>Knowles Canyon</name>
+            <Point>
+                <coordinates>2,2,2</coordinates>
+            </Point>
+            <description>Another Canyon</description>
+        </Placemarker>
         <Linestring>
             <coordinates>
                 3,3,3
-                1,1,1
-                2,2,2
+                4,4,4
+                5,5,5
+                6,6,6
             </coordinates>
         </Linestring>
     </Document>

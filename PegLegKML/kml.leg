@@ -8,6 +8,10 @@
            int vars[26];
            int i = 0;
            NodePtr program(0);
+           std::vector<NodePtr> descriptorsVector;
+           std::vector<NodePtr> coordinatesVector;
+           std::vector<NodePtr> minorTagsVector;
+           std::vector<NodePtr> majorTagsVector;
 
            #define DEBUG 0       
 %}
@@ -33,7 +37,8 @@ DOCUMENT =
     EOL* WS* OPEN-DOCUMENT EOL* WS* majortag:MAJOR-TAGS+ EOL* WS* CLOSE-DOCUMENT EOL* WS*   
     {
         $$ = NodePtr(new DocumentNode()); 
-        $$->children.push_back(majortag);
+        $$->children = majorTagsVector;
+        majorTagsVector.clear();
     }
     |
     EOL* WS* OPEN-DOCUMENT EOL* WS* CLOSE-DOCUMENT EOL* WS* 
@@ -46,11 +51,13 @@ MAJOR-TAGS =
     placemarker:FULL-PLACEMARKER-TAG    
     {
         $$ = placemarker;
+        majorTagsVector.push_back($$);
     }
     |
     linestring:FULL-LINESTRING-TAG  
     {
         $$ = linestring;
+        majorTagsVector.push_back($$);
     }
 
 
@@ -72,7 +79,8 @@ DESCRIPTORS =
     minortag:MINOR-TAGS+    
     {
         $$ = NodePtr(new DescriptorsNode()); 
-        $$->children.push_back(minortag);
+        $$->children = minorTagsVector;
+        minorTagsVector.clear();
     }
 
 
@@ -80,16 +88,19 @@ MINOR-TAGS =
     name:FULL-NAME-TAG 
     {
         $$ = name;
+        minorTagsVector.push_back($$);
     }
     |
     description:FULL-DESCRIPTION-TAG 
     {
         $$ = description;
+        minorTagsVector.push_back($$);
     }
     |
     point:FULL-POINT-TAG 
     {
         $$ = point;
+        minorTagsVector.push_back($$);
     }
 
 
@@ -108,9 +119,15 @@ FULL-DESCRIPTION-TAG =
 
 
 FULL-POINT-TAG = 
-    EOL* WS* OPEN-POINT EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-POINT EOL* WS* 
+    EOL* WS* OPEN-POINT EOL* WS* cor:COOR EOL* WS* CLOSE-POINT EOL* WS* 
     {
-        $$ = NodePtr(new PointNode(corList));
+        $$ = NodePtr(new PointNode(cor));
+    }
+
+COOR =
+    EOL* WS* OPEN-COORDINATE EOL* WS* cor:SINGLECOR EOL* WS* CLOSE-COORDINATE EOL* WS*
+    {
+        $$ = cor;
     }
 
 
@@ -118,7 +135,8 @@ COORDINATES-LIST =
     EOL* WS* OPEN-COORDINATE EOL* WS* cor:SINGLECOR+ EOL* WS* CLOSE-COORDINATE EOL* WS* 
     {
         $$ = NodePtr(new CoordinateListNode()); 
-        $$->children.push_back(cor);
+        $$->children = coordinatesVector;
+        coordinatesVector.clear();
     }
 
 
@@ -126,7 +144,12 @@ SINGLECOR =
     EOL* WS* num1:NUMBER-LITERAL COMMA-DELIMETER num2:NUMBER-LITERAL COMMA-DELIMETER num3:NUMBER-LITERAL EOL* WS* 
     {
         $$ = NodePtr(new CoordinateNode(num1,num2,num3));
+        coordinatesVector.push_back($$);
     }
+
+
+
+
 
 
 
