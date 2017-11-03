@@ -1665,11 +1665,7 @@ YY_PARSE(yycontext *) YYRELEASE(yycontext *yyctx)
 
 int main()
 {
-    int i = 0;
-    //printf("i = %d",i);
     while (yyparse()){
-        //printf("i = %d",i);
-        ++i;
     }
     if (!! program) {
     //program->print(std::cout);

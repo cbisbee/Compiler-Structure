@@ -9,124 +9,240 @@
            int i = 0;
            NodePtr program(0);
 
-           #define DEBUG 0
-           
+           #define DEBUG 0       
 %}
 
 PROGRAM =
-    kml:KML-DOC {
-                    program = kml; 
-                    #if DEBUG == 1 
-                        printf("Valid Doc!\n"); 
-                    #endif
-                }
+    kml:KML-DOC 
+    {
+        program = kml; 
+        #if DEBUG == 1 
+            printf("Valid Doc!\n"); 
+        #endif
+    }
 
 
 KML-DOC = 
-    EOL* WS* OPEN-KML EOL* WS* doc:DOCUMENT EOL* WS* CLOSE-KML EOL* WS* {
-                                                                            $$ = NodePtr(new KMLNode(doc)); //expecting a document node as param
-                                                                        }
+    EOL* WS* OPEN-KML EOL* WS* doc:DOCUMENT EOL* WS* CLOSE-KML EOL* WS* 
+    {
+        $$ = NodePtr(new KMLNode(doc)); //expecting a document node as param
+    }
 
 
 DOCUMENT =
-    EOL* WS* OPEN-DOCUMENT EOL* WS* majortag:MAJOR-TAGS+ EOL* WS* CLOSE-DOCUMENT EOL* WS*   {
-                                                                                                $$ = NodePtr(new DocumentNode()); $$->children.push_back(majortag);
-                                                                                            }
+    EOL* WS* OPEN-DOCUMENT EOL* WS* majortag:MAJOR-TAGS+ EOL* WS* CLOSE-DOCUMENT EOL* WS*   
+    {
+        $$ = NodePtr(new DocumentNode()); 
+        $$->children.push_back(majortag);
+    }
     |
-    EOL* WS* OPEN-DOCUMENT EOL* WS* CLOSE-DOCUMENT EOL* WS* {
-                                                                $$ = NodePtr(new DocumentNode());
-                                                            }
+    EOL* WS* OPEN-DOCUMENT EOL* WS* CLOSE-DOCUMENT EOL* WS* 
+    {
+        $$ = NodePtr(new DocumentNode());
+    }
 
 
 MAJOR-TAGS = 
-    placemarker:FULL-PLACEMARKER-TAG    {
-                                        $$ = placemarker;
-                                        }
+    placemarker:FULL-PLACEMARKER-TAG    
+    {
+        $$ = placemarker;
+    }
     |
-    linestring:FULL-LINESTRING-TAG  {
-                                        $$ = linestring;
-                                    }
+    linestring:FULL-LINESTRING-TAG  
+    {
+        $$ = linestring;
+    }
 
 
 FULL-PLACEMARKER-TAG = 
-    EOL* WS* OPEN-PLACEMARKER EOL* WS* descriptors:DESCRIPTORS+ EOL* WS* CLOSE-PLACEMARKER EOL* WS* { 
-                                                                                                        $$ = NodePtr(new PlacemarkerNode(descriptors)); 
-                                                                                                    }
+    EOL* WS* OPEN-PLACEMARKER EOL* WS* descriptors:DESCRIPTORS+ EOL* WS* CLOSE-PLACEMARKER EOL* WS* 
+    { 
+        $$ = NodePtr(new PlacemarkerNode(descriptors)); 
+    }
 
 
 FULL-LINESTRING-TAG = 
-    EOL* WS* OPEN-LINESTRING EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-LINESTRING EOL* WS* {
-                                                                                                                                                            $$ = NodePtr(new LineStringNode(corList));}
+    EOL* WS* OPEN-LINESTRING EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-LINESTRING EOL* WS* 
+    {
+        $$ = NodePtr(new LineStringNode(corList));
+    }
 
 
 DESCRIPTORS = 
-    minortag:MINOR-TAGS+    {
-                            $$ = NodePtr(new DescriptorsNode()); $$->children.push_back(minortag);
-                            }
+    minortag:MINOR-TAGS+    
+    {
+        $$ = NodePtr(new DescriptorsNode()); 
+        $$->children.push_back(minortag);
+    }
 
 
 MINOR-TAGS = 
-    name:FULL-NAME-TAG {$$ = name;}
+    name:FULL-NAME-TAG 
+    {
+        $$ = name;
+    }
     |
-    description:FULL-DESCRIPTION-TAG {$$ = description;}
+    description:FULL-DESCRIPTION-TAG 
+    {
+        $$ = description;
+    }
     |
-    point:FULL-POINT-TAG {$$ = point;}
+    point:FULL-POINT-TAG 
+    {
+        $$ = point;
+    }
 
 
 FULL-NAME-TAG = 
-    EOL* WS* OPEN-NAME EOL* WS* name:STRING-LITERAL EOL* WS* CLOSE-NAME EOL* WS*{ $$ = NodePtr(new NameNode(name)); }
+    EOL* WS* OPEN-NAME EOL* WS* name:STRING-LITERAL EOL* WS* CLOSE-NAME EOL* WS*
+    {
+        $$ = NodePtr(new NameNode(name));
+    }
 
 
 FULL-DESCRIPTION-TAG = 
-    EOL* WS* OPEN-DESCRIPTION EOL* WS* descr:STRING-LITERAL EOL* WS* CLOSE-DESCRIPTION EOL* WS* { $$ = NodePtr(new DescriptionNode(descr));}
+    EOL* WS* OPEN-DESCRIPTION EOL* WS* descr:STRING-LITERAL EOL* WS* CLOSE-DESCRIPTION EOL* WS* 
+    {
+        $$ = NodePtr(new DescriptionNode(descr));
+    }
 
 
 FULL-POINT-TAG = 
-    EOL* WS* OPEN-POINT EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-POINT EOL* WS* {$$ = NodePtr(new PointNode(corList));}
+    EOL* WS* OPEN-POINT EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-POINT EOL* WS* 
+    {
+        $$ = NodePtr(new PointNode(corList));
+    }
 
 
 COORDINATES-LIST = 
-    EOL* WS* OPEN-COORDINATE EOL* WS* cor:SINGLECOR+ EOL* WS* CLOSE-COORDINATE EOL* WS* {$$ = NodePtr(new CoordinateListNode()); $$->children.push_back(cor);}
+    EOL* WS* OPEN-COORDINATE EOL* WS* cor:SINGLECOR+ EOL* WS* CLOSE-COORDINATE EOL* WS* 
+    {
+        $$ = NodePtr(new CoordinateListNode()); 
+        $$->children.push_back(cor);
+    }
 
 
 SINGLECOR = 
-    EOL* WS* num1:NUMBER-LITERAL COMMA-DELIMETER num2:NUMBER-LITERAL COMMA-DELIMETER num3:NUMBER-LITERAL EOL* WS* {$$ = NodePtr(new CoordinateNode(num1,num2,num3));}
+    EOL* WS* num1:NUMBER-LITERAL COMMA-DELIMETER num2:NUMBER-LITERAL COMMA-DELIMETER num3:NUMBER-LITERAL EOL* WS* 
+    {
+        $$ = NodePtr(new CoordinateNode(num1,num2,num3));
+    }
 
 
 
 
-OPEN-KML = "<Kml>"                                  {printf("OPEN-KML\n");}
-CLOSE-KML = "</Kml>"                                {printf("CLOSE-KML\n");}
-OPEN-DOCUMENT = "<Document>"                        {printf("OPEN-DOCUMENT\n");}
-CLOSE-DOCUMENT = "</Document>"                      {printf("CLOSE-DOCUMENT\n");}
-OPEN-LINESTRING = "<Linestring>"                    {printf("OPEN-LINESTRING\n");}
-CLOSE-LINESTRING = "</Linestring>"                  {printf("CLOSE-LINESTRING\n");}
-OPEN-PLACEMARKER = "<Placemarker>"                  {printf("OPEN-PLACEMARKER\n");}
-CLOSE-PLACEMARKER = "</Placemarker>"                {printf("CLOSE-PLACEMARKER\n");}
-OPEN-NAME = "<name>"                                {printf("OPEN-NAME\n");}
-CLOSE-NAME = "</name>"                              {printf("CLOSE-NAME\n");}
-OPEN-DESCRIPTION = "<description>"                  {printf("OPEN-DESCRIPTION\n");}
-CLOSE-DESCRIPTION = "</description>"                {printf("CLOSE-DESCRIPTION\n");}
-OPEN-POINT = "<Point>"                              {printf("OPEN-POINT\n");}
-CLOSE-POINT = "</Point>"                            {printf("CLOSE-POINT\n");}
-OPEN-COORDINATE = "<coordinates>"                   {printf("OPEN-COORDINATE\n");}
-CLOSE-COORDINATE = "</coordinates>"                 {printf("CLOSE-COORDINATE\n");}
+OPEN-KML = "<Kml>"
+{
+    printf("OPEN-KML\n");
+}
 
-COMMA-DELIMETER = ','                               {printf("COMMA-DELIMETER\n");}
-WS = [ \t]                                          {printf("WS\n");}
-EOL = '\r'?'\n'                                     {printf("EOL\n");}
-NUMBER-LITERAL = < ['+'|'-']?[0-9]+'.'?([0-9]+)? >  {$$ = NodePtr(new NumberLiteralNode(atoi(yytext))); printf("NUMBER-LITERAL %d\n",atoi(yytext));}
-STRING-LITERAL = < [a-z|A-Z|" "]+ >                 {$$ = NodePtr(new StringLiteralNode(yytext)); printf("STRING-LITERAL %s\n",yytext);}
+CLOSE-KML = "</Kml>"
+{
+    printf("CLOSE-KML\n");
+}
+
+OPEN-DOCUMENT = "<Document>"                        
+{
+    printf("OPEN-DOCUMENT\n");
+}
+
+CLOSE-DOCUMENT = "</Document>"                      
+{
+    printf("CLOSE-DOCUMENT\n");
+}
+
+OPEN-LINESTRING = "<Linestring>"                    
+{
+    printf("OPEN-LINESTRING\n");
+}
+
+CLOSE-LINESTRING = "</Linestring>"                  
+{
+    printf("CLOSE-LINESTRING\n");
+}
+
+OPEN-PLACEMARKER = "<Placemarker>"                  
+{
+    printf("OPEN-PLACEMARKER\n");
+}
+
+CLOSE-PLACEMARKER = "</Placemarker>"                
+{
+    printf("CLOSE-PLACEMARKER\n");
+}
+
+OPEN-NAME = "<name>"                                
+{
+    printf("OPEN-NAME\n");
+}
+
+CLOSE-NAME = "</name>"                              
+{
+    printf("CLOSE-NAME\n");
+}
+
+OPEN-DESCRIPTION = "<description>"                  
+{
+    printf("OPEN-DESCRIPTION\n");
+}
+
+CLOSE-DESCRIPTION = "</description>"                
+{
+    printf("CLOSE-DESCRIPTION\n");
+}
+
+OPEN-POINT = "<Point>"                              
+{
+    printf("OPEN-POINT\n");
+}
+
+CLOSE-POINT = "</Point>"                            
+{
+    printf("CLOSE-POINT\n");
+}
+
+OPEN-COORDINATE = "<coordinates>"                   
+{
+    printf("OPEN-COORDINATE\n");
+}
+
+CLOSE-COORDINATE = "</coordinates>"                 
+{
+    printf("CLOSE-COORDINATE\n");
+}
+
+COMMA-DELIMETER = ','                               
+{
+    printf("COMMA-DELIMETER\n");
+}
+
+WS = [ \t]                                          
+{
+    printf("WS\n");
+}
+
+EOL = '\r'?'\n'                                     
+{
+    printf("EOL\n");
+}
+
+NUMBER-LITERAL = < ['+'|'-']?[0-9]+'.'?([0-9]+)? >  
+{
+    $$ = NodePtr(new NumberLiteralNode(atoi(yytext))); 
+    printf("NUMBER-LITERAL %d\n",atoi(yytext));
+}
+
+STRING-LITERAL = < [a-z|A-Z|" "]+ >                 
+{
+    $$ = NodePtr(new StringLiteralNode(yytext)); 
+    printf("STRING-LITERAL %s\n",yytext);
+}
 
 %%
 
 int main()
 {
-    int i = 0;
-    //printf("i = %d",i);
     while (yyparse()){
-        //printf("i = %d",i);
-        ++i;
     }
     if (!! program) {
     //program->print(std::cout);
