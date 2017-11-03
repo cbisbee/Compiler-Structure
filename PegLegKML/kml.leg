@@ -1,0 +1,109 @@
+%{
+           #include <stdio.h>     /* printf() */
+           #include <stdlib.h>    /* atoi() */
+           #include <vector>
+           #include "KML.h"
+           #include <iostream>
+           int vars[26];
+           int i = 0;
+           NodePtr program(0);
+           
+%}
+
+PROGRAM =
+    kml:KML-DOC {program = kml; printf("Valid Doc!\n");}
+
+
+KML-DOC = 
+    OPEN-KML EOL* WS* doc:DOCUMENT EOL* WS* CLOSE-KML EOL* WS* {$$ = NodePtr(new KMLNode(doc)); //expecting a document node as param}
+
+
+DOCUMENT =
+    OPEN-DOCUMENT EOL* WS* majortag:MAJOR-TAGS+ EOL* WS* CLOSE-DOCUMENT {$$ = NodePtr(new DocumentNode()); $$->children.push_back(majortag);}
+    |
+    OPEN-DOCUMENT EOL* WS* CLOSE-DOCUMENT {$$ = NodePtr(new DocumentNode());}
+
+
+MAJOR-TAGS = 
+    placemarker:FULL-PLACEMARKER-TAG {$$ = placemarker;}
+    |
+    linestring:FULL-LINESTRING-TAG {$$ = linestring;}
+
+
+FULL-PLACEMARKER-TAG = 
+    OPEN-PLACEMARKER EOL* WS* descriptors:DESCRIPTORS+ EOL* WS* CLOSE-PLACEMARKER { $$ = NodePtr(new PlacemarkerNode(descriptors)); }
+
+
+FULL-LINESTRING-TAG = 
+    OPEN-LINESTRING OPEN-COORDINATE EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-COORDINATE CLOSE-LINESTRING {$$ = NodePtr(new LineStringNode(corList));}
+
+
+DESCRIPTORS = 
+    minortag:MINOR-TAGS+ {$$ = NodePtr(new DescriptorsNode()); $$->children.push_back(minortag);}
+
+
+MINOR-TAGS = 
+    name:FULL-NAME-TAG {$$ = name;}
+    |
+    description:FULL-DESCRIPTION-TAG {$$ = description;}
+    |
+    point:FULL-POINT-TAG {$$ = point;}
+
+
+FULL-NAME-TAG = 
+    OPEN-NAME EOL* WS* name:STRING-LITERAL EOL* WS* CLOSE-NAME { $$ = NodePtr(new NameNode(name)); }
+
+
+FULL-DESCRIPTION-TAG = 
+    OPEN-DESCRIPTION EOL* WS* descr:STRING-LITERAL EOL* WS* CLOSE-DESCRIPTION { $$ = NodePtr(new DescriptionNode(descr));}
+
+
+FULL-POINT-TAG = 
+    OPEN-POINT EOL* WS* corList:COORDINATES-LIST EOL* WS* CLOSE-POINT {$$ = NodePtr(new PointNode(corList));}
+
+
+COORDINATES-LIST = 
+    OPEN-COORDINATE EOL* WS* cor:SINGLECOR+ EOL* WS* CLOSE-COORDINATE {$$ = NodePtr(new CoordinateListNode()); $$->children.push_back(cor);}
+
+
+SINGLECOR = 
+    num1:NUMBER-LITERAL COMMA-DELIMETER num2:NUMBER-LITERAL COMMA-DELIMETER num3:NUMBER-LITERAL {$$ = NodePtr(new CoordinateNode(num1,num2,num3));}
+
+
+
+
+OPEN-KML = "<Kml>"                                  {printf("OPEN-KML\n");}
+CLOSE-KML = "</Kml>"                                {printf("CLOSE-KML\n");}
+OPEN-DOCUMENT = "<Document>"                        {printf("OPEN-DOCUMENT\n");}
+CLOSE-DOCUMENT = "</Document>"                      {printf("CLOSE-DOCUMENT\n");}
+OPEN-LINESTRING = "<LineString>"                    {printf("OPEN-LINESTRING\n");}
+CLOSE-LINESTRING = "</LineString>"                  {printf("CLOSE-LINESTRING\n");}
+OPEN-PLACEMARKER = "<Placemarker>"                  {printf("OPEN-PLACEMARKER\n");}
+CLOSE-PLACEMARKER = "</Placemarker>"                {printf("CLOSE-PLACEMARKER\n");}
+OPEN-NAME = "<name>"                                {printf("OPEN-NAME\n");}
+CLOSE-NAME = "</name>"                              {printf("CLOSE-NAME\n");}
+OPEN-DESCRIPTION = "<description>"                  {printf("OPEN-DESCRIPTION\n");}
+CLOSE-DESCRIPTION = "</description>"                {printf("CLOSE-DESCRIPTION\n");}
+OPEN-POINT = "<Point>"                              {printf("OPEN-POINT\n");}
+CLOSE-POINT = "</Point>"                            {printf("CLOSE-POINT\n");}
+OPEN-COORDINATE = "<coordinates>"                   {printf("OPEN-COORDINATE\n");}
+CLOSE-COORDINATE = "</coordinates>"                 {printf("CLOSE-COORDINATE\n");}
+
+COMMA-DELIMETER = ','                               {printf("COMMA-DELIMETER\n");}
+WS = [ \t]                                          {printf("WS\n");}
+EOL = '\r'?'\n'                                     {printf("EOL\n");}
+NUMBER-LITERAL = < ['+'|'-']?[0-9]+'.'?([0-9]+)? >  {$$ = NodePtr(new NumberLiteralNode(atoi(yytext))); printf("NUMBER-LITERAL %d\n",atoi(yytext));}
+STRING-LITERAL = < [a-z|A-Z|" "]+ >                 {$$ = NodePtr(new StringLiteralNode(yytext)); printf("STRING-LITERAL %s\n",yytext);}
+
+%%
+
+int main()
+{
+    int i = 0;
+    //printf("i = %d",i);
+    while (yyparse()){
+        //printf("i = %d",i);
+        ++i;
+    }
+    return 0;
+}
