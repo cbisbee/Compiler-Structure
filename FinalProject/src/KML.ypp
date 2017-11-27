@@ -11,11 +11,10 @@
 int yywrap();
 int yylex();
 void yyerror(const char *str);
-std::ifstream baseFile;
-std::ifstream overlayFile;
-//std::ifstream yyin;
 
 NodePtr program(0);
+NodePtr baseLayer(0);
+NodePtr overlayLayer(0);
 %}
 
 %token XML_VERSION OPEN_KML CLOSE_KML OPEN_DOCUMENT CLOSE_DOCUMENT OPEN_PLACEMARK CLOSE_PLACEMARK OPEN_DESCRIPTION CLOSE_DESCRIPTION OPEN_LINESTRING
@@ -281,25 +280,28 @@ int main(int argc, char *argv[])
   std::string overlayFileName;
   //scan for command line arguments
   scanCLAs(argc,argv,baseFileName, overlayFileName);
-  baseFile.open(baseFileName);
-  overlayFile.open(overlayFileName);
-  //yyin.open(baseFileName);
 
   yyin = fopen(baseFileName.c_str(),"r");
 
+//Parse the base layer
   yyparse();
   if (!! program) {
     //program->print(std::cout);
-    GeneratorPtr gen = generator(program);
+    baseLayer = program;
+    GeneratorPtr gen = generator(baseLayer);
     gen->generate(std::cout);
   } else {
     std::cout << "syntax error." << std::endl;
   }
 
   yyin = fopen(overlayFileName.c_str(),"r");
+
+//Parse the overlay layer
+  yyparse();
   if (!! program) {
     //program->print(std::cout);
-    GeneratorPtr gen = generator(program);
+    overlayLayer = program;
+    GeneratorPtr gen = generator(overlayLayer);
     gen->generate(std::cout);
   } else {
     std::cout << "syntax error." << std::endl;
