@@ -12,6 +12,13 @@
 %}
 
 %%
+("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")  {
+  #if DEBUG_LEXER == 1
+    std::cout << "lexed " << yytext << " as XML_VERSION" << std::endl;
+  #endif
+  return XML_VERSION;
+}
+
 (<Kml>|<\/Kml>)   {
   if(strcmp(yytext,"<Kml>") == 0){
     #if DEBUG_LEXER == 1

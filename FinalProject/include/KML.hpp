@@ -5,3 +5,4 @@
 #define YYSTYPE NodePtr
 
 extern YYSTYPE yylval;
+extern FILE * yyin;

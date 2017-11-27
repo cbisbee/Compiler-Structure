@@ -11,11 +11,14 @@
 int yywrap();
 int yylex();
 void yyerror(const char *str);
+std::ifstream baseFile;
+std::ifstream overlayFile;
+//std::ifstream yyin;
 
 NodePtr program(0);
 %}
 
-%token OPEN_KML CLOSE_KML OPEN_DOCUMENT CLOSE_DOCUMENT OPEN_PLACEMARK CLOSE_PLACEMARK OPEN_DESCRIPTION CLOSE_DESCRIPTION OPEN_LINESTRING
+%token XML_VERSION OPEN_KML CLOSE_KML OPEN_DOCUMENT CLOSE_DOCUMENT OPEN_PLACEMARK CLOSE_PLACEMARK OPEN_DESCRIPTION CLOSE_DESCRIPTION OPEN_LINESTRING
 CLOSE_LINESTRING OPEN_NAME CLOSE_NAME OPEN OPEN_POINT CLOSE_POINT OPEN_COORDINATE CLOSE_COORDINATE COMMA_DELIMETER STRING_LITERAL 
 NUMBER_LITERAL WS EOL
 
@@ -245,8 +248,45 @@ void yyerror(const char *str)
   fprintf(stderr,"error: %s\n",str);
 }
 
+void scanCLAs(int argc, char *argv[], std::string &baseFile, std::string &overlayFile){
+  for(int i = 1; i < argc; ++i){
+    //Find the 'base file' which is the file that we are extracting from
+    if(strncmp(argv[i], "-bf", 3) == 0){
+      //std::cout << "The base file is: " << argv[i+1] << std::endl;
+      baseFile = argv[i+1];
+    }
+    //Find the 'overlay file' which is the file that we are using to get the subset from
+    if(strncmp(argv[i], "-of",3) == 0){
+      //std::cout << "The overlay file is: " << argv[i+1] << std::endl;
+      overlayFile = argv[i+1];
+    }
+  }
+}
+
+void displayHelp(){
+  std::cout << std::endl;
+  std::cout << "You must supply at least two arguments to use this compiler:" << std::endl;
+  std::cout << "1) use -bf to specify what kml/skml file should be used as the base file" << std::endl;
+  std::cout << "2) use -of to specify what kml/skml file should be used as the overlay file" << std::endl;
+  std::cout << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
+  if(argc < 5){
+    displayHelp();
+    return 0;
+  }
+  std::string baseFileName;
+  std::string overlayFileName;
+  //scan for command line arguments
+  scanCLAs(argc,argv,baseFileName, overlayFileName);
+  baseFile.open(baseFileName);
+  overlayFile.open(overlayFileName);
+  //yyin.open(baseFileName);
+
+  yyin = fopen(baseFileName.c_str(),"r");
+
   yyparse();
   if (!! program) {
     //program->print(std::cout);
@@ -255,5 +295,15 @@ int main(int argc, char *argv[])
   } else {
     std::cout << "syntax error." << std::endl;
   }
+
+  yyin = fopen(overlayFileName.c_str(),"r");
+  if (!! program) {
+    //program->print(std::cout);
+    GeneratorPtr gen = generator(program);
+    gen->generate(std::cout);
+  } else {
+    std::cout << "syntax error." << std::endl;
+  }
+
   return 0;
 } 
