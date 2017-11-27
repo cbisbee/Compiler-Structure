@@ -1,0 +1,259 @@
+%{
+#include <stdio.h>
+#include <iostream>
+#include <string.h>
+#include "KML.hpp"
+#include "ast.hpp"
+#include "generator.hpp"
+
+#define DEBUG_PARSER 0
+
+int yywrap();
+int yylex();
+void yyerror(const char *str);
+
+NodePtr program(0);
+%}
+
+%token OPEN_KML CLOSE_KML OPEN_DOCUMENT CLOSE_DOCUMENT OPEN_PLACEMARK CLOSE_PLACEMARK OPEN_DESCRIPTION CLOSE_DESCRIPTION OPEN_LINESTRING
+CLOSE_LINESTRING OPEN_NAME CLOSE_NAME OPEN OPEN_POINT CLOSE_POINT OPEN_COORDINATE CLOSE_COORDINATE COMMA_DELIMETER STRING_LITERAL 
+NUMBER_LITERAL WS EOL
+
+%%
+program:
+kml
+{
+#if DEBUG_PARSER == 1
+  std::cout << "program : kml=" << $1 << std::endl;
+#endif
+  program = $1;
+}
+; /*program*/
+
+optionalws:
+/* empty */
+|
+optionalws WS
+|
+optionalws EOL
+; /* optionalws */
+
+kml:
+OPEN_KML document CLOSE_KML
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "kml: document=" << $2 << std::endl;
+  #endif
+  $$ = NodePtr(new KMLNode($2));
+}
+; /*kml*/
+
+document:
+/* empty */
+{
+  $$ = NodePtr(new DocumentNode());
+}
+|
+optionalws OPEN_DOCUMENT major_tag CLOSE_DOCUMENT optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "document: major_tag=" << $3 << std::endl;
+  #endif
+  $$ = $3;
+}
+; /*document*/
+
+
+major_tag:
+/* empty */
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "major_tag: empty" << std::endl;
+  #endif
+  $$ = NodePtr(new DocumentNode());
+}
+|
+major_tag placemarker
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "major_tag: major_tag=" << $1 << " minor_tag=" << $2 << std::endl;
+  #endif
+  $$=$1;
+  $$->children.push_back($2);
+}
+|
+major_tag linestring
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "major_tag: major_tag=" << $1 << " minor_tag=" << $2 << std::endl;
+  #endif
+  $$=$1;
+  $$->children.push_back($2);
+}
+; /*major_tag*/
+
+
+placemarker:
+optionalws OPEN_PLACEMARK descriptors CLOSE_PLACEMARK optionalws
+{
+  $$ = NodePtr(new PlacemarkerNode($3));
+}
+
+descriptors:
+/* empty */
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "descriptor: empty" << std::endl;
+  #endif
+  $$ = NodePtr(new DescriptorsNode());
+}
+|
+descriptors minor_tag
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "descriptor: descriptor=" << $1 << " minor_tag=" << $2 << std::endl;
+  #endif
+  $$ = $1;
+  $$->children.push_back($2);
+}
+; /*descriptor*/
+
+linestring:
+optionalws OPEN_LINESTRING optionalws OPEN_COORDINATE coordinates CLOSE_COORDINATE optionalws CLOSE_LINESTRING optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "linestring: coordinates =" << $5 << std::endl;
+  #endif
+  $$ = NodePtr(new LineStringNode($5));
+  //$$->children.push_back($5);
+}
+; /*linestring*/
+
+minor_tag:
+name_tag
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "minor_tag: nametag=" << $1 << std::endl;  
+  #endif
+  $$ = $1;
+}
+|
+description_tag
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "minor_tag: description_tag=" << $1 << std::endl;
+  #endif
+  $$ = $1;
+}
+|
+point_tag
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "minor_tag: description_tag=" << $1 << std::endl;
+  #endif
+  $$ = $1;
+}
+; /*minor_tag*/
+
+name_tag:
+optionalws OPEN_NAME optionalws STRING_LITERAL optionalws CLOSE_NAME optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "name_tag: string_literal=" << $4 << std::endl;
+  #endif
+  $$ = NodePtr(new NameNode($4));
+}
+; /*name tag*/
+
+description_tag:
+optionalws OPEN_DESCRIPTION optionalws STRING_LITERAL optionalws CLOSE_DESCRIPTION optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "description_tag: string_literal=" << $4 << std::endl;
+  #endif
+  $$ = NodePtr(new DescriptionNode($4));
+}
+; /*description tag*/
+
+point_tag:
+optionalws OPEN_POINT optionalws coordinate optionalws CLOSE_POINT optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "point_tag: coordinate=" << $4 << std::endl;
+  #endif
+  $$ = NodePtr(new PointNode($4));
+}
+; /*point_tag*/
+
+coordinates:
+/*empty*/
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "coordinates: empty" << std::endl;
+  #endif
+  $$ = NodePtr(new CoordinateListNode());
+}
+|
+coordinates singlecor
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "coordinates = " << $1 << " singlecor = " << $2 << std::endl;
+  #endif
+  $$ = $1;
+  $$->children.push_back($2);
+}
+; /*coordinates*/
+
+
+singlecor:
+optionalws NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "singlecor(" << $2 << "," << $4 << "," << $6 << ")" << std::endl;
+  #endif
+  $$ = NodePtr(new CoordinateNode($2,$4,$6));
+}
+; 
+
+coordinate:
+optionalws NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "coordinate: numberLiteral1=" << $2 << "numberLiteral2=" << $4 << "numberLiteral3=" << $6 << std::endl;
+  #endif
+  $$ = NodePtr(new CoordinateNode($2,$4,$6));
+}
+|
+optionalws OPEN_COORDINATE NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL COMMA_DELIMETER NUMBER_LITERAL CLOSE_COORDINATE optionalws
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "coordinate: numberLiteral1=" << $3 << "numberLiteral2=" << $5 << "numberLiteral3=" << $7 << std::endl;
+  #endif
+  $$ = NodePtr(new CoordinateNode($3,$5,$7));
+}
+; /*coordinate*/
+
+%%
+
+int yywrap()
+{
+  return 1;
+} 
+
+void yyerror(const char *str)
+{
+  fprintf(stderr,"error: %s\n",str);
+}
+
+int main(int argc, char *argv[])
+{
+  yyparse();
+  if (!! program) {
+    //program->print(std::cout);
+    GeneratorPtr gen = generator(program);
+    gen->generate(std::cout);
+  } else {
+    std::cout << "syntax error." << std::endl;
+  }
+  return 0;
+} 
