@@ -125,6 +125,66 @@
   }
 }
 
+(<Polygon>|<\/Polygon>) {
+  if(strcmp(yytext, "<Polygon>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as OPEN_POLYGON" << std::endl;
+    #endif
+    return OPEN_POLYGON;
+  }
+  if(strcmp(yytext, "</Polygon>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as CLOSE_POLYGON" << std::endl;
+    #endif
+    return CLOSE_POLYGON;
+  }
+}
+
+(<outerBoundaryIs>|<\/outerBoundaryIs>) {
+  if(strcmp(yytext, "<outerBoundaryIs>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as OPEN_OUTER_BOUNDARY" << std::endl;
+    #endif
+    return OPEN_OUTER_BOUNDARY;
+  }
+  if(strcmp(yytext, "</outerBoundaryIs>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as CLOSE_OUTER_BOUNDARY" << std::endl;
+    #endif
+    return CLOSE_OUTER_BOUNDARY;
+  }
+}
+
+(<innerBoundaryIs>|<\/innerBoundaryIs>) {
+  if(strcmp(yytext,"<innerBoundaryIs>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as OPEN_INNER_BOUNDARY" << std::endl;
+    #endif
+    return OPEN_INNER_BOUNDARY;
+  }
+  if(strcmp(yytext, "</innerBoundaryIs>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as CLOSE_INNER_BOUNDARY" << std::endl;
+    #endif
+    return CLOSE_INNER_BOUNDARY;
+  }
+}
+
+(<LinearRing>|<\/LinearRing>) {
+  if(strcmp(yytext,"<LinearRing>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as OPEN_LINEAR_RING" << std::endl;
+    #endif
+    return OPEN_LINEAR_RING;
+  }
+  if(strcmp(yytext,"</LinearRing>") == 0){
+    #if DEBUG_LEXER == 1
+      std::cout << "lexed " << yytext << " as CLOSE_LINEAR_RING" << std::endl;
+    #endif
+    return CLOSE_LINEAR_RING;
+  }
+}
+
 (<coordinates>|<\/coordinates>)   {
   if(strcmp(yytext, "<coordinates>") == 0){
     #if DEBUG_LEXER == 1
