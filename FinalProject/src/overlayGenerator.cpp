@@ -129,6 +129,22 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
         out << "<!-- End of the Placemarkers -->" << std::endl;
     }
 
+    bool pointInPolygon(OrderedTriplet &point) {
+        int i, j = overlayPolyPoints.size()-1;
+        bool oddNodes = false;
+        for (i=0; i<overlayPolyPoints.size(); ++i) {
+            if ((overlayPolyPoints.at(i).y < point.y && overlayPolyPoints.at(j).y >= point.y
+            ||   overlayPolyPoints.at(j).y < point.y && overlayPolyPoints.at(i).y >= point.y)
+            &&  (overlayPolyPoints.at(i).x <= point.x || overlayPolyPoints.at(j).x <= point.x)) {
+                oddNodes^=(overlayPolyPoints.at(i).x + (point.y-overlayPolyPoints.at(i).y)
+                /(overlayPolyPoints.at(j).y - overlayPolyPoints.at(i).y)*(overlayPolyPoints.at(j).x
+                - overlayPolyPoints.at(i).x) < point.x);
+            }
+            j=i; 
+        }
+        return oddNodes;
+    }
+
     void placemarks(const NodePtr &ast, std::ostream &out){
         switch(ast->type()){
             case Node::DESCRIPTORS:{
@@ -193,7 +209,12 @@ struct KmlIntersectGenerator : public OverlayGenerator {
     
     virtual void generateOverlay(std::ostream &out){
         polyPoints.generateOverlay(out);
+
+        //This seems like a hack, worth checking out in the future
         overlayPolyPoints = polyPoints.overlayPolyPoints;
+        lineStrings.overlayPolyPoints = polyPoints.overlayPolyPoints;
+        placemarkers.overlayPolyPoints = polyPoints.overlayPolyPoints;
+
         lineStrings.generateOverlay(out);
         placemarkers.generateOverlay(out);
     }
