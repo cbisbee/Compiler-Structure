@@ -20,7 +20,7 @@ void StringLiteralNode::print(std::ostream &out) const {
 
 
 
-NumberLiteralNode::NumberLiteralNode(float _numberLiteral)
+NumberLiteralNode::NumberLiteralNode(double _numberLiteral)
 {
   numberLiteral = _numberLiteral;
 }
@@ -248,7 +248,7 @@ void ProgramNode::print(std::ostream &out) const {
 
 
 
-NodePtr node(float number) {
+NodePtr node(double number) {
   return NodePtr(new NumberLiteralNode(number));
 }
 

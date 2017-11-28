@@ -5,8 +5,8 @@
 #include <vector>
 
 struct OrderedTriplet{
-    float x,y,z;
-    OrderedTriplet(float _x, float _y, float _z);
+    double x,y,z;
+    OrderedTriplet(double _x, double _y, double _z);
 };
 
 struct OverlayGenerator {

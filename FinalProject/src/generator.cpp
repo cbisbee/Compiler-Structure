@@ -49,8 +49,8 @@ struct PlacemarkerGenerator : public Generator {
                 std::string descStr = "";
                 std::string xStr = "";
                 std::string yStr = "";
-                float xCor = 0;
-                float yCor = 0;
+                double xCor = 0;
+                double yCor = 0;
                 for(auto child : descriptors->children){
                     switch(child->type()){
                         case Node::NAME:{

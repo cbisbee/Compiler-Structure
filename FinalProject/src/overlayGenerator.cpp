@@ -18,9 +18,10 @@
 #include <set> //May not need this
 #include <string>
 #include <sstream>
+#include <iomanip>
 #include "overlayGenerator.hpp"
 
-OrderedTriplet::OrderedTriplet(float _x, float _y, float _z) : x(_x), y(_y), z(_z){}
+OrderedTriplet::OrderedTriplet(double _x, double _y, double _z) : x(_x), y(_y), z(_z){}
 
 OverlayGenerator::OverlayGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
     : baseLayerAst(_baseLayerAst), overlayLayerAst(_overlayLayerAst){}
@@ -122,11 +123,7 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
         : OverlayGenerator(_baseLayerAst, _overlayLayerAst) {}
     
     virtual void generateOverlay(std::ostream &out) {
-        //TODO remove the following line when you actually go to use this
-        out << "<!-- Placemarkers -->" << std::endl;
         placemarks(baseLayerAst, out);
-        //TODO remove the following line when you actually go to use this
-        out << "<!-- End of the Placemarkers -->" << std::endl;
     }
 
     bool pointInPolygon(OrderedTriplet &point) {
@@ -202,6 +199,7 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
                     if(descStr != "")
                         out << "\t<description>" << descStr << "</description>" << std::endl;
                     out << "\t<Point>" << std::endl;
+                    out << std::fixed << std::showpoint << std::setprecision(15);
                     out << "\t\t<coordinates>" << xCor << ", " << yCor << ", " << zCor << "</coordinates>" << std::endl;
                     out << "\t</Point>" << std::endl;
                     out << "</Placemarker" << std::endl;

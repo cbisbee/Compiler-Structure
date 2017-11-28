@@ -43,8 +43,8 @@ public: void print(std::ostream &out) const;
 typedef std::shared_ptr < StringLiteralNode > StringLiteralNodePtr;
 
 class NumberLiteralNode : public Node {
-public: float numberLiteral;
-public: NumberLiteralNode(float _numberLiteral);
+public: double numberLiteral;
+public: NumberLiteralNode(double _numberLiteral);
 public: int type() const;
 public: void print(std::ostream &out) const;  
 };
@@ -161,7 +161,7 @@ int numberLiteral(const NodePtr &p);
 
 const std::string & stringLiteral(const NodePtr &p);
 
-NodePtr node(float numberLiteral);
+NodePtr node(double numberLiteral);
 
 NodePtr node(const std::string &stringLiteral);
 
