@@ -20,7 +20,7 @@
 #include <sstream>
 #include "overlayGenerator.hpp"
 
-OrderedTriplet::OrderedTriplet(int _x, int _y, int _z) : x(_x), y(_y), z(_z){}
+OrderedTriplet::OrderedTriplet(float _x, float _y, float _z) : x(_x), y(_y), z(_z){}
 
 OverlayGenerator::OverlayGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
     : baseLayerAst(_baseLayerAst), overlayLayerAst(_overlayLayerAst){}
@@ -133,13 +133,20 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
         int i, j = overlayPolyPoints.size()-1;
         bool oddNodes = false;
         for (i=0; i<overlayPolyPoints.size(); ++i) {
-            if ((overlayPolyPoints.at(i).y < point.y && overlayPolyPoints.at(j).y >= point.y
-            ||   overlayPolyPoints.at(j).y < point.y && overlayPolyPoints.at(i).y >= point.y)
-            &&  (overlayPolyPoints.at(i).x <= point.x || overlayPolyPoints.at(j).x <= point.x)) {
-                oddNodes^=(overlayPolyPoints.at(i).x + (point.y-overlayPolyPoints.at(i).y)
-                /(overlayPolyPoints.at(j).y - overlayPolyPoints.at(i).y)*(overlayPolyPoints.at(j).x
-                - overlayPolyPoints.at(i).x) < point.x);
-            }
+            if (
+                (
+                    (overlayPolyPoints.at(i).y < point.y && overlayPolyPoints.at(j).y >= point.y)
+                    ||
+                    (overlayPolyPoints.at(j).y < point.y && overlayPolyPoints.at(i).y >= point.y)
+                )
+                &&
+                (overlayPolyPoints.at(i).x <= point.x || overlayPolyPoints.at(j).x <= point.x))
+                {
+                    //figure this out...
+                    oddNodes^=(overlayPolyPoints.at(i).x + (point.y-overlayPolyPoints.at(i).y)
+                    /(overlayPolyPoints.at(j).y - overlayPolyPoints.at(i).y)*(overlayPolyPoints.at(j).x
+                    - overlayPolyPoints.at(i).x) < point.x);
+                }
             j=i; 
         }
         return oddNodes;
@@ -175,11 +182,16 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
                             NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(1));
                             NumberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(2));
 
-                            xCor = xCorNode->numberLiteral;
-                            yCor = yCorNode->numberLiteral;
-                            zCor = zCorNode->numberLiteral;
-
                             //Figure out if this coordinate falls within the overlay layer poly
+                            OrderedTriplet curPoint(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
+                            if(pointInPolygon(curPoint)){
+                                //TODO replace this with something meaningful
+                                std::cout << "The Placemarker fell within the polygon!" << std::endl;
+                            }
+                            else {
+                                //TODO replace this with something meaningful
+                                std::cout << "The Placemarker did not fall within the polygon!" << std::endl;
+                            }
 
                             ++numPlacemarkers;
                         }

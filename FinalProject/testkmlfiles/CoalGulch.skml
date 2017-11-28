@@ -4,7 +4,14 @@
 		<name>"Coal Gulch Road to Hunter Canyon"</name>
 		<description>"A potentially awesome trail run"</description>
 		<Point>
-			<coordinates>-108.742307822411,39.33684198694219,0</coordinates>
+			<coordinates>-108.630620,39.349957,0</coordinates>
+		</Point>
+	</Placemarker>
+	<Placemarker>
+		<name>"A random landmark"</name>
+		<description>"just a random spot"</description>
+		<Point>
+			<coordinates>-108.626828,39.300909,0</coordinates>
 		</Point>
 	</Placemarker>
 	<LineString>
