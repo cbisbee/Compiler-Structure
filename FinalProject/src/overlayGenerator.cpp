@@ -164,16 +164,17 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
                 double xCor = 0;
                 double yCor = 0;
                 double zCor = 0;
+                bool containedInOverlayPoly = false;
                 for(auto child : descriptors->children){
                     switch(child->type()){
                         case Node::NAME:{
                             StringLiteralNodePtr nameStringNode = std::dynamic_pointer_cast<StringLiteralNode>(child->children.at(0));
-                            //Do something with this
+                            nameStr = nameStringNode->stringLiteral;
                         }
                         break;
                         case Node::DESCRIPTION:{
                             StringLiteralNodePtr descriptionStringNode = std::dynamic_pointer_cast<StringLiteralNode>(child->children.at(0));
-                            //Do something with this
+                            descStr = descriptionStringNode->stringLiteral;                        
                         }
                         break;
                         case Node::POINT:{
@@ -182,21 +183,28 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
                             NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(1));
                             NumberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(2));
 
-                            //Figure out if this coordinate falls within the overlay layer poly
-                            OrderedTriplet curPoint(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
-                            if(pointInPolygon(curPoint)){
-                                //TODO replace this with something meaningful
-                                std::cout << "The Placemarker fell within the polygon!" << std::endl;
-                            }
-                            else {
-                                //TODO replace this with something meaningful
-                                std::cout << "The Placemarker did not fall within the polygon!" << std::endl;
-                            }
+                            xCor = xCorNode->numberLiteral;
+                            yCor = yCorNode->numberLiteral;
+                            zCor = zCorNode->numberLiteral;
 
-                            ++numPlacemarkers;
+                            //Figure out if this coordinate falls within the overlay layer poly
+                            OrderedTriplet curPoint(xCor, yCor, zCor);
+                            containedInOverlayPoly = pointInPolygon(curPoint);                
                         }
                         break;
                     }
+                }
+                //Check if the placemarker was found in the overlay polygon and if so, add it to the output kml file
+                if(containedInOverlayPoly){
+                    out << "<Placemarker>" << std::endl;
+                    if(nameStr != "")
+                        out <<"\t<name>" << nameStr << "</name>" << std::endl;
+                    if(descStr != "")
+                        out << "\t<description>" << descStr << "</description>" << std::endl;
+                    out << "\t<Point>" << std::endl;
+                    out << "\t\t<coordinates>" << xCor << ", " << yCor << ", " << zCor << "</coordinates>" << std::endl;
+                    out << "\t</Point>" << std::endl;
+                    out << "</Placemarker" << std::endl;
                 }
             }
             break;
