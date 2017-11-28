@@ -10,9 +10,9 @@ struct OrderedTriplet{
 };
 
 struct OverlayGenerator {
-    std::vector<OrderedTriplet> overlayPolyPoints;
     NodePtr baseLayerAst;
     NodePtr overlayLayerAst;
+    std::vector<OrderedTriplet> overlayPolyPoints;
     OverlayGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst);
     virtual void generateOverlay(std::ostream &out) = 0;
 };

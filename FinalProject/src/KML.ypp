@@ -5,6 +5,7 @@
 #include "KML.hpp"
 #include "ast.hpp"
 #include "generator.hpp"
+#include "overlayGenerator.hpp"
 
 #define DEBUG_PARSER 0
 
@@ -354,6 +355,9 @@ int main(int argc, char *argv[])
     overlayLayer = program;
     //GeneratorPtr gen = generator(overlayLayer);
     //gen->generate(std::cout);
+    OverlayGeneratorPtr ovGen = overlaygenerator(baseLayer,overlayLayer);
+    ovGen->generateOverlay(std::cout);
+    std::cout << "Size of polypoints vector = " << ovGen->overlayPolyPoints.size() << std::endl;
   } else {
     std::cout << "syntax error." << std::endl;
   }

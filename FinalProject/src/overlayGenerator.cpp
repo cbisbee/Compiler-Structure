@@ -48,13 +48,13 @@ struct OverlayPolyPointsGenerator : public OverlayGenerator {
                 OuterBoundaryNodePtr outerBoundary = std::dynamic_pointer_cast<OuterBoundaryNode>(polyNode->children.at(0));
                 LinearRingNodePtr linearRing = std::dynamic_pointer_cast<LinearRingNode>(outerBoundary->children.at(0));
                 CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(linearRing->children.at(0));
-                int count = 0;
+                //int count = 0;
                 for(auto child : coordinateList->children){
                     //get the current coordinate's x, y, and z values
                     NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(0));
                     NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(1));
                     NumberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(2));
-
+            
                     //Make a new ordered triplet
                     OrderedTriplet newCoor(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
 
@@ -193,6 +193,7 @@ struct KmlIntersectGenerator : public OverlayGenerator {
     
     virtual void generateOverlay(std::ostream &out){
         polyPoints.generateOverlay(out);
+        overlayPolyPoints = polyPoints.overlayPolyPoints;
         lineStrings.generateOverlay(out);
         placemarkers.generateOverlay(out);
     }
