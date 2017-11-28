@@ -12,6 +12,11 @@ public: enum {
     DOCUMENT,
     PLACEMARKER,
     LINESTRING,
+    LINEAR_RING,
+    INNER_BOUNDARIES,
+    INNER_BOUNDARY,
+    OUTER_BOUNDARY,
+    POLYGON,
     DESCRIPTORS,
     NAME,
     DESCRIPTION,
@@ -84,6 +89,40 @@ public: int type() const;
 public: void print(std::ostream &out) const;
 };
 typedef std::shared_ptr < DescriptorsNode > DescriptorsNodePtr;
+
+class OuterBoundaryNode : public Node {
+public: OuterBoundaryNode(const NodePtr &linearRing);
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr < OuterBoundaryNode > OuterBoundaryNodePtr;
+
+class InnerBoundariesNode : public Node {
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr < InnerBoundariesNode > InnerBoundariesNodePtr;
+
+class InnerBoundaryNode : public Node {
+public: InnerBoundaryNode(const NodePtr &linearRing);
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr < InnerBoundaryNode > InnerBoundaryNodePtr;
+
+class LinearRingNode : public Node {
+public: LinearRingNode(const NodePtr &coordinateList);
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr < LinearRingNode > LinearRingNodePtr;
+
+class PolygonNode : public Node {
+public: PolygonNode(const NodePtr &outerBoundary, const NodePtr &innerBoundaries);
+public: int type() const;
+public: void print(std::ostream &out) const;
+};
+typedef std::shared_ptr < PolygonNode > PolygonNodePtr;
 
 class LineStringNode : public Node {
 public: LineStringNode(const NodePtr &coordinateList);

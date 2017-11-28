@@ -106,8 +106,6 @@ void NameNode::print(std::ostream &out) const {
     out << "name(stringLiteral=" << children.at(0) << ")";
 }
 
-
-
 int DescriptorsNode::type() const {
     return DESCRIPTORS;
 }
@@ -120,6 +118,66 @@ void DescriptorsNode::print(std::ostream &out) const {
     out << "] //descriptors";
 }
 
+OuterBoundaryNode::OuterBoundaryNode(const NodePtr &linearRing){
+    children.push_back(linearRing);
+}
+
+int OuterBoundaryNode::type() const {
+    return OUTER_BOUNDARY;
+}
+
+void OuterBoundaryNode::print(std::ostream &out) const {
+    out << "outer_boundary(" << children.at(0) << ")" << std::endl;
+}
+
+int InnerBoundariesNode::type() const {
+    return INNER_BOUNDARIES;
+}
+
+void InnerBoundariesNode::print(std::ostream &out) const {
+    out << "inner_boundaries=[" << std::endl;
+    for(size_t i = 0; i < children.size(); ++i){
+        out << children.at(i) << " // child " << i << std::endl;
+    }
+    out << "] //inner_boundaries";
+}
+
+InnerBoundaryNode::InnerBoundaryNode(const NodePtr &linearRing){
+    children.push_back(linearRing);
+}
+
+int InnerBoundaryNode::type() const {
+    return INNER_BOUNDARY;
+}
+
+void InnerBoundaryNode::print(std::ostream &out) const {
+    out << "inner_boundary(" << children.at(0) << ")" << std::endl;
+}
+
+LinearRingNode::LinearRingNode(const NodePtr &coordinateList){
+    children.push_back(coordinateList);
+}
+
+int LinearRingNode::type() const {
+    return LINEAR_RING;
+}
+
+void LinearRingNode::print(std::ostream &out) const {
+    out << "linear_ring(" << children.at(0) << ")" << std::endl;
+}
+
+PolygonNode::PolygonNode(const NodePtr &outerBoundary, const NodePtr &innerBoundaries){
+    children.push_back(outerBoundary);
+    children.push_back(innerBoundaries);
+}
+
+int PolygonNode::type() const {
+    return POLYGON;
+}
+
+void PolygonNode::print(std::ostream &out) const {
+    out << "polygon(child 0=" << children.at(0) <<", child 1=" << children.at(1) << ")" << std::endl;
+}
 
 LineStringNode::LineStringNode(const NodePtr &coordinateList){
     children.push_back(coordinateList);

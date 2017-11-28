@@ -92,7 +92,57 @@ major_tag linestring
   $$=$1;
   $$->children.push_back($2);
 }
+|
+major_tag polygon
+{
+  #if DEBUG_PARSER == 1
+    std::cout << "major_tag: major_tag=" << $1 << " minor_tag=" << $2 << std::endl;
+  #endif
+  $$ = $1;
+  $$->children.push_back($2);
+}
 ; /*major_tag*/
+
+polygon:
+optionalws OPEN_POLYGON outer_boundary inner_boundaries CLOSE_POLYGON optionalws
+{
+  $$ = NodePtr(new PolygonNode($3, $4));
+}
+; /*polygon*/
+
+outer_boundary:
+optionalws OPEN_OUTER_BOUNDARY linear_ring CLOSE_OUTER_BOUNDARY optionalws
+{
+  $$ = NodePtr(new OuterBoundaryNode($3));
+}
+; /*outer_boundary*/
+
+inner_boundaries:
+/* empty */
+{
+  $$ = NodePtr(new InnerBoundariesNode());
+}
+|
+inner_boundaries inner_boundary
+{
+  $$ = $1;
+  $$->children.push_back($2);
+}
+; /*outer_boundary*/
+
+inner_boundary:
+optionalws OPEN_INNER_BOUNDARY linear_ring CLOSE_INNER_BOUNDARY optionalws
+{
+  $$ = NodePtr(new InnerBoundaryNode($3));
+}
+; /*inner_boundary*/
+
+linear_ring:
+optionalws OPEN_LINEAR_RING optionalws OPEN_COORDINATE coordinates CLOSE_COORDINATE optionalws CLOSE_LINEAR_RING optionalws
+{
+  $$ = NodePtr(new LinearRingNode($3));
+}
+; /*linear_ring*/
 
 
 placemarker:
@@ -100,6 +150,7 @@ optionalws OPEN_PLACEMARK descriptors CLOSE_PLACEMARK optionalws
 {
   $$ = NodePtr(new PlacemarkerNode($3));
 }
+; /*placemarker*/
 
 descriptors:
 /* empty */
