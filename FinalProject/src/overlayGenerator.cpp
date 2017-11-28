@@ -49,6 +49,25 @@ bool OverlayGenerator::pointInPolygon(OrderedTriplet &point) {
     return oddNodes;
 }
 
+struct OverlayHeaderGenerator : public OverlayGenerator {
+    OverlayHeaderGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
+        : OverlayGenerator(_baseLayerAst, _overlayLayerAst){}
+    
+    virtual void generateOverlay(std::ostream &out){
+        out << "<Kml>" << std::endl;
+        out << "\t<document>" << std::endl;
+    }
+};
+
+struct OverlayFooterGenerator : public OverlayGenerator {
+    OverlayFooterGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
+        : OverlayGenerator(_baseLayerAst, _overlayLayerAst){}
+    virtual void generateOverlay(std::ostream &out){
+        out << "\t</document>" << std::endl;
+        out << "</Kml>";
+    }
+};
+
 //This is where we get all of the points in the overlay poly(s)
 //I am not entirely convinced that this needs to inherit from OverlayGenerator...
 struct OverlayPolyPointsGenerator : public OverlayGenerator {
@@ -110,8 +129,8 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
                 int count = 0;
 
                 //TODO what do we do if we find a linestring that is not in the overlay poly? we probably shouldn't print this
-                out << "<LineString>" << std::endl;
-                out << "\t<coordinates>" << std::endl;
+                out << "\t\t<LineString>" << std::endl;
+                out << "\t\t\t<coordinates>" << std::endl;
 
                 for(auto child : coordinateList->children){
                     //Get the current coordinate's x, y, and z values
@@ -124,14 +143,14 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
                     OrderedTriplet currentPoint(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
                     if(pointInPolygon(currentPoint)){
                         out << std::fixed << std::showpoint << std::setprecision(15);
-                        out << "\t\t" << currentPoint.x << ", " << currentPoint.y << ", " << currentPoint.z << std::endl;
+                        out << "\t\t\t\t" << currentPoint.x << ", " << currentPoint.y << ", " << currentPoint.z << std::endl;
                         ++count;
                     }
 
                 }
 
-                out << "\t</coordinates>" << std::endl;
-                out << "</LineString>" <<std::endl;                
+                out << "\t\t\t</coordinates>" << std::endl;
+                out << "\t\t</LineString>" <<std::endl;                
             }
             break;
             default:{
@@ -199,16 +218,16 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
                 }
                 //Check if the placemarker was found in the overlay polygon and if so, add it to the output kml file
                 if(containedInOverlayPoly){
-                    out << "<Placemarker>" << std::endl;
+                    out << "\t\t<Placemarker>" << std::endl;
                     if(nameStr != "")
-                        out <<"\t<name>" << nameStr << "</name>" << std::endl;
+                        out <<"\t\t\t<name>" << nameStr << "</name>" << std::endl;
                     if(descStr != "")
-                        out << "\t<description>" << descStr << "</description>" << std::endl;
-                    out << "\t<Point>" << std::endl;
+                        out << "\t\t\t<description>" << descStr << "</description>" << std::endl;
+                    out << "\t\t\t<Point>" << std::endl;
                     out << std::fixed << std::showpoint << std::setprecision(15);
-                    out << "\t\t<coordinates>" << xCor << ", " << yCor << ", " << zCor << "</coordinates>" << std::endl;
-                    out << "\t</Point>" << std::endl;
-                    out << "</Placemarker" << std::endl;
+                    out << "\t\t\t\t<coordinates>" << xCor << ", " << yCor << ", " << zCor << "</coordinates>" << std::endl;
+                    out << "\t\t\t</Point>" << std::endl;
+                    out << "\t\t</Placemarker>" << std::endl;
                 }
             }
             break;
@@ -223,15 +242,19 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
 };
 
 struct KmlIntersectGenerator : public OverlayGenerator {
+    OverlayHeaderGenerator header;
     OverlayPolyPointsGenerator polyPoints;
     OverlayLineStringGenerator lineStrings;
     OverlayPlacemarkerGenerator placemarkers;
+    OverlayFooterGenerator footer;
 
     KmlIntersectGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
-        : OverlayGenerator(_baseLayerAst,_overlayLayerAst), polyPoints(_baseLayerAst,_overlayLayerAst),
-        lineStrings(_baseLayerAst,_overlayLayerAst), placemarkers(_baseLayerAst,_overlayLayerAst){}
+        : OverlayGenerator(_baseLayerAst,_overlayLayerAst), header(_baseLayerAst, _overlayLayerAst), 
+        polyPoints(_baseLayerAst,_overlayLayerAst), lineStrings(_baseLayerAst,_overlayLayerAst), 
+        placemarkers(_baseLayerAst,_overlayLayerAst), footer(_baseLayerAst,overlayLayerAst) {}
     
     virtual void generateOverlay(std::ostream &out){
+        header.generateOverlay(out);
         polyPoints.generateOverlay(out);
 
         //This seems like a hack, worth checking out in the future
@@ -241,6 +264,7 @@ struct KmlIntersectGenerator : public OverlayGenerator {
 
         lineStrings.generateOverlay(out);
         placemarkers.generateOverlay(out);
+        footer.generateOverlay(out);
     }
 };
 

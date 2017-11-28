@@ -336,7 +336,7 @@ int main(int argc, char *argv[])
 //Parse the base layer
   yyparse();
   if (!! program) {
-    program->print(std::cout);
+    //program->print(std::cout);
     baseLayer = program;
     //GeneratorPtr gen = generator(baseLayer);
     //gen->generate(std::cout);
@@ -349,7 +349,7 @@ int main(int argc, char *argv[])
 //Parse the overlay layer
   yyparse();
   if (!! program) {
-    program->print(std::cout);
+    //program->print(std::cout);
     overlayLayer = program;
     //GeneratorPtr gen = generator(overlayLayer);
     //gen->generate(std::cout);
