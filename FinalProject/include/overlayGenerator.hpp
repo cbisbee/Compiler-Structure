@@ -15,6 +15,7 @@ struct OverlayGenerator {
     std::vector<OrderedTriplet> overlayPolyPoints;
     OverlayGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst);
     virtual void generateOverlay(std::ostream &out) = 0;
+    bool pointInPolygon(OrderedTriplet &point);
 };
 
 typedef std::shared_ptr <OverlayGenerator> OverlayGeneratorPtr;

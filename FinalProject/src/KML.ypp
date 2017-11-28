@@ -303,12 +303,10 @@ void scanCLAs(int argc, char *argv[], std::string &baseFile, std::string &overla
   for(int i = 1; i < argc; ++i){
     //Find the 'base file' which is the file that we are extracting from
     if(strncmp(argv[i], "-bf", 3) == 0){
-      //std::cout << "The base file is: " << argv[i+1] << std::endl;
       baseFile = argv[i+1];
     }
     //Find the 'overlay file' which is the file that we are using to get the subset from
-    if(strncmp(argv[i], "-of",3) == 0){
-      //std::cout << "The overlay file is: " << argv[i+1] << std::endl;
+    if(strncmp(argv[i], "-of",3) == 0){      
       overlayFile = argv[i+1];
     }
   }
@@ -356,8 +354,7 @@ int main(int argc, char *argv[])
     //GeneratorPtr gen = generator(overlayLayer);
     //gen->generate(std::cout);
     OverlayGeneratorPtr ovGen = overlaygenerator(baseLayer,overlayLayer);
-    ovGen->generateOverlay(std::cout);
-    std::cout << "Size of polypoints vector = " << ovGen->overlayPolyPoints.size() << std::endl;
+    ovGen->generateOverlay(std::cout);    
   } else {
     std::cout << "syntax error." << std::endl;
   }

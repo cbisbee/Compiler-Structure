@@ -26,6 +26,28 @@ OrderedTriplet::OrderedTriplet(double _x, double _y, double _z) : x(_x), y(_y), 
 OverlayGenerator::OverlayGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
     : baseLayerAst(_baseLayerAst), overlayLayerAst(_overlayLayerAst){}
 
+bool OverlayGenerator::pointInPolygon(OrderedTriplet &point) {
+    int i, j = overlayPolyPoints.size()-1;
+    bool oddNodes = false;
+    for (i=0; i<overlayPolyPoints.size(); ++i) {
+        if (
+            (
+                (overlayPolyPoints.at(i).y < point.y && overlayPolyPoints.at(j).y >= point.y)
+                ||
+                (overlayPolyPoints.at(j).y < point.y && overlayPolyPoints.at(i).y >= point.y)
+            )
+            &&
+            (overlayPolyPoints.at(i).x <= point.x || overlayPolyPoints.at(j).x <= point.x))
+            {
+                //figure this out...
+                oddNodes^=(overlayPolyPoints.at(i).x + (point.y-overlayPolyPoints.at(i).y)
+                /(overlayPolyPoints.at(j).y - overlayPolyPoints.at(i).y)*(overlayPolyPoints.at(j).x
+                - overlayPolyPoints.at(i).x) < point.x);
+            }
+        j=i; 
+    }
+    return oddNodes;
+}
 
 //This is where we get all of the points in the overlay poly(s)
 //I am not entirely convinced that this needs to inherit from OverlayGenerator...
@@ -34,12 +56,8 @@ struct OverlayPolyPointsGenerator : public OverlayGenerator {
         : OverlayGenerator(_baseLayerAst, _overlayLayerAst){}
     
     virtual void generateOverlay(std::ostream &out){
-        //This really doesn't feel like it belongs here
-        //TODO remove this when you actually use it
-        out << "<!-- generating the list of points in the overlay layer poly(s) -->" << std::endl;
-        getOverlayPolyPoints(overlayLayerAst);
-        //TODO remove this when you actually use it
-        out << "<!-- done generating list of overlay points" << std::endl;
+        //This really doesn't feel like it belongs here        
+        getOverlayPolyPoints(overlayLayerAst);        
     }
 
     void getOverlayPolyPoints(const NodePtr &ast){
@@ -81,11 +99,7 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
         : OverlayGenerator(_baseLayerAst, _overlayLayerAst){}
     
     virtual void generateOverlay(std::ostream &out){
-        //TODO remove this when it actually comes time to use this
-        out << "<!-- LineString Section -->" << std::endl;
         linestrings(baseLayerAst,out);
-        //TODO remove this when it actually comes time to use this
-        out << "<!-- End LineString Section -->" << std::endl;
     }
 
     void linestrings(const NodePtr &ast, std::ostream &out){
@@ -94,6 +108,11 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
                 LineStringNodePtr lineString = std::dynamic_pointer_cast<LineStringNode>(ast);
                 CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(lineString->children.at(0));
                 int count = 0;
+
+                //TODO what do we do if we find a linestring that is not in the overlay poly? we probably shouldn't print this
+                out << "<LineString>" << std::endl;
+                out << "\t<coordinates>" << std::endl;
+
                 for(auto child : coordinateList->children){
                     //Get the current coordinate's x, y, and z values
                     NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(0));
@@ -102,7 +121,17 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
 
                     //Need to find out if this coordinate is contained within the overlay layer's polygon(s)
                     //Then I need to do something with it after I figure that out
+                    OrderedTriplet currentPoint(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
+                    if(pointInPolygon(currentPoint)){
+                        out << std::fixed << std::showpoint << std::setprecision(15);
+                        out << "\t\t" << currentPoint.x << ", " << currentPoint.y << ", " << currentPoint.z << std::endl;
+                        ++count;
+                    }
+
                 }
+
+                out << "\t</coordinates>" << std::endl;
+                out << "</LineString>" <<std::endl;                
             }
             break;
             default:{
@@ -124,29 +153,6 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
     
     virtual void generateOverlay(std::ostream &out) {
         placemarks(baseLayerAst, out);
-    }
-
-    bool pointInPolygon(OrderedTriplet &point) {
-        int i, j = overlayPolyPoints.size()-1;
-        bool oddNodes = false;
-        for (i=0; i<overlayPolyPoints.size(); ++i) {
-            if (
-                (
-                    (overlayPolyPoints.at(i).y < point.y && overlayPolyPoints.at(j).y >= point.y)
-                    ||
-                    (overlayPolyPoints.at(j).y < point.y && overlayPolyPoints.at(i).y >= point.y)
-                )
-                &&
-                (overlayPolyPoints.at(i).x <= point.x || overlayPolyPoints.at(j).x <= point.x))
-                {
-                    //figure this out...
-                    oddNodes^=(overlayPolyPoints.at(i).x + (point.y-overlayPolyPoints.at(i).y)
-                    /(overlayPolyPoints.at(j).y - overlayPolyPoints.at(i).y)*(overlayPolyPoints.at(j).x
-                    - overlayPolyPoints.at(i).x) < point.x);
-                }
-            j=i; 
-        }
-        return oddNodes;
     }
 
     void placemarks(const NodePtr &ast, std::ostream &out){
