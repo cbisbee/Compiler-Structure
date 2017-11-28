@@ -144,7 +144,7 @@ struct FooterGenerator : public Generator {
 };
 
 
-struct ProgramGenerator : Generator {
+struct ProgramGenerator : public Generator {
   HeaderGenerator header;
   PlacemarkerGenerator placemarkers;
   LineStringGenerator linestrings;

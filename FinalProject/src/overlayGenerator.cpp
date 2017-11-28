@@ -28,11 +28,11 @@ OverlayGenerator::OverlayGenerator(const NodePtr &_baseLayerAst, const NodePtr &
 
 //This is where we get all of the points in the overlay poly(s)
 //I am not entirely convinced that this needs to inherit from OverlayGenerator...
-struct OverlayPolyPointsGenerator : public OverlayGenerator(){
+struct OverlayPolyPointsGenerator : public OverlayGenerator {
     OverlayPolyPointsGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
         : OverlayGenerator(_baseLayerAst, _overlayLayerAst){}
     
-    virtual void generate(std::ostream &out){
+    virtual void generateOverlay(std::ostream &out){
         //This really doesn't feel like it belongs here
         //TODO remove this when you actually use it
         out << "<!-- generating the list of points in the overlay layer poly(s) -->" << std::endl;
@@ -41,13 +41,13 @@ struct OverlayPolyPointsGenerator : public OverlayGenerator(){
         out << "<!-- done generating list of overlay points" << std::endl;
     }
 
-    getOverlayPolyPoints(const NodePtr &ast){
+    void getOverlayPolyPoints(const NodePtr &ast){
         switch(ast->type()){
-            case NODE::Polygon:{
+            case Node::POLYGON:{
                 PolygonNodePtr polyNode = std::dynamic_pointer_cast<PolygonNode>(ast);
                 OuterBoundaryNodePtr outerBoundary = std::dynamic_pointer_cast<OuterBoundaryNode>(polyNode->children.at(0));
-                LinearRingNodePtr linearRing = std::dynamic_pointer_cast<LinearRingNode>(outerboundary->children.at(0));
-                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateNode>(linearRing->children.at(0));
+                LinearRingNodePtr linearRing = std::dynamic_pointer_cast<LinearRingNode>(outerBoundary->children.at(0));
+                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(linearRing->children.at(0));
                 int count = 0;
                 for(auto child : coordinateList->children){
                     //get the current coordinate's x, y, and z values
@@ -71,7 +71,7 @@ struct OverlayPolyPointsGenerator : public OverlayGenerator(){
             break;
         }
     }
-}
+};
 
 
 //This is where we find all of the LineString stuff in the base layer that is contained inside the overlay layer
@@ -79,7 +79,7 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
     OverlayLineStringGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
         : OverlayGenerator(_baseLayerAst, _overlayLayerAst){}
     
-    virtual void generate(std::ostream &out){
+    virtual void generateOverlay(std::ostream &out){
         //TODO remove this when it actually comes time to use this
         out << "<!-- LineString Section -->" << std::endl;
         linestrings(baseLayerAst,out);
@@ -87,15 +87,15 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
         out << "<!-- End LineString Section -->" << std::endl;
     }
 
-    void linestrings(const NodePtr &ast, std::ostream out){
+    void linestrings(const NodePtr &ast, std::ostream &out){
         switch(ast->type()){
             case Node::LINESTRING:{
                 LineStringNodePtr lineString = std::dynamic_pointer_cast<LineStringNode>(ast);
-                CoordinateListNodePtr coordinateList = std::dynamic_pinter_cast<CoordinateListNode>(lineString->children.at(0));
+                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(lineString->children.at(0));
                 int count = 0;
                 for(auto child : coordinateList->children){
                     //Get the current coordinate's x, y, and z values
-                    NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberliteralNode>(child->children.at(0));
+                    NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(0));
                     NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(1));
                     NumberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(2));
 
@@ -112,7 +112,7 @@ struct OverlayLineStringGenerator : public OverlayGenerator {
             break;
         }
     }
-}
+};
 
 //This is where we find all of the Placemarker stuff in the base layer that is contained inside the overlay layer
 struct OverlayPlacemarkerGenerator : public OverlayGenerator {
@@ -121,7 +121,7 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
     OverlayPlacemarkerGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
         : OverlayGenerator(_baseLayerAst, _overlayLayerAst) {}
     
-    virtual void generate(std::ostream &out) {
+    virtual void generateOverlay(std::ostream &out) {
         //TODO remove the following line when you actually go to use this
         out << "<!-- Placemarkers -->" << std::endl;
         placemarks(baseLayerAst, out);
@@ -142,7 +142,7 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
                 double yCor = 0;
                 double zCor = 0;
                 for(auto child : descriptors->children){
-                    switch(child-type()){
+                    switch(child->type()){
                         case Node::NAME:{
                             StringLiteralNodePtr nameStringNode = std::dynamic_pointer_cast<StringLiteralNode>(child->children.at(0));
                             //Do something with this
@@ -157,7 +157,7 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
                             CoordinateNodePtr corNode = std::dynamic_pointer_cast<CoordinateNode>(child->children.at(0));
                             NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(0));
                             NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(1));
-                            numberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(2));
+                            NumberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(corNode->children.at(2));
 
                             xCor = xCorNode->numberLiteral;
                             yCor = yCorNode->numberLiteral;
@@ -179,10 +179,10 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
             }
             break;
         }
-    };
-}
+    }
+};
 
-struct KmlIntersectGenerator : OverlayGenerator {
+struct KmlIntersectGenerator : public OverlayGenerator {
     OverlayPolyPointsGenerator polyPoints;
     OverlayLineStringGenerator lineStrings;
     OverlayPlacemarkerGenerator placemarkers;
@@ -191,12 +191,12 @@ struct KmlIntersectGenerator : OverlayGenerator {
         : OverlayGenerator(_baseLayerAst,_overlayLayerAst), polyPoints(_baseLayerAst,_overlayLayerAst),
         lineStrings(_baseLayerAst,_overlayLayerAst), placemarkers(_baseLayerAst,_overlayLayerAst){}
     
-    virtual void generate(std::ostream &out){
-        polyPoints.generate(out);
-        lineStrings.generate(out);
-        placemarkers.generate(out);
+    virtual void generateOverlay(std::ostream &out){
+        polyPoints.generateOverlay(out);
+        lineStrings.generateOverlay(out);
+        placemarkers.generateOverlay(out);
     }
-}
+};
 
 OverlayGeneratorPtr overlaygenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst){
     return OverlayGeneratorPtr(new KmlIntersectGenerator(_baseLayerAst,_overlayLayerAst));

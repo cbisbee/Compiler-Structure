@@ -21,10 +21,13 @@ tmp/ast.o : src/ast.cpp include/ast.hpp
 tmp/generator.o : src/generator.cpp include/generator.hpp include/ast.hpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-tmp/kml.tab.o : tmp/kml.tab.cpp  include/ast.hpp include/KML.hpp include/generator.hpp
+tmp/overlayGenerator.o : src/overlayGenerator.cpp include/overlayGenerator.hpp include/ast.hpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-bin/kml : tmp/kml.tab.o tmp/kml.lex.o tmp/ast.o tmp/generator.o
+tmp/kml.tab.o : tmp/kml.tab.cpp  include/ast.hpp include/KML.hpp include/generator.hpp include/overlayGenerator.hpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+bin/kml : tmp/kml.tab.o tmp/kml.lex.o tmp/ast.o tmp/generator.o tmp/overlayGenerator.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean :

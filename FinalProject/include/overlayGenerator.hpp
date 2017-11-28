@@ -7,10 +7,10 @@
 struct OrderedTriplet{
     int x,y,z;
     OrderedTriplet(int _x, int _y, int _z);
-}
+};
 
 struct OverlayGenerator {
-    vector<OrderedTriplet> overlayPolyPoints;
+    std::vector<OrderedTriplet> overlayPolyPoints;
     NodePtr baseLayerAst;
     NodePtr overlayLayerAst;
     OverlayGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst);
