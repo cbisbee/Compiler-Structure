@@ -181,3 +181,23 @@ struct OverlayPlacemarkerGenerator : public OverlayGenerator {
         }
     };
 }
+
+struct KmlIntersectGenerator : OverlayGenerator {
+    OverlayPolyPointsGenerator polyPoints;
+    OverlayLineStringGenerator lineStrings;
+    OverlayPlacemarkerGenerator placemarkers;
+
+    KmlIntersectGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
+        : OverlayGenerator(_baseLayerAst,_overlayLayerAst), polyPoints(_baseLayerAst,_overlayLayerAst),
+        lineStrings(_baseLayerAst,_overlayLayerAst), placemarkers(_baseLayerAst,_overlayLayerAst){}
+    
+    virtual void generate(std::ostream &out){
+        polyPoints.generate(out);
+        lineStrings.generate(out);
+        placemarkers.generate(out);
+    }
+}
+
+OverlayGeneratorPtr overlaygenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst){
+    return OverlayGeneratorPtr(new KmlIntersectGenerator(_baseLayerAst,_overlayLayerAst));
+}
