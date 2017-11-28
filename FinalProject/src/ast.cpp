@@ -166,9 +166,9 @@ void LinearRingNode::print(std::ostream &out) const {
     out << "linear_ring(" << children.at(0) << ")" << std::endl;
 }
 
-PolygonNode::PolygonNode(const NodePtr &outerBoundary, const NodePtr &innerBoundaries){
+PolygonNode::PolygonNode(const NodePtr &outerBoundary){
     children.push_back(outerBoundary);
-    children.push_back(innerBoundaries);
+    //children.push_back(innerBoundaries);
 }
 
 int PolygonNode::type() const {
@@ -176,7 +176,7 @@ int PolygonNode::type() const {
 }
 
 void PolygonNode::print(std::ostream &out) const {
-    out << "polygon(child 0=" << children.at(0) <<", child 1=" << children.at(1) << ")" << std::endl;
+    out << "polygon(child 0=" << children.at(0) << ")" << std::endl;//", child 1=" << children.at(1) << ")" << std::endl;
 }
 
 LineStringNode::LineStringNode(const NodePtr &coordinateList){

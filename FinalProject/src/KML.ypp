@@ -98,15 +98,15 @@ major_tag polygon
   #if DEBUG_PARSER == 1
     std::cout << "major_tag: major_tag=" << $1 << " minor_tag=" << $2 << std::endl;
   #endif
-  $$ = $1;
+  $$=$1;
   $$->children.push_back($2);
 }
 ; /*major_tag*/
 
 polygon:
-optionalws OPEN_POLYGON outer_boundary inner_boundaries CLOSE_POLYGON optionalws
+optionalws OPEN_POLYGON outer_boundary CLOSE_POLYGON optionalws
 {
-  $$ = NodePtr(new PolygonNode($3, $4));
+  $$ = NodePtr(new PolygonNode($3));
 }
 ; /*polygon*/
 
@@ -140,7 +140,7 @@ optionalws OPEN_INNER_BOUNDARY linear_ring CLOSE_INNER_BOUNDARY optionalws
 linear_ring:
 optionalws OPEN_LINEAR_RING optionalws OPEN_COORDINATE coordinates CLOSE_COORDINATE optionalws CLOSE_LINEAR_RING optionalws
 {
-  $$ = NodePtr(new LinearRingNode($3));
+  $$ = NodePtr(new LinearRingNode($5));
 }
 ; /*linear_ring*/
 
@@ -337,10 +337,10 @@ int main(int argc, char *argv[])
 //Parse the base layer
   yyparse();
   if (!! program) {
-    //program->print(std::cout);
+    program->print(std::cout);
     baseLayer = program;
-    GeneratorPtr gen = generator(baseLayer);
-    gen->generate(std::cout);
+    //GeneratorPtr gen = generator(baseLayer);
+    //gen->generate(std::cout);
   } else {
     std::cout << "syntax error." << std::endl;
   }
@@ -350,10 +350,10 @@ int main(int argc, char *argv[])
 //Parse the overlay layer
   yyparse();
   if (!! program) {
-    //program->print(std::cout);
+    program->print(std::cout);
     overlayLayer = program;
-    GeneratorPtr gen = generator(overlayLayer);
-    gen->generate(std::cout);
+    //GeneratorPtr gen = generator(overlayLayer);
+    //gen->generate(std::cout);
   } else {
     std::cout << "syntax error." << std::endl;
   }

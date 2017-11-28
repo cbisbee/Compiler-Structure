@@ -118,7 +118,7 @@ public: void print(std::ostream &out) const;
 typedef std::shared_ptr < LinearRingNode > LinearRingNodePtr;
 
 class PolygonNode : public Node {
-public: PolygonNode(const NodePtr &outerBoundary, const NodePtr &innerBoundaries);
+public: PolygonNode(const NodePtr &outerBoundary);
 public: int type() const;
 public: void print(std::ostream &out) const;
 };
