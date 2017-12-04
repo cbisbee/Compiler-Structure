@@ -12,15 +12,8 @@
 %}
 
 %%
-("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")  {
-  #if DEBUG_LEXER == 1
-    std::cout << "lexed " << yytext << " as XML_VERSION" << std::endl;
-  #endif
-  return XML_VERSION;
-}
-
-("<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">"|<\/kml>)   {
-  if(strcmp(yytext,"<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">") == 0){
+(<kml>|<\/kml>)   {
+  if(strcmp(yytext,"<kml>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_KML" << std::endl;
     #endif

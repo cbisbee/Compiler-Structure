@@ -42,7 +42,7 @@ optionalws EOL
 ; /* optionalws */
 
 kml:
-XML_VERSION optionalws OPEN_KML document CLOSE_KML
+optionalws OPEN_KML document CLOSE_KML
 {
   #if DEBUG_PARSER == 1
     std::cout << "kml: document=" << $2 << std::endl;
