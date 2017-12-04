@@ -8,7 +8,7 @@
 #include "KML.hpp"
 #include "kml.tab.hpp"
 
-#define DEBUG_LEXER 1
+#define DEBUG_LEXER 0
 %}
 
 %%
@@ -231,7 +231,7 @@
 }
 
 .   {
-  std::cout << "syntax error '" << yytext << "'" << std::endl;
+  std::cout << "syntax error while lexing'" << yytext << "'" << std::endl;
   assert(0);
 }
 %%

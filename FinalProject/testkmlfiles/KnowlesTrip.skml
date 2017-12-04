@@ -1,4 +1,4 @@
-<Kml>
+<kml>
     <Document>
         <Placemarker>
             <name>"Mee Canyon"</name>
@@ -49,4 +49,4 @@
             </coordinates>
         </LineString>
     </Document>
-</Kml>
+</kml>

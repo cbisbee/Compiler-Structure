@@ -63,8 +63,8 @@ struct HeaderGenerator : public Generator {
         }
         //If we are compiling a base KML with an overlay KML file...
         else {
-            out << "<Kml>" << std::endl;
-            out << "\t<document>" << std::endl;
+            out << "<kml>" << std::endl;
+            out << "\t<Document>" << std::endl;
         }
     }
 };
@@ -88,8 +88,8 @@ struct FooterGenerator : public Generator {
         }
         //If we are compiling a base KML file with an overlay KML file...
         else {
-            out << "\t</document>" << std::endl;
-            out << "</Kml>";
+            out << "\t</Document>" << std::endl;
+            out << "</kml>";
         }
     }
 };
@@ -101,17 +101,17 @@ struct OverlayPolyPointsGenerator : public Generator {
         : Generator(_baseLayerAst, _overlayLayerAst){}
     
     virtual void generate(std::ostream &out){
-        //This really doesn't feel like it belongs here        
+        //This really doesn't feel like it belongs here            
         getOverlayPolyPoints(overlayAst);        
     }
 
     void getOverlayPolyPoints(const NodePtr &ast){
         switch(ast->type()){
-            case Node::POLYGON:{
-                PolygonNodePtr polyNode = std::dynamic_pointer_cast<PolygonNode>(ast);
-                OuterBoundaryNodePtr outerBoundary = std::dynamic_pointer_cast<OuterBoundaryNode>(polyNode->children.at(0));
-                LinearRingNodePtr linearRing = std::dynamic_pointer_cast<LinearRingNode>(outerBoundary->children.at(0));
-                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(linearRing->children.at(0));
+            case Node::POLYGON:{                
+                PolygonNodePtr polyNode = std::dynamic_pointer_cast<PolygonNode>(ast);                
+                OuterBoundaryNodePtr outerBoundary = std::dynamic_pointer_cast<OuterBoundaryNode>(polyNode->children.at(0));                
+                LinearRingNodePtr linearRing = std::dynamic_pointer_cast<LinearRingNode>(outerBoundary->children.at(0));                
+                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(linearRing->children.at(0));            
                 //int count = 0;
                 for(auto child : coordinateList->children){
                     //get the current coordinate's x, y, and z values
@@ -386,7 +386,7 @@ struct ProgramGenerator : public Generator {
 
   virtual void generate(std::ostream &out) {
       //if we are only compiling a single KML file
-      if(overlayAst == NULL){
+      if(overlayAst == NULL){          
         header.generate(out);
         placemarkers.generate(out);
         linestrings.generate(out);

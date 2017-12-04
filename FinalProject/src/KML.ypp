@@ -42,12 +42,12 @@ optionalws EOL
 ; /* optionalws */
 
 kml:
-optionalws OPEN_KML document CLOSE_KML
+optionalws OPEN_KML document CLOSE_KML optionalws
 {
   #if DEBUG_PARSER == 1
-    std::cout << "kml: document=" << $2 << std::endl;
+    std::cout << "kml: document=" << $3 << std::endl;
   #endif
-  $$ = NodePtr(new KMLNode($2));
+  $$ = NodePtr(new KMLNode($3));
 }
 ; /*kml*/
 
@@ -296,7 +296,7 @@ int yywrap()
 
 void yyerror(const char *str)
 {
-  fprintf(stderr,"error: %s\n",str);
+  fprintf(stderr,"error: %s while parsing\n",str);
 }
 
 void scanCLAs(int argc, char *argv[], std::string &baseFile, std::string &overlayFile, std::string &outputFile){
@@ -327,8 +327,7 @@ void displayHelp(){
 
 int main(int argc, char *argv[])
 {
-  /*
-  if(argc < 5 || argc){
+  if(argc < 5){
     displayHelp();
     return 0;
   }
@@ -347,7 +346,7 @@ int main(int argc, char *argv[])
   }
 
   yyin = fopen(baseFileName.c_str(),"r");
-*/
+
 //Parse the base layer
   yyparse();
   if (!! program) {
@@ -356,9 +355,9 @@ int main(int argc, char *argv[])
     //GeneratorPtr gen = generator(baseLayer);
     //gen->generate(std::cout);
   } else {
-    std::cout << "syntax error." << std::endl;
+    std::cout << "syntax error. The base layer was null" << std::endl;
   }
-/*
+
   yyin = fopen(overlayFileName.c_str(),"r");
 
 //Parse the overlay layer
@@ -374,11 +373,11 @@ int main(int argc, char *argv[])
     else
       ovGen->generate(std::cout);    
   } else {
-    std::cout << "syntax error." << std::endl;
+    std::cout << "syntax error. The overlay layer was null" << std::endl;
   }
   if(outputSpecified)
     outf.close();
-    */
+    
 
   return 0;
 } 

@@ -1,5 +1,5 @@
-<Kml>
-	<document>
+<kml>
+	<Document>
 		<LineString>
 			<coordinates>
 				-108.692550425538997, 39.358603059122743, 0.000000000000000
@@ -341,5 +341,5 @@
 				<coordinates>-108.630619999999993, 39.349957000000003, 0.000000000000000</coordinates>
 			</Point>
 		</Placemarker>
-	</document>
-</Kml>
+	</Document>
+</kml>
