@@ -6,7 +6,6 @@
 #include "KML.hpp"
 #include "ast.hpp"
 #include "generator.hpp"
-#include "overlayGenerator.hpp"
 
 #define DEBUG_PARSER 0
 
@@ -368,11 +367,11 @@ int main(int argc, char *argv[])
     overlayLayer = program;
     //GeneratorPtr gen = generator(overlayLayer);
     //gen->generate(std::cout);
-    OverlayGeneratorPtr ovGen = overlaygenerator(baseLayer,overlayLayer);
+    GeneratorPtr ovGen = generator(baseLayer,overlayLayer);
     if(outputSpecified)
-      ovGen->generateOverlay(outf);    
+      ovGen->generate(outf);    
     else
-      ovGen->generateOverlay(std::cout);    
+      ovGen->generate(std::cout);    
   } else {
     std::cout << "syntax error." << std::endl;
   }
