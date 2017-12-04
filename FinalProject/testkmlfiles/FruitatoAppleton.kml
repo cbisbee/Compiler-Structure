@@ -1,0 +1,43 @@
+<kml>
+<Document>
+	<Placemarker>
+		<name>"Fruita to Appleton"</name>
+		<description>"A route from Fruita to Appleton, two towns in Colorado."</description>
+		<Point>
+			<coordinates>-108.6607984099437,39.11177242009387,0</coordinates>
+		</Point>
+	</Placemarker>
+
+	<Placemarker>
+		<name>"Start Point"</name>
+		<description>"Where I started the journey"</description>
+		<Point>
+			<coordinates>-108.7347419318182,39.15528952708935,0</coordinates>
+		</Point>
+	</Placemarker>
+	
+	<Placemarker>
+		<name>"End Point"</name>
+		<description>"Where I ended the journey"</description>
+		<Point>
+			<coordinates>-108.6080379112248,39.1209320156983,0</coordinates>
+		</Point>
+	</Placemarker>
+
+	<LineString>
+		<coordinates>
+			-108.7347419318182,39.15528952708935,0
+			-108.6854262775462,39.1296385596206,0
+			-108.6787594335081,39.12279496627162,0
+			-108.6684318389886,39.11736631781484,0
+			-108.6607984099437,39.11177242009387,0
+			-108.6567105731654,39.10959991623439,0
+			-108.6480070310322,39.11060211955345,0
+			-108.6400484645042,39.11368590902494,0
+			-108.6083607840371,39.11385621791175,0
+			-108.6080379112248,39.1209320156983,0
+		</coordinates>
+	</LineString>
+
+</Document>
+</kml>
