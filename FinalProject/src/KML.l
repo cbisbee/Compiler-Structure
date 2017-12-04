@@ -8,7 +8,7 @@
 #include "KML.hpp"
 #include "kml.tab.hpp"
 
-#define DEBUG_LEXER 0
+#define DEBUG_LEXER 1
 %}
 
 %%
@@ -19,14 +19,14 @@
   return XML_VERSION;
 }
 
-(<Kml>|<\/Kml>)   {
-  if(strcmp(yytext,"<Kml>") == 0){
+("<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">"|<\/kml>)   {
+  if(strcmp(yytext,"<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as OPEN_KML" << std::endl;
     #endif
     return OPEN_KML;
   }
-  if(strcmp(yytext,"</Kml>") == 0){
+  if(strcmp(yytext,"</kml>") == 0){
     #if DEBUG_LEXER == 1
       std::cout << "lexed " << yytext << " as CLOSE_KML" << std::endl;
     #endif
