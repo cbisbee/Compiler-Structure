@@ -42,7 +42,7 @@ optionalws EOL
 ; /* optionalws */
 
 kml:
-OPEN_KML document CLOSE_KML
+XML_VERSION optionalws OPEN_KML document CLOSE_KML
 {
   #if DEBUG_PARSER == 1
     std::cout << "kml: document=" << $2 << std::endl;
@@ -327,7 +327,8 @@ void displayHelp(){
 
 int main(int argc, char *argv[])
 {
-  if(argc < 5){
+  /*
+  if(argc < 5 || argc){
     displayHelp();
     return 0;
   }
@@ -346,7 +347,7 @@ int main(int argc, char *argv[])
   }
 
   yyin = fopen(baseFileName.c_str(),"r");
-
+*/
 //Parse the base layer
   yyparse();
   if (!! program) {
@@ -357,7 +358,7 @@ int main(int argc, char *argv[])
   } else {
     std::cout << "syntax error." << std::endl;
   }
-
+/*
   yyin = fopen(overlayFileName.c_str(),"r");
 
 //Parse the overlay layer
@@ -377,6 +378,7 @@ int main(int argc, char *argv[])
   }
   if(outputSpecified)
     outf.close();
+    */
 
   return 0;
 } 

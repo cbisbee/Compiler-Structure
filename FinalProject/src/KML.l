@@ -8,7 +8,7 @@
 #include "KML.hpp"
 #include "kml.tab.hpp"
 
-#define DEBUG_LEXER 0
+#define DEBUG_LEXER 1
 %}
 
 %%
