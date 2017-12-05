@@ -14,10 +14,10 @@ std::string numToString(T num)
 }
 
 Generator::Generator(const NodePtr &_baseAst)
-    : baseAst(_baseAst), overlayAst(NULL) { }
+    : baseAst(_baseAst), overlayAst(NULL), mode(MAP) { }
 
-Generator::Generator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
-    : baseAst(_baseAst), overlayAst(_overlayAst) { }
+Generator::Generator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
+    : baseAst(_baseAst), overlayAst(_overlayAst), mode(_mode) { }
 
 OrderedTriplet::OrderedTriplet(double _x, double _y, double _z) : x(_x), y(_y), z(_z) { }
 
@@ -36,9 +36,16 @@ bool Generator::pointInPolygon(OrderedTriplet &point) {
             (overlayPolyPoints.at(i).x <= point.x || overlayPolyPoints.at(j).x <= point.x))
             {
                 //figure this out...
+                /*
                 oddNodes^=(overlayPolyPoints.at(i).x + (point.y-overlayPolyPoints.at(i).y)
                 /(overlayPolyPoints.at(j).y - overlayPolyPoints.at(i).y)*(overlayPolyPoints.at(j).x
                 - overlayPolyPoints.at(i).x) < point.x);
+                */
+                if (overlayPolyPoints.at(i).x + (point.y - overlayPolyPoints.at(i).y)
+                    /(overlayPolyPoints.at(j).y - overlayPolyPoints.at(i).y)
+                    *(overlayPolyPoints.at(j).x-overlayPolyPoints.at(i).x) < point.x) {
+                        oddNodes=!oddNodes;
+                    }
             }
         j=i; 
     }
@@ -50,21 +57,32 @@ bool Generator::pointInPolygon(OrderedTriplet &point) {
 struct HeaderGenerator : public Generator {
     HeaderGenerator(const NodePtr &_baseAst)
         : Generator(_baseAst) { }
-    HeaderGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
-        : Generator(_baseAst, _overlayAst) { }
+    HeaderGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
+        : Generator(_baseAst, _overlayAst, _mode) { }
         
     virtual void generate(std::ostream &out) {
-        //If we are only compiling a single KML file...
-        if(overlayAst == NULL){
-            out << "import requests" << std::endl;
-            out << "APIKEY = \"ENTER YOUR OWN APIKEY\"" << std::endl;
-            out << "url = \"http://maps.google.com/maps/api/staticmap?&maptype=hybrid&size=640x640\"" << std::endl;
-            out << std::endl;
-        }
-        //If we are compiling a base KML with an overlay KML file...
-        else {
-            out << "<kml>" << std::endl;
-            out << "\t<Document>" << std::endl;
+        switch(mode){
+            case MAP:{
+                out << "import requests" << std::endl;
+                out << "APIKEY = \"ENTER YOUR OWN APIKEY\"" << std::endl;
+                out << "url = \"http://maps.google.com/maps/api/staticmap?&maptype=hybrid&size=640x640\"" << std::endl;
+                out << std::endl;
+            }
+            break;
+            case SUBSET:{
+                out << "<kml>" << std::endl;
+                out << "\t<Document>" << std::endl;
+            }
+            break;
+            case SETADD:{
+                out << "<kml>" << std::endl;
+                out << "\t<Document>" << std::endl;                
+            }
+            break;
+            default:{
+                //Do nothing for now
+            }
+            break;
         }
     }
 };
@@ -72,24 +90,35 @@ struct HeaderGenerator : public Generator {
 
 struct FooterGenerator : public Generator {
     FooterGenerator(const NodePtr &_baseAst) : Generator(_baseAst) { }
-    FooterGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
-        : Generator(_baseAst,_overlayAst) { }
+    FooterGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
+        : Generator(_baseAst,_overlayAst, _mode) { }
 
     virtual void generate(std::ostream &out) {
-        //If we are only compiling a single KML file
-        if(overlayAst == NULL){
-            out << "url += \"&key=\"" << std::endl;
-            out << "url += APIKEY" << std::endl;
-            out << "session = requests.Session()" << std::endl;
-            out << "r = session.get(url)" << std::endl;
-            out << "f = open('testMap.png','wb')" << std::endl;
-            out << "f.write(r.content)" << std::endl;
-            out << "f.close()" << std::endl;
-        }
-        //If we are compiling a base KML file with an overlay KML file...
-        else {
-            out << "\t</Document>" << std::endl;
-            out << "</kml>";
+        switch(mode){
+            case MAP:{
+                out << "url += \"&key=\"" << std::endl;
+                out << "url += APIKEY" << std::endl;
+                out << "session = requests.Session()" << std::endl;
+                out << "r = session.get(url)" << std::endl;
+                out << "f = open('testMap.png','wb')" << std::endl;
+                out << "f.write(r.content)" << std::endl;
+                out << "f.close()" << std::endl;
+            }
+            break;
+            case SUBSET:{
+                out << "\t</Document>" << std::endl;
+                out << "</kml>";
+            }
+            break;
+            case SETADD:{
+                out << "\t</Document>" << std::endl;
+                out << "</kml>";                
+            }
+            break;
+            default:{
+                //Do nothing for now
+            }
+            break;
         }
     }
 };
@@ -97,12 +126,14 @@ struct FooterGenerator : public Generator {
 //This is where we get all of the points in the overlay poly(s)
 //I am not entirely convinced that this needs to inherit from OverlayGenerator...
 struct OverlayPolyPointsGenerator : public Generator {
-    OverlayPolyPointsGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst)
-        : Generator(_baseLayerAst, _overlayLayerAst){}
+    OverlayPolyPointsGenerator(const NodePtr &_baseLayerAst, const NodePtr &_overlayLayerAst, COMPILE_MODE _mode)
+        : Generator(_baseLayerAst, _overlayLayerAst, _mode){}
     
     virtual void generate(std::ostream &out){
-        //This really doesn't feel like it belongs here            
-        getOverlayPolyPoints(overlayAst);        
+        //This really doesn't feel like it belongs here   
+        if(mode != MAP){         
+            getOverlayPolyPoints(overlayAst);
+        }
     }
 
     void getOverlayPolyPoints(const NodePtr &ast){
@@ -140,22 +171,33 @@ struct OverlayPolyPointsGenerator : public Generator {
 
 struct LineStringGenerator : public Generator {
     LineStringGenerator(const NodePtr &_baseAst) : Generator(_baseAst){ }
-    LineStringGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
-        : Generator(_baseAst, _overlayAst) { }
+    LineStringGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
+        : Generator(_baseAst, _overlayAst,_mode) { }
     
     virtual void generate(std::ostream &out){
-        //if we are only compiling a single KML file
-        if(overlayAst == NULL){
-            out << "#Beginning of the line string section" << std::endl;
-            linestringsBase(baseAst, out);
-            out << "#End of the line string section" << std::endl;
-        }
-        //if we are compiling a base KML file with an overlay KML file
-        else{
-            linestringsOverlay(baseAst, out);
+        switch(mode){
+            case MAP:{
+                out << "#Beginning of the line string section" << std::endl;
+                linestringsMap(baseAst, out);
+                out << "#End of the line string section" << std::endl;
+            }
+            break;
+            case SUBSET:{
+                linestrings(baseAst, out);
+            }
+            break;
+            case SETADD:{                
+                linestrings(baseAst, out);
+                linestrings(overlayAst, out);
+            }
+            break;
+            default:{
+                //Do nothing for now
+            }
+            break;
         }
     }
-    void linestringsBase(const NodePtr &ast, std::ostream &out){
+    void linestringsMap(const NodePtr &ast, std::ostream &out){
         switch(ast->type()){
             case Node::LINESTRING:{
                 LineStringNodePtr lineString = std::dynamic_pointer_cast<LineStringNode>(ast);
@@ -177,13 +219,14 @@ struct LineStringGenerator : public Generator {
             break;
             default:{
                 for(auto child : ast->children){
-                    linestringsBase(child,out);
+                    linestringsMap(child,out);
                 }
             }
             break;
         }
     }
-    void linestringsOverlay(const NodePtr &ast, std::ostream &out){
+
+    void linestrings(const NodePtr &ast, std::ostream &out){
         switch(ast->type()){
             case Node::LINESTRING:{
                 LineStringNodePtr lineString = std::dynamic_pointer_cast<LineStringNode>(ast);
@@ -203,12 +246,18 @@ struct LineStringGenerator : public Generator {
                     //Need to find out if this coordinate is contained within the overlay layer's polygon(s)
                     //Then I need to do something with it after I figure that out
                     OrderedTriplet currentPoint(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
-                    if(pointInPolygon(currentPoint)){
+                    if(mode == SUBSET){
+                        if(pointInPolygon(currentPoint)){
+                            out << std::fixed << std::showpoint << std::setprecision(15);
+                            out << "\t\t\t\t" << currentPoint.x << ", " << currentPoint.y << ", " << currentPoint.z << std::endl;
+                            ++count;
+                        }
+                    }
+                    else if(mode == SETADD){
                         out << std::fixed << std::showpoint << std::setprecision(15);
                         out << "\t\t\t\t" << currentPoint.x << ", " << currentPoint.y << ", " << currentPoint.z << std::endl;
                         ++count;
                     }
-
                 }
 
                 out << "\t\t\t</coordinates>" << std::endl;
@@ -217,37 +266,42 @@ struct LineStringGenerator : public Generator {
             break;
             default:{
                 for(auto child : ast->children){
-                    linestringsOverlay(child,out);
+                    linestrings(child,out);
                 }
             }
             break;
         }
     }
+
 };
-
-
-
-
-
-
 
 struct PlacemarkerGenerator : public Generator {
     int numPlacemarks = 0;
     PlacemarkerGenerator(const NodePtr &_baseAst) : Generator(_baseAst) { }
-    PlacemarkerGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
-        : Generator(_baseAst,_overlayAst) { }
+    PlacemarkerGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
+        : Generator(_baseAst,_overlayAst, _mode) { }
     
     virtual void generate(std::ostream &out){
-        //If we are only compiling a single KML file         
-        if(overlayAst == NULL){            
-            out << "# Creating the placemarks on the canvas" << std::endl;
-            placemarksBase(baseAst,out);
-            out << "# End of the placemarks section" << std::endl;
-        }
-        //If we are compiling a base KML file with an overlay KML file
-        else
-        {
-            placemarksOverlay(baseAst, out);
+        switch(mode){
+            case MAP:{
+                out << "# Creating the placemarks on the canvas" << std::endl;
+                placemarksBase(baseAst,out);
+                out << "# End of the placemarks section" << std::endl;
+            }
+            break;
+            case SUBSET:{
+                placemarksOverlay(baseAst, out);
+            }
+            break;
+            case SETADD:{
+                placemarksOverlay(baseAst,out);
+                placemarksOverlay(overlayAst,out);
+            }
+            break;
+            default:{
+                //Do nothing for now
+            }
+            break;
         }
     }
 
@@ -341,8 +395,22 @@ struct PlacemarkerGenerator : public Generator {
                         break;
                     }
                 }
-                //Check if the placemarker was found in the overlay polygon and if so, add it to the output kml file
-                if(containedInOverlayPoly){
+                if(mode == SUBSET){
+                    //Check if the placemarker was found in the overlay polygon and if so, add it to the output kml file
+                    if(containedInOverlayPoly){
+                        out << "\t\t<Placemarker>" << std::endl;
+                        if(nameStr != "")
+                            out <<"\t\t\t<name>" << nameStr << "</name>" << std::endl;
+                        if(descStr != "")
+                            out << "\t\t\t<description>" << descStr << "</description>" << std::endl;
+                        out << "\t\t\t<Point>" << std::endl;
+                        out << std::fixed << std::showpoint << std::setprecision(15);
+                        out << "\t\t\t\t<coordinates>" << xCor << ", " << yCor << ", " << zCor << "</coordinates>" << std::endl;
+                        out << "\t\t\t</Point>" << std::endl;
+                        out << "\t\t</Placemarker>" << std::endl;
+                    }
+                }
+                else if(mode == SETADD){
                     out << "\t\t<Placemarker>" << std::endl;
                     if(nameStr != "")
                         out <<"\t\t\t<name>" << nameStr << "</name>" << std::endl;
@@ -368,23 +436,35 @@ struct PlacemarkerGenerator : public Generator {
 
 struct PolygonGenerator : public Generator {
     PolygonGenerator(const NodePtr &_baseAst) : Generator(_baseAst) { }
-    PolygonGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
-        : Generator(_baseAst, _overlayAst) { }
+    PolygonGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
+        : Generator(_baseAst, _overlayAst, _mode) { }
 
     virtual void generate(std::ostream &out){
-        //We are compiling a single KML file
-        if(overlayAst == NULL){
-            out << "#Start of polygon section" << std::endl;
-            polygons(baseAst,out);
-            out << "#End of polygon section" << std::endl;
-        }
-        //We are compiling a base KML file with an overlay KML file
-        else {
-            polygons(baseAst,overlayAst,out);
+        switch(mode){
+            case MAP:{
+                out << "#Start of polygon section" << std::endl;
+                polygonsBase(baseAst,out);
+                out << "#End of polygon section" << std::endl;
+            }
+            break;
+            case SUBSET:{
+                //Need to figure this out
+                polygonsOverlay(baseAst,out);
+            }
+            break;
+            case SETADD:{
+                polygonsOverlay(baseAst,out);
+                polygonsOverlay(overlayAst,out);
+            }
+            break;
+            default:{
+                //Do nothing for now
+            }
+            break;
         }
     }
 
-    void polygons(const NodePtr &ast, std::ostream &out){
+    void polygonsBase(const NodePtr &ast, std::ostream &out){
         switch(ast->type()){
             case Node::POLYGON:{
                 out << "url += \"&path=color%3ared|weight:1|fillcolor%3aorange\"" << std::endl;
@@ -405,21 +485,58 @@ struct PolygonGenerator : public Generator {
             break;
             default:{
                 for(auto child : ast->children){
-                    polygons(child,out);
+                    polygonsBase(child,out);
                 }
             }
             break;
         }
     }
 
-    void polygons(const NodePtr &_baseAst, const NodePtr &_overlayAst, std::ostream &out){
+    void polygonsOverlay(const NodePtr &ast, std::ostream &out){
+        switch(ast->type()){
+            case Node::POLYGON:{
+                out << "\t\t<Polygon>" << std::endl;
+                out << "\t\t\t<outerBoundaryIs>" << std::endl;
+                out << "\t\t\t\t<LinearRing>" << std::endl;
+                out << "\t\t\t\t\t<coordinates>" << std::endl;
 
+                PolygonNodePtr polyNode = std::dynamic_pointer_cast<PolygonNode>(ast);                
+                OuterBoundaryNodePtr outerBoundary = std::dynamic_pointer_cast<OuterBoundaryNode>(polyNode->children.at(0));                
+                LinearRingNodePtr linearRing = std::dynamic_pointer_cast<LinearRingNode>(outerBoundary->children.at(0));                
+                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(linearRing->children.at(0));           
+                for(auto child : coordinateList->children){
+                    //get the current coordinate's x, y, and z values
+                    NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(0));
+                    NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(1));
+                    NumberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(2));
+
+                    if(mode == SUBSET){
+                        OrderedTriplet curPoint(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
+                        if(pointInPolygon(curPoint)){
+                            out << std::fixed << std::showpoint << std::setprecision(15);
+                            out << "\t\t\t\t\t\t" << xCorNode->numberLiteral << ", " << yCorNode->numberLiteral << ", " << zCorNode->numberLiteral << std::endl;
+                        }
+                    }
+                    else if(mode == SETADD){
+                        out << std::fixed << std::showpoint << std::setprecision(15);
+                        out << "\t\t\t\t\t\t" << xCorNode->numberLiteral << ", " << yCorNode->numberLiteral << ", " << zCorNode->numberLiteral << std::endl;
+                    }
+                }
+                out << "\t\t\t\t\t</coordinates>" << std::endl;
+                out << "\t\t\t\t</LinearRing>" << std::endl;
+                out << "\t\t\t</outerBoundaryIs>" << std::endl;
+                out << "\t\t</Polygon>" << std::endl;
+            }
+            break;
+            default:{
+                for(auto child : ast->children){
+                    polygonsOverlay(child,out);
+                }
+            }
+            break;
+        }
     }
 };
-
-
-
-
 
 
 struct ProgramGenerator : public Generator {
@@ -431,16 +548,16 @@ struct ProgramGenerator : public Generator {
     FooterGenerator footer;  
 
     ProgramGenerator(const NodePtr &_baseAst)
-        : Generator(_baseAst), header(_baseAst), placemarkers(_baseAst), polyPoints(NULL, NULL), linestrings(_baseAst),
+        : Generator(_baseAst), header(_baseAst), placemarkers(_baseAst), polyPoints(NULL, NULL, MAP), linestrings(_baseAst),
         polygons(_baseAst), footer(_baseAst) { }
-    ProgramGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
-        : Generator(_baseAst,_overlayAst), header(_baseAst, _overlayAst), placemarkers(_baseAst,_overlayAst),
-        polyPoints(_baseAst,_overlayAst), linestrings(_baseAst, _overlayAst),
-        polygons(_baseAst,_overlayAst), footer(_baseAst, _overlayAst) { }
+    ProgramGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
+        : Generator(_baseAst,_overlayAst, _mode), header(_baseAst, _overlayAst, _mode), placemarkers(_baseAst,_overlayAst, _mode),
+        polyPoints(_baseAst,_overlayAst, _mode), linestrings(_baseAst, _overlayAst, _mode),
+        polygons(_baseAst,_overlayAst,_mode), footer(_baseAst, _overlayAst, _mode) { }
 
   virtual void generate(std::ostream &out) {
       //if we are only compiling a single KML file
-      if(overlayAst == NULL){         
+      if(mode == MAP){         
         header.generate(out); 
         placemarkers.generate(out);
         linestrings.generate(out);
@@ -456,9 +573,9 @@ struct ProgramGenerator : public Generator {
         overlayPolyPoints = polyPoints.overlayPolyPoints;
         linestrings.overlayPolyPoints = polyPoints.overlayPolyPoints;
         placemarkers.overlayPolyPoints = polyPoints.overlayPolyPoints;
-
         linestrings.generate(out);
         placemarkers.generate(out);
+        polygons.generate(out);
         footer.generate(out);
       }    
   }
@@ -468,6 +585,6 @@ GeneratorPtr generator(const NodePtr &ast) {
     return GeneratorPtr(new ProgramGenerator(ast));
 }
 
-GeneratorPtr generator(const NodePtr &baseAst, const NodePtr &overlayAst) {
-  return GeneratorPtr(new ProgramGenerator(baseAst,overlayAst));
+GeneratorPtr generator(const NodePtr &baseAst, const NodePtr &overlayAst, COMPILE_MODE _mode) {
+  return GeneratorPtr(new ProgramGenerator(baseAst,overlayAst, _mode));
 }
