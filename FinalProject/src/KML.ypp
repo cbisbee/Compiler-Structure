@@ -263,27 +263,19 @@ singlecor:
 optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws
 {
   #if DEBUG_PARSER == 1
-    std::cout << "singlecor(" << $2 << "," << $4 << "," << $6 << ")" << std::endl;
+    std::cout << "singlecor(" << $2 << "," << $6 << "," << $10 << ")" << std::endl;
   #endif
-  $$ = NodePtr(new CoordinateNode($2,$4,$6));
+  $$ = NodePtr(new CoordinateNode($2,$6,$10));
 }
 ; 
 
 coordinate:
-optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws
+OPEN_COORDINATE optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws CLOSE_COORDINATE
 {
   #if DEBUG_PARSER == 1
-    std::cout << "coordinate: numberLiteral1=" << $2 << "numberLiteral2=" << $4 << "numberLiteral3=" << $6 << std::endl;
+    std::cout << "coordinate: numberLiteral1=" << $3 << "numberLiteral2=" << $7 << "numberLiteral3=" << $11 << std::endl;
   #endif
-  $$ = NodePtr(new CoordinateNode($2,$4,$6));
-}
-|
-optionalws OPEN_COORDINATE optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws COMMA_DELIMETER optionalws NUMBER_LITERAL optionalws CLOSE_COORDINATE optionalws
-{
-  #if DEBUG_PARSER == 1
-    std::cout << "coordinate: numberLiteral1=" << $3 << "numberLiteral2=" << $5 << "numberLiteral3=" << $7 << std::endl;
-  #endif
-  $$ = NodePtr(new CoordinateNode($3,$5,$7));
+  $$ = NodePtr(new CoordinateNode($3,$7,$11));
 }
 ; /*coordinate*/
 

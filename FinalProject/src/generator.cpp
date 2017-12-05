@@ -238,8 +238,8 @@ struct PlacemarkerGenerator : public Generator {
         : Generator(_baseAst,_overlayAst) { }
     
     virtual void generate(std::ostream &out){
-        //If we are only compiling a single KML file
-        if(overlayAst == NULL){
+        //If we are only compiling a single KML file         
+        if(overlayAst == NULL){            
             out << "# Creating the placemarks on the canvas" << std::endl;
             placemarksBase(baseAst,out);
             out << "# End of the placemarks section" << std::endl;
@@ -251,7 +251,7 @@ struct PlacemarkerGenerator : public Generator {
         }
     }
 
-    void placemarksBase(const NodePtr &ast, std::ostream &out){
+    void placemarksBase(const NodePtr &ast, std::ostream &out){        
         switch(ast->type()){
             case Node::DESCRIPTORS:{
                 DescriptorsNodePtr descriptors = std::dynamic_pointer_cast<DescriptorsNode>(ast);
@@ -386,8 +386,8 @@ struct ProgramGenerator : public Generator {
 
   virtual void generate(std::ostream &out) {
       //if we are only compiling a single KML file
-      if(overlayAst == NULL){          
-        header.generate(out);
+      if(overlayAst == NULL){         
+        header.generate(out); 
         placemarkers.generate(out);
         linestrings.generate(out);
         footer.generate(out);
@@ -410,7 +410,7 @@ struct ProgramGenerator : public Generator {
 };
 
 GeneratorPtr generator(const NodePtr &ast) {
-  return GeneratorPtr(new ProgramGenerator(ast));
+    return GeneratorPtr(new ProgramGenerator(ast));
 }
 
 GeneratorPtr generator(const NodePtr &baseAst, const NodePtr &overlayAst) {

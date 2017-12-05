@@ -7,9 +7,9 @@
 
 class Node {
 public: enum {
-    PROGRAM,
-    KML,
-    DOCUMENT,
+    PROGRAM, 
+    KML, 
+    DOCUMENT, 
     PLACEMARKER,
     LINESTRING,
     LINEAR_RING,
@@ -17,8 +17,8 @@ public: enum {
     INNER_BOUNDARY,
     OUTER_BOUNDARY,
     POLYGON,
-    DESCRIPTORS,
-    NAME,
+    DESCRIPTORS, 
+    NAME, 
     DESCRIPTION,
     POINT,
     COORDINATE_LIST,
