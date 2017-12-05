@@ -366,6 +366,57 @@ struct PlacemarkerGenerator : public Generator {
     }
 };
 
+struct PolygonGenerator : public Generator {
+    PolygonGenerator(const NodePtr &_baseAst) : Generator(_baseAst) { }
+    PolygonGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
+        : Generator(_baseAst, _overlayAst) { }
+
+    virtual void generate(std::ostream &out){
+        //We are compiling a single KML file
+        if(overlayAst == NULL){
+            out << "#Start of polygon section" << std::endl;
+            polygons(baseAst,out);
+            out << "#End of polygon section" << std::endl;
+        }
+        //We are compiling a base KML file with an overlay KML file
+        else {
+            polygons(baseAst,overlayAst,out);
+        }
+    }
+
+    void polygons(const NodePtr &ast, std::ostream &out){
+        switch(ast->type()){
+            case Node::POLYGON:{
+                out << "url += \"&path=color%3ared|weight:1|fillcolor%3aorange\"" << std::endl;
+
+                PolygonNodePtr polyNode = std::dynamic_pointer_cast<PolygonNode>(ast);                
+                OuterBoundaryNodePtr outerBoundary = std::dynamic_pointer_cast<OuterBoundaryNode>(polyNode->children.at(0));                
+                LinearRingNodePtr linearRing = std::dynamic_pointer_cast<LinearRingNode>(outerBoundary->children.at(0));                
+                CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(linearRing->children.at(0));           
+                for(auto child : coordinateList->children){
+                    //get the current coordinate's x, y, and z values
+                    NumberLiteralNodePtr xCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(0));
+                    NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(1));
+                    NumberLiteralNodePtr zCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(2));
+                    
+                    out << "url += \"|" << yCorNode->numberLiteral << "," << xCorNode->numberLiteral << "\"" << std::endl;
+                }
+            }
+            break;
+            default:{
+                for(auto child : ast->children){
+                    polygons(child,out);
+                }
+            }
+            break;
+        }
+    }
+
+    void polygons(const NodePtr &_baseAst, const NodePtr &_overlayAst, std::ostream &out){
+
+    }
+};
+
 
 
 
@@ -374,15 +425,18 @@ struct PlacemarkerGenerator : public Generator {
 struct ProgramGenerator : public Generator {
     HeaderGenerator header;
     PlacemarkerGenerator placemarkers;
-    LineStringGenerator linestrings;
     OverlayPolyPointsGenerator polyPoints;
+    LineStringGenerator linestrings;
+    PolygonGenerator polygons;
     FooterGenerator footer;  
 
     ProgramGenerator(const NodePtr &_baseAst)
-        : Generator(_baseAst), header(_baseAst), placemarkers(_baseAst), polyPoints(NULL, NULL), linestrings(_baseAst), footer(_baseAst) { }
+        : Generator(_baseAst), header(_baseAst), placemarkers(_baseAst), polyPoints(NULL, NULL), linestrings(_baseAst),
+        polygons(_baseAst), footer(_baseAst) { }
     ProgramGenerator(const NodePtr &_baseAst, const NodePtr &_overlayAst)
         : Generator(_baseAst,_overlayAst), header(_baseAst, _overlayAst), placemarkers(_baseAst,_overlayAst),
-        polyPoints(_baseAst,_overlayAst), linestrings(_baseAst, _overlayAst), footer(_baseAst, _overlayAst) { }
+        polyPoints(_baseAst,_overlayAst), linestrings(_baseAst, _overlayAst),
+        polygons(_baseAst,_overlayAst), footer(_baseAst, _overlayAst) { }
 
   virtual void generate(std::ostream &out) {
       //if we are only compiling a single KML file
@@ -390,6 +444,7 @@ struct ProgramGenerator : public Generator {
         header.generate(out); 
         placemarkers.generate(out);
         linestrings.generate(out);
+        polygons.generate(out);
         footer.generate(out);
       }
       //if we are compiling a base KML file with an overlay KML file
