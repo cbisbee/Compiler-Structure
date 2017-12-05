@@ -9,7 +9,7 @@ template <class T>
 std::string numToString(T num)
 {
    std::ostringstream ss;
-   ss << num;
+   ss << std::fixed << std::showpoint << std::setprecision(3) << num;
    return ss.str();
 }
 
@@ -167,9 +167,9 @@ struct LineStringGenerator : public Generator {
                     NumberLiteralNodePtr yCorNode = std::dynamic_pointer_cast<NumberLiteralNode>(child->children.at(1));
                     if(count == 0){
                         out << "url += \"&path=color:0xff0000ff|weight:2\"" << std::endl;
-                        out << "url += \"" << "|" << numToString(xCorNode->numberLiteral) << "," << numToString(yCorNode->numberLiteral) << "\"" << std::endl;
-                    } else {
-                        out << "url += \"" << "|" << numToString(xCorNode->numberLiteral) << "," << numToString(yCorNode->numberLiteral) << "\"" << std::endl;
+                        out << "url += \"" << "|" << numToString(yCorNode->numberLiteral) << "," << numToString(xCorNode->numberLiteral) << "\"" << std::endl;
+                    } else {                        
+                        out << "url += \"" << "|" << numToString(yCorNode->numberLiteral) << "," << numToString(xCorNode->numberLiteral) << "\"" << std::endl;
                     }
                     ++count;
                 }
@@ -279,9 +279,9 @@ struct PlacemarkerGenerator : public Generator {
                             yCor = yCorNode->numberLiteral;
                             if(numPlacemarks == 0){
                                 out << "url += " << "\"" << "&markers=color:blue%7Clabel:S%7C" << "\"" << std::endl;
-                                out << "url += " << "\"" << numToString(xCor) << "," << numToString(yCor) << "\"" << std::endl; 
+                                out << "url += " << "\"" << numToString(yCor) << "," << numToString(xCor) << "\"" << std::endl; 
                             } else {
-                                out << "url += " << "\"|" << numToString(xCor) << "," << numToString(yCor) << "\"" << std::endl;
+                                out << "url += " << "\"|" << numToString(yCor) << "," << numToString(xCor) << "\"" << std::endl;
                             }
                             ++numPlacemarks;
                         }
