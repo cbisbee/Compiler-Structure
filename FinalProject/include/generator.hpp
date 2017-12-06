@@ -8,7 +8,9 @@ enum COMPILE_MODE {MAP, SUBSET, SETADD };
 
 struct OrderedTriplet{
     double x,y,z;
+    bool isdefault = true;
     OrderedTriplet(double _x, double _y, double _z);
+    OrderedTriplet();
 };
 
 struct Generator {

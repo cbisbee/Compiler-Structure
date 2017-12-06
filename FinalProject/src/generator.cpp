@@ -19,7 +19,8 @@ Generator::Generator(const NodePtr &_baseAst)
 Generator::Generator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode)
     : baseAst(_baseAst), overlayAst(_overlayAst), mode(_mode) { }
 
-OrderedTriplet::OrderedTriplet(double _x, double _y, double _z) : x(_x), y(_y), z(_z) { }
+OrderedTriplet::OrderedTriplet() : x(0), y(0), z(0), isdefault(true) { }
+OrderedTriplet::OrderedTriplet(double _x, double _y, double _z) : x(_x), y(_y), z(_z), isdefault(false) { }
 
 
 bool Generator::pointInPolygon(OrderedTriplet &point) {
@@ -183,12 +184,16 @@ struct LineStringGenerator : public Generator {
             }
             break;
             case SUBSET:{
-                linestrings(baseAst, out);
+                OrderedTriplet prevPoint;
+                bool prevInPoly = false;
+                linestrings(baseAst, out, prevPoint,prevInPoly);
             }
             break;
-            case SETADD:{                
-                linestrings(baseAst, out);
-                linestrings(overlayAst, out);
+            case SETADD:{    
+                OrderedTriplet prevPoint;
+                bool prevInPoly = false;            
+                linestrings(baseAst, out, prevPoint, prevInPoly);
+                linestrings(overlayAst, out, prevPoint, prevInPoly);
             }
             break;
             default:{
@@ -197,6 +202,22 @@ struct LineStringGenerator : public Generator {
             break;
         }
     }
+
+    OrderedTriplet findPolyEdge(OrderedTriplet prev, OrderedTriplet cur, int count){
+        double aveX = (prev.x + cur.x) / 2.0;
+        double aveY = (prev.y + cur.y) / 2.0;
+        double aveZ = (prev.z + cur.z) / 2.0;
+        OrderedTriplet ave(aveX, aveY, aveZ);
+        if(count == 20)
+            return ave;
+        else {
+            if(pointInPolygon(ave))
+                return findPolyEdge(prev, ave, ++count);
+            else
+                return findPolyEdge(ave, cur, ++count);
+        }
+    }
+
     void linestringsMap(const NodePtr &ast, std::ostream &out){
         switch(ast->type()){
             case Node::LINESTRING:{
@@ -226,14 +247,13 @@ struct LineStringGenerator : public Generator {
         }
     }
 
-    void linestrings(const NodePtr &ast, std::ostream &out){
+    void linestrings(const NodePtr &ast, std::ostream &out, OrderedTriplet prevPoint, bool prevInPoly){
         switch(ast->type()){
             case Node::LINESTRING:{
                 LineStringNodePtr lineString = std::dynamic_pointer_cast<LineStringNode>(ast);
                 CoordinateListNodePtr coordinateList = std::dynamic_pointer_cast<CoordinateListNode>(lineString->children.at(0));
                 int count = 0;
 
-                //TODO what do we do if we find a linestring that is not in the overlay poly? we probably shouldn't print this
                 out << "\t\t<LineString>" << std::endl;
                 out << "\t\t\t<coordinates>" << std::endl;
 
@@ -248,9 +268,30 @@ struct LineStringGenerator : public Generator {
                     OrderedTriplet currentPoint(xCorNode->numberLiteral, yCorNode->numberLiteral, zCorNode->numberLiteral);
                     if(mode == SUBSET){
                         if(pointInPolygon(currentPoint)){
+                            if(!prevInPoly && !prevPoint.isdefault){
+                                //Find the edge of the polygon
+                                OrderedTriplet polyEdgePoint = findPolyEdge(prevPoint,currentPoint,0);   
+                                //Add a new point to the linestring so we get better subset accuracy
+                                out << std::fixed << std::showpoint << std::setprecision(15);
+                                out << "\t\t\t\t" << polyEdgePoint.x << ", " << polyEdgePoint.y << ", " << polyEdgePoint.z << std::endl;           
+                            }
                             out << std::fixed << std::showpoint << std::setprecision(15);
                             out << "\t\t\t\t" << currentPoint.x << ", " << currentPoint.y << ", " << currentPoint.z << std::endl;
                             ++count;
+                            prevInPoly = true;
+                            prevPoint = currentPoint;
+                        }
+                        //The current point was not in the polygon
+                        else{
+                            if(prevInPoly && !prevPoint.isdefault){
+                                //Find the edge of the polygon
+                                OrderedTriplet polyEdgePoint = findPolyEdge(prevPoint,currentPoint,0);   
+                                //Add a new point to the linestring so we get better subset accuracy
+                                out << std::fixed << std::showpoint << std::setprecision(15);
+                                out << "\t\t\t\t" << polyEdgePoint.x << ", " << polyEdgePoint.y << ", " << polyEdgePoint.z << std::endl;   
+                            }
+                            prevInPoly = false;
+                            prevPoint = currentPoint;
                         }
                     }
                     else if(mode == SETADD){
@@ -266,7 +307,7 @@ struct LineStringGenerator : public Generator {
             break;
             default:{
                 for(auto child : ast->children){
-                    linestrings(child,out);
+                    linestrings(child,out, prevPoint, prevInPoly);
                 }
             }
             break;
