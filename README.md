@@ -12,7 +12,7 @@ Repo for CSCI 450 - Compiler Structure, Colorado Mesa University Fall 2017
   2) python2 [OUTPUT_FILENAME].py
 
 - Example PNG file produced:
-  1) display example image here
+<img src="https://github.com/cbisbee/Compiler-Structure/blob/FinalProject/FinalProject/testkmlfiles/fruitapath.png" width="640" height="640">
 
 # Performing a set union of two KML files
 - This compiler is capable of taking two KML files and performing a basic set union of the two files. That is, the map items detailed in the first file will be combined with the map items in the second file to produce a single output KML file.
@@ -22,7 +22,10 @@ Repo for CSCI 450 - Compiler Structure, Colorado Mesa University Fall 2017
   
 - The resulting file of this operation can then be used as input to the compiler in map mode to create a PNG file of the union KML file.
 - Example of using the union feature of the compiler:
-  1) Display the three pictures here
+
+  <img src="https://github.com/cbisbee/Compiler-Structure/blob/FinalProject/FinalProject/testkmlfiles/fruitapath.png" width="275" height="275">
+  <img src="https://github.com/cbisbee/Compiler-Structure/blob/FinalProject/FinalProject/testkmlfiles/appletonarea.png" width="275" height="275">
+  <img src="https://github.com/cbisbee/Compiler-Structure/blob/FinalProject/FinalProject/testkmlfiles/kmladd.png" width="275" height="275">
   
   
 # Performing a subset operation on two KML files
@@ -33,4 +36,6 @@ Repo for CSCI 450 - Compiler Structure, Colorado Mesa University Fall 2017
   
 - The resulting file of this operation can then be used as input to the compiler in map mode to create a PNG file of the subset KML file.
 - Example of using the subset feature of the compiler:
-  1) Display the two pictures here
+
+  <img src="https://github.com/cbisbee/Compiler-Structure/blob/FinalProject/FinalProject/testkmlfiles/kmladd.png" width="400" height="400">
+  <img src="https://github.com/cbisbee/Compiler-Structure/blob/FinalProject/FinalProject/testkmlfiles/testsub.png" width="400" height="400">
