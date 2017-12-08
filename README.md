@@ -21,4 +21,4 @@ Repo for CSCI 450 - Compiler Structure, Colorado Mesa University Fall 2017
 # Final Project:
 - In this project we were to create a compiler for a language of our choice using tools of our choice. I decided to build off of the work that I had done for my KML parser/scanner and create a KML compiler capable of taking in simple KML style files (not actual KML!) and performing various operations on those files.
 - The branch can be found at https://github.com/cbisbee/Compiler-Structure/tree/FinalProject
-- The README for this branch is pretty detailed
+- The relavent files for this project can be found at https://github.com/cbisbee/Compiler-Structure/tree/FinalProject/FinalProject
