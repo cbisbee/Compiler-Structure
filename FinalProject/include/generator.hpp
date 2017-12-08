@@ -3,6 +3,9 @@
 #include "ast.hpp"
 #include <memory>
 #include <vector>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 enum COMPILE_MODE {MAP, SUBSET, SETADD };
 
@@ -26,5 +29,10 @@ struct Generator {
 
 typedef std::shared_ptr <Generator> GeneratorPtr;
 
-GeneratorPtr generator(const NodePtr &ast);
-GeneratorPtr generator(const NodePtr &_baseAst, const NodePtr &_overlayAst, COMPILE_MODE _mode);
+template <class T>
+std::string numToString(T num)
+{
+   std::ostringstream ss;
+   ss << std::fixed << std::showpoint << std::setprecision(3) << num;
+   return ss.str();
+}
